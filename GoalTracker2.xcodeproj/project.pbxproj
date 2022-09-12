@@ -9,6 +9,68 @@
 /* Begin PBXBuildFile section */
 		2A978355B5DA0EF882D565E1 /* Pods_GoalTracker2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0B1B21EABD8BA56813343784 /* Pods_GoalTracker2.framework */; };
 		4D48197F419328D96712A530 /* Pods_GoalTracker2_GoalTracker2UITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D7F12845C4B9F031CBE5F31 /* Pods_GoalTracker2_GoalTracker2UITests.framework */; };
+		621AEAA028CEF56C00D53F2C /* Outfit-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 621AEA7A28CEF56C00D53F2C /* Outfit-Bold.ttf */; };
+		621AEAA128CEF56C00D53F2C /* Outfit-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 621AEA7B28CEF56C00D53F2C /* Outfit-Regular.ttf */; };
+		621AEAA228CEF56C00D53F2C /* Outfit-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 621AEA7C28CEF56C00D53F2C /* Outfit-Black.ttf */; };
+		621AEAA328CEF56C00D53F2C /* Outfit-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 621AEA7D28CEF56C00D53F2C /* Outfit-Thin.ttf */; };
+		621AEAA428CEF56C00D53F2C /* Outfit-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 621AEA7E28CEF56C00D53F2C /* Outfit-SemiBold.ttf */; };
+		621AEAA528CEF56C00D53F2C /* Outfit-ExtraLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 621AEA7F28CEF56C00D53F2C /* Outfit-ExtraLight.ttf */; };
+		621AEAA628CEF56C00D53F2C /* Outfit-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 621AEA8028CEF56C00D53F2C /* Outfit-ExtraBold.ttf */; };
+		621AEAA728CEF56C00D53F2C /* Outfit-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 621AEA8128CEF56C00D53F2C /* Outfit-Medium.ttf */; };
+		621AEAA828CEF56C00D53F2C /* Outfit-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 621AEA8228CEF56C00D53F2C /* Outfit-Light.ttf */; };
+		621AEAA928CEF56C00D53F2C /* SF-Pro-Display-Thin.otf in Resources */ = {isa = PBXBuildFile; fileRef = 621AEA8428CEF56C00D53F2C /* SF-Pro-Display-Thin.otf */; };
+		621AEAAA28CEF56C00D53F2C /* SF-Pro-Display-SemiboldItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 621AEA8528CEF56C00D53F2C /* SF-Pro-Display-SemiboldItalic.otf */; };
+		621AEAAB28CEF56C00D53F2C /* SF-Pro-Display-RegularItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 621AEA8628CEF56C00D53F2C /* SF-Pro-Display-RegularItalic.otf */; };
+		621AEAAC28CEF56C00D53F2C /* SF-Pro-Display-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = 621AEA8728CEF56C00D53F2C /* SF-Pro-Display-Light.otf */; };
+		621AEAAD28CEF56C00D53F2C /* SF-Pro-Display-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 621AEA8828CEF56C00D53F2C /* SF-Pro-Display-Regular.otf */; };
+		621AEAAE28CEF56C00D53F2C /* SF-Pro-Display-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 621AEA8928CEF56C00D53F2C /* SF-Pro-Display-Bold.otf */; };
+		621AEAAF28CEF56C00D53F2C /* SF-Pro-Display-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 621AEA8A28CEF56C00D53F2C /* SF-Pro-Display-Medium.otf */; };
+		621AEAB028CEF56C00D53F2C /* SF-Pro-Display-Heavy.otf in Resources */ = {isa = PBXBuildFile; fileRef = 621AEA8B28CEF56C00D53F2C /* SF-Pro-Display-Heavy.otf */; };
+		621AEAB128CEF56C00D53F2C /* SF-Pro-Display-Semibold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 621AEA8C28CEF56C00D53F2C /* SF-Pro-Display-Semibold.otf */; };
+		621AEAB228CEF56C00D53F2C /* SF-Pro-Display-MediumItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 621AEA8D28CEF56C00D53F2C /* SF-Pro-Display-MediumItalic.otf */; };
+		621AEAB328CEF56C00D53F2C /* SF-Pro-Display-HeavyItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 621AEA8E28CEF56C00D53F2C /* SF-Pro-Display-HeavyItalic.otf */; };
+		621AEAB428CEF56C00D53F2C /* SF-Pro-Display-Ultralight.otf in Resources */ = {isa = PBXBuildFile; fileRef = 621AEA8F28CEF56C00D53F2C /* SF-Pro-Display-Ultralight.otf */; };
+		621AEAB528CEF56C00D53F2C /* SF-Pro-Display-UltralightItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 621AEA9028CEF56C00D53F2C /* SF-Pro-Display-UltralightItalic.otf */; };
+		621AEAB628CEF56C00D53F2C /* SF-Pro-Display-LightItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 621AEA9128CEF56C00D53F2C /* SF-Pro-Display-LightItalic.otf */; };
+		621AEAB728CEF56C00D53F2C /* SF-Pro-Display-BlackItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 621AEA9228CEF56C00D53F2C /* SF-Pro-Display-BlackItalic.otf */; };
+		621AEAB828CEF56C00D53F2C /* SF-Pro-Display-Black.otf in Resources */ = {isa = PBXBuildFile; fileRef = 621AEA9328CEF56C00D53F2C /* SF-Pro-Display-Black.otf */; };
+		621AEAB928CEF56C00D53F2C /* SF-Pro-Display-ThinItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 621AEA9428CEF56C00D53F2C /* SF-Pro-Display-ThinItalic.otf */; };
+		621AEABA28CEF56C00D53F2C /* SF-Pro-Display-BoldItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 621AEA9528CEF56C00D53F2C /* SF-Pro-Display-BoldItalic.otf */; };
+		621AEABB28CEF56C00D53F2C /* NotoSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 621AEA9728CEF56C00D53F2C /* NotoSans-Regular.ttf */; };
+		621AEABC28CEF56C00D53F2C /* NotoSans-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 621AEA9828CEF56C00D53F2C /* NotoSans-Medium.ttf */; };
+		621AEABD28CEF56C00D53F2C /* NotoSans-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 621AEA9928CEF56C00D53F2C /* NotoSans-Black.ttf */; };
+		621AEABE28CEF56C00D53F2C /* NotoSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 621AEA9A28CEF56C00D53F2C /* NotoSans-Bold.ttf */; };
+		621AEABF28CEF56C00D53F2C /* NotoSans-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 621AEA9B28CEF56C00D53F2C /* NotoSans-Thin.ttf */; };
+		621AEAC028CEF56C00D53F2C /* NotoSans-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 621AEA9C28CEF56C00D53F2C /* NotoSans-SemiBold.ttf */; };
+		621AEAC128CEF56C00D53F2C /* NotoSans-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 621AEA9D28CEF56C00D53F2C /* NotoSans-Light.ttf */; };
+		621AEAC228CEF56C00D53F2C /* NotoSans-ExtraLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 621AEA9E28CEF56C00D53F2C /* NotoSans-ExtraLight.ttf */; };
+		621AEAC328CEF56C00D53F2C /* NotoSans-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 621AEA9F28CEF56C00D53F2C /* NotoSans-ExtraBold.ttf */; };
+		621AEAC528CEF58800D53F2C /* UIFont_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 621AEAC428CEF58800D53F2C /* UIFont_Extension.swift */; };
+		621AEAC828CEF5A300D53F2C /* UIImage_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 621AEAC628CEF5A300D53F2C /* UIImage_Extension.swift */; };
+		621AEAC928CEF5A300D53F2C /* Numeric_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 621AEAC728CEF5A300D53F2C /* Numeric_Extension.swift */; };
+		621AEACC28CEF64C00D53F2C /* Entities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 621AEACB28CEF64C00D53F2C /* Entities.swift */; };
+		621AEACE28CEF66A00D53F2C /* Date_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 621AEACD28CEF66A00D53F2C /* Date_Extension.swift */; };
+		621AEAD428CEF71700D53F2C /* GoalManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 621AEAD328CEF71700D53F2C /* GoalManager.swift */; };
+		621AEAD628CEF71D00D53F2C /* MainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 621AEAD528CEF71D00D53F2C /* MainViewModel.swift */; };
+		621AEAEE28CEF74300D53F2C /* TileCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 621AEADC28CEF74300D53F2C /* TileCell.swift */; };
+		621AEAEF28CEF74300D53F2C /* TileBoardCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 621AEADD28CEF74300D53F2C /* TileBoardCollectionView.swift */; };
+		621AEAF028CEF74300D53F2C /* HomeCircularGoalCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 621AEADF28CEF74300D53F2C /* HomeCircularGoalCell.swift */; };
+		621AEAF128CEF74300D53F2C /* DigitalCountPannel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 621AEAE128CEF74300D53F2C /* DigitalCountPannel.swift */; };
+		621AEAF228CEF74300D53F2C /* ArcProcessBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 621AEAE228CEF74300D53F2C /* ArcProcessBar.swift */; };
+		621AEAF328CEF74300D53F2C /* GoalCircle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 621AEAE328CEF74300D53F2C /* GoalCircle.swift */; };
+		621AEAF428CEF74300D53F2C /* GTAlertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 621AEAE528CEF74300D53F2C /* GTAlertViewController.swift */; };
+		621AEAF728CEF74300D53F2C /* VerticalPageIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 621AEAE828CEF74300D53F2C /* VerticalPageIndicator.swift */; };
+		621AEAF828CEF74300D53F2C /* MainDimView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 621AEAE928CEF74300D53F2C /* MainDimView.swift */; };
+		621AEAF928CEF74300D53F2C /* MessageBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 621AEAEA28CEF74300D53F2C /* MessageBar.swift */; };
+		621AEAFA28CEF74300D53F2C /* CircularCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 621AEAEC28CEF74300D53F2C /* CircularCollectionView.swift */; };
+		621AEAFB28CEF74300D53F2C /* CollectionViewCircularLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 621AEAED28CEF74300D53F2C /* CollectionViewCircularLayout.swift */; };
+		621AEAFE28CEF74D00D53F2C /* PresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 621AEAFD28CEF74D00D53F2C /* PresentationController.swift */; };
+		621AEB0028CEF81C00D53F2C /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 621AEAFF28CEF81C00D53F2C /* Constants.swift */; };
+		621AEB0328CF056400D53F2C /* AddGoalViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 621AEB0128CF056400D53F2C /* AddGoalViewModel.swift */; };
+		621AEB0428CF056400D53F2C /* AddGoalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 621AEB0228CF056400D53F2C /* AddGoalViewController.swift */; };
+		621AEB0628CF058B00D53F2C /* UIView_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 621AEB0528CF058B00D53F2C /* UIView_Extension.swift */; };
+		621AEB0828CF05A000D53F2C /* UIButton_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 621AEB0728CF05A000D53F2C /* UIButton_Extension.swift */; };
+		621AEB0A28CF089400D53F2C /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 621AEB0928CF089400D53F2C /* HomeViewModel.swift */; };
 		62B5723928CEE6A000015354 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62B5723828CEE6A000015354 /* AppDelegate.swift */; };
 		62B5723B28CEE6A000015354 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62B5723A28CEE6A000015354 /* SceneDelegate.swift */; };
 		62B5724228CEE6A100015354 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 62B5724128CEE6A100015354 /* Assets.xcassets */; };
@@ -17,7 +79,7 @@
 		62B5725A28CEE6A100015354 /* GoalTracker2UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62B5725928CEE6A100015354 /* GoalTracker2UITests.swift */; };
 		62B5725C28CEE6A100015354 /* GoalTracker2UITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62B5725B28CEE6A100015354 /* GoalTracker2UITestsLaunchTests.swift */; };
 		62B5726928CEE84000015354 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62B5726828CEE84000015354 /* HomeViewController.swift */; };
-		62B5726C28CEE88500015354 /* UIColorExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62B5726B28CEE88500015354 /* UIColorExtensions.swift */; };
+		62B5726C28CEE88500015354 /* UIColor_Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62B5726B28CEE88500015354 /* UIColor_Extensions.swift */; };
 		F684813D80B4962657465F9A /* Pods_GoalTracker2Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D255B2A165BE8163F24C05BB /* Pods_GoalTracker2Tests.framework */; };
 /* End PBXBuildFile section */
 
@@ -42,6 +104,68 @@
 		0948CCDFED13891E6FD9E00F /* Pods-GoalTracker2Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GoalTracker2Tests.debug.xcconfig"; path = "Target Support Files/Pods-GoalTracker2Tests/Pods-GoalTracker2Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		0B1B21EABD8BA56813343784 /* Pods_GoalTracker2.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_GoalTracker2.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		1D7F12845C4B9F031CBE5F31 /* Pods_GoalTracker2_GoalTracker2UITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_GoalTracker2_GoalTracker2UITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		621AEA7A28CEF56C00D53F2C /* Outfit-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Outfit-Bold.ttf"; sourceTree = "<group>"; };
+		621AEA7B28CEF56C00D53F2C /* Outfit-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Outfit-Regular.ttf"; sourceTree = "<group>"; };
+		621AEA7C28CEF56C00D53F2C /* Outfit-Black.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Outfit-Black.ttf"; sourceTree = "<group>"; };
+		621AEA7D28CEF56C00D53F2C /* Outfit-Thin.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Outfit-Thin.ttf"; sourceTree = "<group>"; };
+		621AEA7E28CEF56C00D53F2C /* Outfit-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Outfit-SemiBold.ttf"; sourceTree = "<group>"; };
+		621AEA7F28CEF56C00D53F2C /* Outfit-ExtraLight.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Outfit-ExtraLight.ttf"; sourceTree = "<group>"; };
+		621AEA8028CEF56C00D53F2C /* Outfit-ExtraBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Outfit-ExtraBold.ttf"; sourceTree = "<group>"; };
+		621AEA8128CEF56C00D53F2C /* Outfit-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Outfit-Medium.ttf"; sourceTree = "<group>"; };
+		621AEA8228CEF56C00D53F2C /* Outfit-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Outfit-Light.ttf"; sourceTree = "<group>"; };
+		621AEA8428CEF56C00D53F2C /* SF-Pro-Display-Thin.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Display-Thin.otf"; sourceTree = "<group>"; };
+		621AEA8528CEF56C00D53F2C /* SF-Pro-Display-SemiboldItalic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Display-SemiboldItalic.otf"; sourceTree = "<group>"; };
+		621AEA8628CEF56C00D53F2C /* SF-Pro-Display-RegularItalic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Display-RegularItalic.otf"; sourceTree = "<group>"; };
+		621AEA8728CEF56C00D53F2C /* SF-Pro-Display-Light.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Display-Light.otf"; sourceTree = "<group>"; };
+		621AEA8828CEF56C00D53F2C /* SF-Pro-Display-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Display-Regular.otf"; sourceTree = "<group>"; };
+		621AEA8928CEF56C00D53F2C /* SF-Pro-Display-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Display-Bold.otf"; sourceTree = "<group>"; };
+		621AEA8A28CEF56C00D53F2C /* SF-Pro-Display-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Display-Medium.otf"; sourceTree = "<group>"; };
+		621AEA8B28CEF56C00D53F2C /* SF-Pro-Display-Heavy.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Display-Heavy.otf"; sourceTree = "<group>"; };
+		621AEA8C28CEF56C00D53F2C /* SF-Pro-Display-Semibold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Display-Semibold.otf"; sourceTree = "<group>"; };
+		621AEA8D28CEF56C00D53F2C /* SF-Pro-Display-MediumItalic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Display-MediumItalic.otf"; sourceTree = "<group>"; };
+		621AEA8E28CEF56C00D53F2C /* SF-Pro-Display-HeavyItalic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Display-HeavyItalic.otf"; sourceTree = "<group>"; };
+		621AEA8F28CEF56C00D53F2C /* SF-Pro-Display-Ultralight.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Display-Ultralight.otf"; sourceTree = "<group>"; };
+		621AEA9028CEF56C00D53F2C /* SF-Pro-Display-UltralightItalic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Display-UltralightItalic.otf"; sourceTree = "<group>"; };
+		621AEA9128CEF56C00D53F2C /* SF-Pro-Display-LightItalic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Display-LightItalic.otf"; sourceTree = "<group>"; };
+		621AEA9228CEF56C00D53F2C /* SF-Pro-Display-BlackItalic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Display-BlackItalic.otf"; sourceTree = "<group>"; };
+		621AEA9328CEF56C00D53F2C /* SF-Pro-Display-Black.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Display-Black.otf"; sourceTree = "<group>"; };
+		621AEA9428CEF56C00D53F2C /* SF-Pro-Display-ThinItalic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Display-ThinItalic.otf"; sourceTree = "<group>"; };
+		621AEA9528CEF56C00D53F2C /* SF-Pro-Display-BoldItalic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Display-BoldItalic.otf"; sourceTree = "<group>"; };
+		621AEA9728CEF56C00D53F2C /* NotoSans-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NotoSans-Regular.ttf"; sourceTree = "<group>"; };
+		621AEA9828CEF56C00D53F2C /* NotoSans-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NotoSans-Medium.ttf"; sourceTree = "<group>"; };
+		621AEA9928CEF56C00D53F2C /* NotoSans-Black.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NotoSans-Black.ttf"; sourceTree = "<group>"; };
+		621AEA9A28CEF56C00D53F2C /* NotoSans-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NotoSans-Bold.ttf"; sourceTree = "<group>"; };
+		621AEA9B28CEF56C00D53F2C /* NotoSans-Thin.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NotoSans-Thin.ttf"; sourceTree = "<group>"; };
+		621AEA9C28CEF56C00D53F2C /* NotoSans-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NotoSans-SemiBold.ttf"; sourceTree = "<group>"; };
+		621AEA9D28CEF56C00D53F2C /* NotoSans-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NotoSans-Light.ttf"; sourceTree = "<group>"; };
+		621AEA9E28CEF56C00D53F2C /* NotoSans-ExtraLight.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NotoSans-ExtraLight.ttf"; sourceTree = "<group>"; };
+		621AEA9F28CEF56C00D53F2C /* NotoSans-ExtraBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NotoSans-ExtraBold.ttf"; sourceTree = "<group>"; };
+		621AEAC428CEF58800D53F2C /* UIFont_Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIFont_Extension.swift; sourceTree = "<group>"; };
+		621AEAC628CEF5A300D53F2C /* UIImage_Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIImage_Extension.swift; sourceTree = "<group>"; };
+		621AEAC728CEF5A300D53F2C /* Numeric_Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Numeric_Extension.swift; sourceTree = "<group>"; };
+		621AEACB28CEF64C00D53F2C /* Entities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Entities.swift; sourceTree = "<group>"; };
+		621AEACD28CEF66A00D53F2C /* Date_Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Date_Extension.swift; sourceTree = "<group>"; };
+		621AEAD328CEF71700D53F2C /* GoalManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoalManager.swift; sourceTree = "<group>"; };
+		621AEAD528CEF71D00D53F2C /* MainViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainViewModel.swift; sourceTree = "<group>"; };
+		621AEADC28CEF74300D53F2C /* TileCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TileCell.swift; sourceTree = "<group>"; };
+		621AEADD28CEF74300D53F2C /* TileBoardCollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TileBoardCollectionView.swift; sourceTree = "<group>"; };
+		621AEADF28CEF74300D53F2C /* HomeCircularGoalCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeCircularGoalCell.swift; sourceTree = "<group>"; };
+		621AEAE128CEF74300D53F2C /* DigitalCountPannel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DigitalCountPannel.swift; sourceTree = "<group>"; };
+		621AEAE228CEF74300D53F2C /* ArcProcessBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArcProcessBar.swift; sourceTree = "<group>"; };
+		621AEAE328CEF74300D53F2C /* GoalCircle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoalCircle.swift; sourceTree = "<group>"; };
+		621AEAE528CEF74300D53F2C /* GTAlertViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GTAlertViewController.swift; sourceTree = "<group>"; };
+		621AEAE828CEF74300D53F2C /* VerticalPageIndicator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VerticalPageIndicator.swift; sourceTree = "<group>"; };
+		621AEAE928CEF74300D53F2C /* MainDimView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainDimView.swift; sourceTree = "<group>"; };
+		621AEAEA28CEF74300D53F2C /* MessageBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageBar.swift; sourceTree = "<group>"; };
+		621AEAEC28CEF74300D53F2C /* CircularCollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircularCollectionView.swift; sourceTree = "<group>"; };
+		621AEAED28CEF74300D53F2C /* CollectionViewCircularLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionViewCircularLayout.swift; sourceTree = "<group>"; };
+		621AEAFD28CEF74D00D53F2C /* PresentationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PresentationController.swift; sourceTree = "<group>"; };
+		621AEAFF28CEF81C00D53F2C /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		621AEB0128CF056400D53F2C /* AddGoalViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddGoalViewModel.swift; sourceTree = "<group>"; };
+		621AEB0228CF056400D53F2C /* AddGoalViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddGoalViewController.swift; sourceTree = "<group>"; };
+		621AEB0528CF058B00D53F2C /* UIView_Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIView_Extension.swift; sourceTree = "<group>"; };
+		621AEB0728CF05A000D53F2C /* UIButton_Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIButton_Extension.swift; sourceTree = "<group>"; };
+		621AEB0928CF089400D53F2C /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		62B5723528CEE6A000015354 /* GoalTracker2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GoalTracker2.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		62B5723828CEE6A000015354 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		62B5723A28CEE6A000015354 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -54,7 +178,7 @@
 		62B5725928CEE6A100015354 /* GoalTracker2UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalTracker2UITests.swift; sourceTree = "<group>"; };
 		62B5725B28CEE6A100015354 /* GoalTracker2UITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalTracker2UITestsLaunchTests.swift; sourceTree = "<group>"; };
 		62B5726828CEE84000015354 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
-		62B5726B28CEE88500015354 /* UIColorExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorExtensions.swift; sourceTree = "<group>"; };
+		62B5726B28CEE88500015354 /* UIColor_Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor_Extensions.swift; sourceTree = "<group>"; };
 		6E3403375D2E08953A642A97 /* Pods-GoalTracker2Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GoalTracker2Tests.release.xcconfig"; path = "Target Support Files/Pods-GoalTracker2Tests/Pods-GoalTracker2Tests.release.xcconfig"; sourceTree = "<group>"; };
 		7DB549AED6B2F40D9115861A /* Pods-GoalTracker2-GoalTracker2UITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GoalTracker2-GoalTracker2UITests.release.xcconfig"; path = "Target Support Files/Pods-GoalTracker2-GoalTracker2UITests/Pods-GoalTracker2-GoalTracker2UITests.release.xcconfig"; sourceTree = "<group>"; };
 		9E3026A29071F2207AD91954 /* Pods-GoalTracker2-GoalTracker2UITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GoalTracker2-GoalTracker2UITests.debug.xcconfig"; path = "Target Support Files/Pods-GoalTracker2-GoalTracker2UITests/Pods-GoalTracker2-GoalTracker2UITests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -91,6 +215,174 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		621AEA7828CEF56C00D53F2C /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				621AEA7928CEF56C00D53F2C /* Outfit */,
+				621AEA8328CEF56C00D53F2C /* SF-Pro-Display */,
+				621AEA9628CEF56C00D53F2C /* Noto-Sans */,
+			);
+			name = Fonts;
+			path = ../../GoalTracker/GoalTracker/Fonts;
+			sourceTree = "<group>";
+		};
+		621AEA7928CEF56C00D53F2C /* Outfit */ = {
+			isa = PBXGroup;
+			children = (
+				621AEA7A28CEF56C00D53F2C /* Outfit-Bold.ttf */,
+				621AEA7B28CEF56C00D53F2C /* Outfit-Regular.ttf */,
+				621AEA7C28CEF56C00D53F2C /* Outfit-Black.ttf */,
+				621AEA7D28CEF56C00D53F2C /* Outfit-Thin.ttf */,
+				621AEA7E28CEF56C00D53F2C /* Outfit-SemiBold.ttf */,
+				621AEA7F28CEF56C00D53F2C /* Outfit-ExtraLight.ttf */,
+				621AEA8028CEF56C00D53F2C /* Outfit-ExtraBold.ttf */,
+				621AEA8128CEF56C00D53F2C /* Outfit-Medium.ttf */,
+				621AEA8228CEF56C00D53F2C /* Outfit-Light.ttf */,
+			);
+			path = Outfit;
+			sourceTree = "<group>";
+		};
+		621AEA8328CEF56C00D53F2C /* SF-Pro-Display */ = {
+			isa = PBXGroup;
+			children = (
+				621AEA8428CEF56C00D53F2C /* SF-Pro-Display-Thin.otf */,
+				621AEA8528CEF56C00D53F2C /* SF-Pro-Display-SemiboldItalic.otf */,
+				621AEA8628CEF56C00D53F2C /* SF-Pro-Display-RegularItalic.otf */,
+				621AEA8728CEF56C00D53F2C /* SF-Pro-Display-Light.otf */,
+				621AEA8828CEF56C00D53F2C /* SF-Pro-Display-Regular.otf */,
+				621AEA8928CEF56C00D53F2C /* SF-Pro-Display-Bold.otf */,
+				621AEA8A28CEF56C00D53F2C /* SF-Pro-Display-Medium.otf */,
+				621AEA8B28CEF56C00D53F2C /* SF-Pro-Display-Heavy.otf */,
+				621AEA8C28CEF56C00D53F2C /* SF-Pro-Display-Semibold.otf */,
+				621AEA8D28CEF56C00D53F2C /* SF-Pro-Display-MediumItalic.otf */,
+				621AEA8E28CEF56C00D53F2C /* SF-Pro-Display-HeavyItalic.otf */,
+				621AEA8F28CEF56C00D53F2C /* SF-Pro-Display-Ultralight.otf */,
+				621AEA9028CEF56C00D53F2C /* SF-Pro-Display-UltralightItalic.otf */,
+				621AEA9128CEF56C00D53F2C /* SF-Pro-Display-LightItalic.otf */,
+				621AEA9228CEF56C00D53F2C /* SF-Pro-Display-BlackItalic.otf */,
+				621AEA9328CEF56C00D53F2C /* SF-Pro-Display-Black.otf */,
+				621AEA9428CEF56C00D53F2C /* SF-Pro-Display-ThinItalic.otf */,
+				621AEA9528CEF56C00D53F2C /* SF-Pro-Display-BoldItalic.otf */,
+			);
+			path = "SF-Pro-Display";
+			sourceTree = "<group>";
+		};
+		621AEA9628CEF56C00D53F2C /* Noto-Sans */ = {
+			isa = PBXGroup;
+			children = (
+				621AEA9728CEF56C00D53F2C /* NotoSans-Regular.ttf */,
+				621AEA9828CEF56C00D53F2C /* NotoSans-Medium.ttf */,
+				621AEA9928CEF56C00D53F2C /* NotoSans-Black.ttf */,
+				621AEA9A28CEF56C00D53F2C /* NotoSans-Bold.ttf */,
+				621AEA9B28CEF56C00D53F2C /* NotoSans-Thin.ttf */,
+				621AEA9C28CEF56C00D53F2C /* NotoSans-SemiBold.ttf */,
+				621AEA9D28CEF56C00D53F2C /* NotoSans-Light.ttf */,
+				621AEA9E28CEF56C00D53F2C /* NotoSans-ExtraLight.ttf */,
+				621AEA9F28CEF56C00D53F2C /* NotoSans-ExtraBold.ttf */,
+			);
+			path = "Noto-Sans";
+			sourceTree = "<group>";
+		};
+		621AEACA28CEF5DE00D53F2C /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				62B5726828CEE84000015354 /* HomeViewController.swift */,
+				621AEB0928CF089400D53F2C /* HomeViewModel.swift */,
+				621AEAD528CEF71D00D53F2C /* MainViewModel.swift */,
+			);
+			path = Home;
+			sourceTree = "<group>";
+		};
+		621AEAD728CEF73200D53F2C /* Calendar */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Calendar;
+			sourceTree = "<group>";
+		};
+		621AEAD828CEF73200D53F2C /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
+		621AEAD928CEF73200D53F2C /* AddGoal */ = {
+			isa = PBXGroup;
+			children = (
+				621AEB0228CF056400D53F2C /* AddGoalViewController.swift */,
+				621AEB0128CF056400D53F2C /* AddGoalViewModel.swift */,
+			);
+			path = AddGoal;
+			sourceTree = "<group>";
+		};
+		621AEADA28CEF74300D53F2C /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				621AEADE28CEF74300D53F2C /* HomeCircularGoalCell */,
+				621AEADB28CEF74300D53F2C /* TileBoard */,
+				621AEAE428CEF74300D53F2C /* OtherComponents */,
+				621AEAEA28CEF74300D53F2C /* MessageBar.swift */,
+				621AEAEB28CEF74300D53F2C /* CircularCollectionView */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		621AEADB28CEF74300D53F2C /* TileBoard */ = {
+			isa = PBXGroup;
+			children = (
+				621AEADC28CEF74300D53F2C /* TileCell.swift */,
+				621AEADD28CEF74300D53F2C /* TileBoardCollectionView.swift */,
+			);
+			path = TileBoard;
+			sourceTree = "<group>";
+		};
+		621AEADE28CEF74300D53F2C /* HomeCircularGoalCell */ = {
+			isa = PBXGroup;
+			children = (
+				621AEADF28CEF74300D53F2C /* HomeCircularGoalCell.swift */,
+				621AEAE028CEF74300D53F2C /* Components */,
+			);
+			path = HomeCircularGoalCell;
+			sourceTree = "<group>";
+		};
+		621AEAE028CEF74300D53F2C /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				621AEAE328CEF74300D53F2C /* GoalCircle.swift */,
+				621AEAE228CEF74300D53F2C /* ArcProcessBar.swift */,
+				621AEAE128CEF74300D53F2C /* DigitalCountPannel.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		621AEAE428CEF74300D53F2C /* OtherComponents */ = {
+			isa = PBXGroup;
+			children = (
+				621AEAE528CEF74300D53F2C /* GTAlertViewController.swift */,
+				621AEAE828CEF74300D53F2C /* VerticalPageIndicator.swift */,
+				621AEAE928CEF74300D53F2C /* MainDimView.swift */,
+			);
+			path = OtherComponents;
+			sourceTree = "<group>";
+		};
+		621AEAEB28CEF74300D53F2C /* CircularCollectionView */ = {
+			isa = PBXGroup;
+			children = (
+				621AEAEC28CEF74300D53F2C /* CircularCollectionView.swift */,
+				621AEAED28CEF74300D53F2C /* CollectionViewCircularLayout.swift */,
+			);
+			path = CircularCollectionView;
+			sourceTree = "<group>";
+		};
+		621AEAFC28CEF74D00D53F2C /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				621AEAFD28CEF74D00D53F2C /* PresentationController.swift */,
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
 		62B5722C28CEE6A000015354 = {
 			isa = PBXGroup;
 			children = (
@@ -118,10 +410,19 @@
 			children = (
 				62B5723828CEE6A000015354 /* AppDelegate.swift */,
 				62B5723A28CEE6A000015354 /* SceneDelegate.swift */,
-				62B5726828CEE84000015354 /* HomeViewController.swift */,
+				621AEACB28CEF64C00D53F2C /* Entities.swift */,
+				621AEAD328CEF71700D53F2C /* GoalManager.swift */,
+				621AEAFF28CEF81C00D53F2C /* Constants.swift */,
+				621AEACA28CEF5DE00D53F2C /* Home */,
+				621AEAD928CEF73200D53F2C /* AddGoal */,
+				621AEAD728CEF73200D53F2C /* Calendar */,
+				621AEAD828CEF73200D53F2C /* Settings */,
+				621AEADA28CEF74300D53F2C /* Components */,
+				621AEAFC28CEF74D00D53F2C /* Common */,
 				62B5726A28CEE87A00015354 /* Extensions */,
 				62B5724128CEE6A100015354 /* Assets.xcassets */,
 				62B5724328CEE6A100015354 /* LaunchScreen.storyboard */,
+				621AEA7828CEF56C00D53F2C /* Fonts */,
 				62B5724628CEE6A100015354 /* Info.plist */,
 			);
 			path = GoalTracker2;
@@ -147,7 +448,13 @@
 		62B5726A28CEE87A00015354 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				62B5726B28CEE88500015354 /* UIColorExtensions.swift */,
+				621AEB0528CF058B00D53F2C /* UIView_Extension.swift */,
+				621AEB0728CF05A000D53F2C /* UIButton_Extension.swift */,
+				62B5726B28CEE88500015354 /* UIColor_Extensions.swift */,
+				621AEAC428CEF58800D53F2C /* UIFont_Extension.swift */,
+				621AEAC728CEF5A300D53F2C /* Numeric_Extension.swift */,
+				621AEAC628CEF5A300D53F2C /* UIImage_Extension.swift */,
+				621AEACD28CEF66A00D53F2C /* Date_Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -284,8 +591,44 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				621AEAA328CEF56C00D53F2C /* Outfit-Thin.ttf in Resources */,
+				621AEAB428CEF56C00D53F2C /* SF-Pro-Display-Ultralight.otf in Resources */,
+				621AEABA28CEF56C00D53F2C /* SF-Pro-Display-BoldItalic.otf in Resources */,
+				621AEABE28CEF56C00D53F2C /* NotoSans-Bold.ttf in Resources */,
+				621AEAB828CEF56C00D53F2C /* SF-Pro-Display-Black.otf in Resources */,
+				621AEAAC28CEF56C00D53F2C /* SF-Pro-Display-Light.otf in Resources */,
+				621AEAA428CEF56C00D53F2C /* Outfit-SemiBold.ttf in Resources */,
+				621AEAB028CEF56C00D53F2C /* SF-Pro-Display-Heavy.otf in Resources */,
+				621AEAB228CEF56C00D53F2C /* SF-Pro-Display-MediumItalic.otf in Resources */,
+				621AEAAB28CEF56C00D53F2C /* SF-Pro-Display-RegularItalic.otf in Resources */,
+				621AEAB628CEF56C00D53F2C /* SF-Pro-Display-LightItalic.otf in Resources */,
+				621AEAA128CEF56C00D53F2C /* Outfit-Regular.ttf in Resources */,
+				621AEAA028CEF56C00D53F2C /* Outfit-Bold.ttf in Resources */,
+				621AEABB28CEF56C00D53F2C /* NotoSans-Regular.ttf in Resources */,
+				621AEABD28CEF56C00D53F2C /* NotoSans-Black.ttf in Resources */,
+				621AEAAF28CEF56C00D53F2C /* SF-Pro-Display-Medium.otf in Resources */,
+				621AEAC028CEF56C00D53F2C /* NotoSans-SemiBold.ttf in Resources */,
+				621AEAAA28CEF56C00D53F2C /* SF-Pro-Display-SemiboldItalic.otf in Resources */,
 				62B5724528CEE6A100015354 /* LaunchScreen.storyboard in Resources */,
+				621AEAB728CEF56C00D53F2C /* SF-Pro-Display-BlackItalic.otf in Resources */,
+				621AEAA828CEF56C00D53F2C /* Outfit-Light.ttf in Resources */,
+				621AEAA528CEF56C00D53F2C /* Outfit-ExtraLight.ttf in Resources */,
+				621AEAC228CEF56C00D53F2C /* NotoSans-ExtraLight.ttf in Resources */,
+				621AEAB128CEF56C00D53F2C /* SF-Pro-Display-Semibold.otf in Resources */,
+				621AEAB528CEF56C00D53F2C /* SF-Pro-Display-UltralightItalic.otf in Resources */,
+				621AEAAD28CEF56C00D53F2C /* SF-Pro-Display-Regular.otf in Resources */,
+				621AEAB328CEF56C00D53F2C /* SF-Pro-Display-HeavyItalic.otf in Resources */,
+				621AEAA628CEF56C00D53F2C /* Outfit-ExtraBold.ttf in Resources */,
+				621AEAA928CEF56C00D53F2C /* SF-Pro-Display-Thin.otf in Resources */,
 				62B5724228CEE6A100015354 /* Assets.xcassets in Resources */,
+				621AEABF28CEF56C00D53F2C /* NotoSans-Thin.ttf in Resources */,
+				621AEAC328CEF56C00D53F2C /* NotoSans-ExtraBold.ttf in Resources */,
+				621AEAB928CEF56C00D53F2C /* SF-Pro-Display-ThinItalic.otf in Resources */,
+				621AEAAE28CEF56C00D53F2C /* SF-Pro-Display-Bold.otf in Resources */,
+				621AEAC128CEF56C00D53F2C /* NotoSans-Light.ttf in Resources */,
+				621AEAA728CEF56C00D53F2C /* Outfit-Medium.ttf in Resources */,
+				621AEAA228CEF56C00D53F2C /* Outfit-Black.ttf in Resources */,
+				621AEABC28CEF56C00D53F2C /* NotoSans-Medium.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -413,10 +756,36 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				621AEACE28CEF66A00D53F2C /* Date_Extension.swift in Sources */,
 				62B5723928CEE6A000015354 /* AppDelegate.swift in Sources */,
+				621AEB0628CF058B00D53F2C /* UIView_Extension.swift in Sources */,
 				62B5723B28CEE6A000015354 /* SceneDelegate.swift in Sources */,
 				62B5726928CEE84000015354 /* HomeViewController.swift in Sources */,
-				62B5726C28CEE88500015354 /* UIColorExtensions.swift in Sources */,
+				621AEAF728CEF74300D53F2C /* VerticalPageIndicator.swift in Sources */,
+				621AEB0328CF056400D53F2C /* AddGoalViewModel.swift in Sources */,
+				62B5726C28CEE88500015354 /* UIColor_Extensions.swift in Sources */,
+				621AEAC528CEF58800D53F2C /* UIFont_Extension.swift in Sources */,
+				621AEAC828CEF5A300D53F2C /* UIImage_Extension.swift in Sources */,
+				621AEACC28CEF64C00D53F2C /* Entities.swift in Sources */,
+				621AEAFE28CEF74D00D53F2C /* PresentationController.swift in Sources */,
+				621AEAF228CEF74300D53F2C /* ArcProcessBar.swift in Sources */,
+				621AEB0A28CF089400D53F2C /* HomeViewModel.swift in Sources */,
+				621AEAD428CEF71700D53F2C /* GoalManager.swift in Sources */,
+				621AEAC928CEF5A300D53F2C /* Numeric_Extension.swift in Sources */,
+				621AEAD628CEF71D00D53F2C /* MainViewModel.swift in Sources */,
+				621AEAF328CEF74300D53F2C /* GoalCircle.swift in Sources */,
+				621AEB0828CF05A000D53F2C /* UIButton_Extension.swift in Sources */,
+				621AEAEF28CEF74300D53F2C /* TileBoardCollectionView.swift in Sources */,
+				621AEAF428CEF74300D53F2C /* GTAlertViewController.swift in Sources */,
+				621AEB0428CF056400D53F2C /* AddGoalViewController.swift in Sources */,
+				621AEAF928CEF74300D53F2C /* MessageBar.swift in Sources */,
+				621AEAF028CEF74300D53F2C /* HomeCircularGoalCell.swift in Sources */,
+				621AEAFA28CEF74300D53F2C /* CircularCollectionView.swift in Sources */,
+				621AEAF828CEF74300D53F2C /* MainDimView.swift in Sources */,
+				621AEAFB28CEF74300D53F2C /* CollectionViewCircularLayout.swift in Sources */,
+				621AEAEE28CEF74300D53F2C /* TileCell.swift in Sources */,
+				621AEAF128CEF74300D53F2C /* DigitalCountPannel.swift in Sources */,
+				621AEB0028CEF81C00D53F2C /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -591,7 +960,6 @@
 				INFOPLIST_FILE = GoalTracker2/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -620,7 +988,6 @@
 				INFOPLIST_FILE = GoalTracker2/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
