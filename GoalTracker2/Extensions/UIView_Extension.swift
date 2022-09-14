@@ -10,82 +10,124 @@ import UIKit
 
 extension UIView {
     func roundCorners(_ corners: UIRectCorner, radius: CGFloat) {
-        let path = UIBezierPath(roundedRect: bounds, byRoundingCorners: corners,
-                                cornerRadii: CGSize(width: radius, height: radius))
         let mask = CAShapeLayer()
+        let path = UIBezierPath(
+            roundedRect: bounds,
+            byRoundingCorners: corners,
+            cornerRadii: CGSize(width: radius, height: radius)
+        )
         mask.path = path.cgPath
         layer.mask = mask
     }
     
-    func setupShadowToDefaultLayer(alpha: Float=0.6, colour: CGColor=UIColor.gray.cgColor, rd: CGFloat=3, width: CGFloat=1.6, height: CGFloat=2.5) {
-        self.layer.shadowOpacity = alpha
-        self.layer.shadowColor = colour
-        self.layer.shadowRadius = rd
-        self.layer.shadowOffset = CGSize(width: width, height: height)
+    func setDropShadow(layer: CALayer?=nil, color: UIColor=UIColor.gray, width: CGFloat=1.6, height: CGFloat=2.5, blur radius: CGFloat=3, spread: CGFloat, opacity: Float) {
+        let shadowLayer = layer ?? self.layer
+        
+        shadowLayer.shadowColor = color.cgColor
+        shadowLayer.shadowOpacity = opacity
+        shadowLayer.shadowOffset = CGSize(width: width, height: height)
+        shadowLayer.shadowRadius = radius / 2
+        shadowLayer.masksToBounds = false
+        shadowLayer.shouldRasterize = true
+        shadowLayer.backgroundColor = UIColor.white.cgColor
+        
+        if layer != nil {
+            shadowLayer.frame = self.layer.bounds
+            shadowLayer.cornerRadius = self.layer.cornerRadius
+        }
     }
 }
 
-class NeumorphismView: UIView {
-    private var whiteUpperShadowLayer = CALayer()
-    
-    private var blackUnderShadowLayer = CALayer()
-    
-    private var shadowSize: ShadowSize!
-    
-    enum ShadowSize { case small, medium, large}
-    
-    init(cornerRadius: CGFloat, shadowSize: ShadowSize) {
-        super.init(frame: .zero)
-        
-        backgroundColor = .crayon
-        layer.cornerRadius = cornerRadius
-        
-        [whiteUpperShadowLayer, blackUnderShadowLayer]
-            .forEach { self.layer.insertSublayer($0, at: 0)}
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        
-    }
-    
-    private func setNeuphShadowSmall() {
-        layerDropShadow(layer: whiteUpperShadowLayer, color: .black, x: 1, y: 1, blur: 3, spread: -1, opacity: 0.2)
-        layerDropShadow(layer: blackUnderShadowLayer, color: .white, x: -2, y: -2, blur: 4, spread: 0, opacity: 0.9)
-        
-        layoutNeuphShadow()
-    }
-    
-    private  func setNeuphShadowMedium() {
-        layerDropShadow(layer: whiteUpperShadowLayer, color: .black, x: 2, y: 2, blur: 6, spread: -2, opacity: 0.2)
-        layerDropShadow(layer: blackUnderShadowLayer, color: .white, x: -3.6, y: -3.6, blur: 8, spread: 0, opacity: 0.9)
-        
-        layoutNeuphShadow()
-    }
-    
-    public func setNeuphShadowLarge() {
-        
-    }
-    
-    private func layoutNeuphShadow() {
-        [whiteUpperShadowLayer, blackUnderShadowLayer]
-            .forEach { layer in
-                layer.frame = self.layer.bounds
-                layer.cornerRadius = self.layer.cornerRadius
-            }
-    }
-    
-    private func layerDropShadow(layer: CALayer, color: UIColor, x w: CGFloat, y h: CGFloat, blur radius: CGFloat, spread: CGFloat, opacity: Float) {
-        layer.shadowColor = color.cgColor
-        layer.shadowOpacity = opacity
-        layer.shadowOffset = CGSize(width: w, height: h)
-        layer.shadowRadius = radius / 2
-        layer.masksToBounds = false
-        layer.shouldRasterize = true
-        layer.backgroundColor = UIColor.crayon.cgColor
-    }
-}
+//
+//extension UIView where Self: Neumorphic {
+//    enum NeumorphicSize {
+//        case small, medium, large
+//    }
+//
+//    func insertNeumorphicShadow(size shadowSize: NeumorphicSize, whiteShadowLayer: CALayer, blackShadowLayer: CALayer) {
+//        switch shadowSize {
+//        case .small:
+//            setDropShadow(layer: whiteShadowLayer, color: .black, width: 1, height: 1, blur: 3, spread: -1, opacity: 0.2)
+//            setDropShadow(layer: blackShadowLayer, color: .white, width: -2, height: -2, blur: 4, spread: 0, opacity: 0.9)
+//        case .medium:
+//            setDropShadow(layer: whiteShadowLayer, color: .black, width: 2, height: 2, blur: 6, spread: -2, opacity: 0.2)
+//            setDropShadow(layer: blackShadowLayer, color: .white, width: -3.6, height: -3.6, blur: 8, spread: 0, opacity: 0.9)
+//        case .large:
+//            setDropShadow(layer: whiteShadowLayer, color: .black, width: 2, height: 2, blur: 6, spread: -2, opacity: 0.2)
+//            setDropShadow(layer: blackShadowLayer, color: .white, width: -3.6, height: -3.6, blur: 8, spread: 0, opacity: 0.9)
+//        }
+//    }
+//}
+
+
+
+//protocol Neumorphic where Self: UIView {
+//    var shadowLayers: [CALayer] { get }
+//    func setNeumorphicShadow(size: NeumorphicSize)
+//}
+//
+//extension UIView: Neumorphic {
+//    enum NeumorphicSize {
+//        case small, medium, large
+//    }
+//
+//    var shadowLayers: [CALayer] {
+//        return [CALayer](repeating: CALayer(), count: 2)
+//    }
+//    var shadowLayers: [CALayer] {
+//        var neumorpicLayers = layer
+//            .sublayers?
+//            .filter { $0.name == "neumorpic_layer" }
+//
+//        switch neumorpicLayers {
+//        case let layers where layers == nil:
+//            neumorpicLayers = []
+//            fallthrough
+//        case let layers where layers!.isEmpty:
+//            return [CALayer](repeating: CALayer(), count: 2)
+//                .compactMap { layer in
+//                    layer.name = "neumorpic_layer"
+//                    return layer
+//                }
+//        case let layers:
+//            return layers!
+//        }
+//    }
+
+//    func setNeumorphicShadow(size shadowSize: NeumorphicSize) {
+//        
+//        var neumorphicShadowLayers = layer
+//            .sublayers?
+//            .filter { $0.name == "neumorpic_layer" } ?? []
+//        
+//        if neumorphicShadowLayers.isEmpty {
+//            neumorphicShadowLayers = [CALayer](repeating: CALayer(), count: 2)
+//                .compactMap({ layer in
+//                    layer.name = ""
+//                    return layer
+//                })
+//            //{ $0.name = "neumorpic_layer" }
+//        }
+//            
+//        
+//        
+//
+//        whiteUpperShadowLayer.name = "neumorpic_layer"
+//        blackUnderShadowLayer.name = "neumorpic_layer"
+//
+//        switch shadowSize {
+//        case .small:
+//            setDropShadow(layer: whiteUpperShadowLayer, color: .black, width: 1, height: 1, blur: 3, spread: -1, opacity: 0.2)
+//            setDropShadow(layer: blackUnderShadowLayer, color: .white, width: -2, height: -2, blur: 4, spread: 0, opacity: 0.9)
+//        case .medium:
+//            setDropShadow(layer: whiteUpperShadowLayer, color: .black, width: 2, height: 2, blur: 6, spread: -2, opacity: 0.2)
+//            setDropShadow(layer: blackUnderShadowLayer, color: .white, width: -3.6, height: -3.6, blur: 8, spread: 0, opacity: 0.9)
+//        case .large:
+//            setDropShadow(layer: whiteUpperShadowLayer, color: .black, width: 2, height: 2, blur: 6, spread: -2, opacity: 0.2)
+//            setDropShadow(layer: blackUnderShadowLayer, color: .white, width: -3.6, height: -3.6, blur: 8, spread: 0, opacity: 0.9)
+//        }
+//
+//        layer.insertSublayer(whiteUpperShadowLayer, at: 0)
+//        layer.insertSublayer(blackUnderShadowLayer, at: 0)
+//    }
+//}

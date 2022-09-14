@@ -42,7 +42,7 @@ final class AddGoalViewController: UIViewController {
     }
     
     //MARK: - Top Components
-    let slideIndicator = NeuphShadowView(cornerRadius: 2)
+    let slideIndicator = NeumorphicView()
     
     let closeButton: UIButton = {
         let button = UIButton()

@@ -34,6 +34,7 @@ extension UIColor {
      */
     
     static let crayon = UIColor(hex: "EDEFF1")
+    // Consider: "EDEFF1") FBFBFB F6F6F6
     
     static let redA = UIColor(hex: "F04D4E")
     

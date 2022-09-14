@@ -19,7 +19,6 @@ class HomeViewController: UIViewController {
     
     private let topAlphaScreenView = UIView()
     
-    
     //MARK: - Logics
     private let homeViewModel = HomeVieWModel()
     
@@ -30,7 +29,6 @@ class HomeViewController: UIViewController {
         
         setupHome()
     }
-
 
 }
 

@@ -344,7 +344,7 @@ class GTAlertViewController: UIViewController {
                 buttonLabel.textColor = buttonTextColor
                 buttonLabel.numberOfLines = 1
                 buttonLabel.textAlignment = .center
-                buttonLabel.setupShadowToDefaultLayer(alpha: 0.8, rd: 1, width: 1, height: 1)
+                buttonLabel.setDropShadow(width: 1, height: 1, spread: 1, opacity: 0.8)
                 buttonLabel.font = buttonFont
                 
                 if let text = buttonText {
@@ -369,7 +369,7 @@ class GTAlertViewController: UIViewController {
                     cancelButtonLabel.numberOfLines = 1
                     cancelButtonLabel.textAlignment = .center
                     cancelButtonLabel.text = cancelButtonText
-                    cancelButtonLabel.setupShadowToDefaultLayer(alpha: 0.5, rd: 1, width: 1, height: 1)
+                    buttonLabel.setDropShadow(width: 1, height: 1, spread: 1, opacity: 0.5)
                     
                     cancelButton.addSubview(cancelButtonLabel)
                 }
