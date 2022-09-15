@@ -16,12 +16,8 @@ class NeumorphicView: UIView {
     
     private let underBlackShadowLayer = CALayer()
     
-    override private init(frame: CGRect) {
-        super.init(frame: frame)
-    }
-    
-    convenience init(color: UIColor, shadowSize: ShadowSize) {
-        self.init(frame: .zero)
+    init(color: UIColor, shadowSize: ShadowSize) {
+        super.init(frame: .zero)
         backgroundColor = color
         
 //        layer.borderColor = UIColor.crayon.cgColor
