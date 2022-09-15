@@ -8,6 +8,12 @@
 import UIKit
 
 class MessageBar: UIView {
+    private let backgroundView: NeumorphicView = {
+        let view = NeumorphicView(color: .crayon, shadowSize: .medium)
+        view.layer.cornerRadius = 7
+        return view
+    }()
+    
     private let messageLabel: UILabel = {
         let label = UILabel()
         label.font = .sfPro(size: 14, family: .Regular)
@@ -39,24 +45,13 @@ class MessageBar: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: .zero)
-        self.layer.cornerRadius = 7
+        layer.cornerRadius = 7
+        clipsToBounds = false
         
-        self.addSubview(messageLabel)
-        
-        messageLabel.snp.makeConstraints { make in
-            make.leading.equalToSuperview().inset(18)
-            make.centerY.equalToSuperview()
-        }
-    }
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        
-        print("safasdf")
+        layoutMessageBar()
     }
     
     public func message(_ text: String, color: NoticeColor, emoji: MessageEmoji) {
-        
         messageLabel.text = emoji.string + " " + text
         
         switch color {
@@ -64,6 +59,20 @@ class MessageBar: UIView {
             messageLabel.textColor = .blueB
         case .orange:
             messageLabel.textColor = .orangeB
+        }
+    }
+    
+    private func layoutMessageBar()  {
+        [backgroundView, messageLabel]
+            .forEach { addSubview($0) }
+        
+        backgroundView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+        
+        messageLabel.snp.makeConstraints { make in
+            make.leading.equalToSuperview().inset(18)
+            make.centerY.equalToSuperview()
         }
     }
     

@@ -8,10 +8,10 @@
 import UIKit
 
 /// UIView with Neumorphism Shadow
-/// *     convenience init(shadowSize: ShadowSize)
 /// *     enum NeumorphicSize { case small, medium, large }
+/// *     func setNeumorphicShadow(size shadowSize: NeumorphicSize)
 ///
-class NeumorphicView: UIView {
+class NeumorphicButton: UIButton {
     private var neumorphicShadowLayers: [CALayer]!
     
     override private init(frame: CGRect) {
@@ -46,3 +46,4 @@ class NeumorphicView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 }
+

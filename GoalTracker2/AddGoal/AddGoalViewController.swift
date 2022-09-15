@@ -42,7 +42,7 @@ final class AddGoalViewController: UIViewController {
     }
     
     //MARK: - Top Components
-    let slideIndicator = NeumorphicView()
+    let slideIndicator = NeumorphicView(color: .crayon, shadowSize: .medium)
     
     let closeButton: UIButton = {
         let button = UIButton()
@@ -239,13 +239,6 @@ final class AddGoalViewController: UIViewController {
         layout()
         bind()
         bindPickerViewDatasource()
-    }
-    
-    override func viewWillLayoutSubviews() {
-        super.viewWillLayoutSubviews()
-        
-        self.slideIndicator.setNeuphShadowSmall()
-        self.saveButton.setNeuphShadowMedium()
     }
     
     override func viewDidLayoutSubviews() {

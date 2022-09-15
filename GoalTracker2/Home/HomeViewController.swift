@@ -29,6 +29,10 @@ class HomeViewController: UIViewController {
         
         setupHome()
     }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+    }
 
 }
 
@@ -39,8 +43,6 @@ extension HomeViewController {
         edgesForExtendedLayout = [.top, .bottom]
         modalTransitionStyle = .coverVertical
         modalPresentationStyle = .automatic
-        
-        messageBar.layer.borderWidth = 1
         
         layout()
         
@@ -53,7 +55,6 @@ extension HomeViewController {
         homeViewModel.goalViewModelsRelay
             .bind(to: goalCircularCollectionView.rx.items)(homeViewModel.cellFactory)
             .disposed(by: disposeBag)
-        
     }
     
     private func messageBarBind() {

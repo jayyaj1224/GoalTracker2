@@ -45,6 +45,7 @@
 		62B5726928CEE84000015354 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62B5726828CEE84000015354 /* HomeViewController.swift */; };
 		62B5726C28CEE88500015354 /* UIColor_Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62B5726B28CEE88500015354 /* UIColor_Extensions.swift */; };
 		AA9990CF28D1A1C800FE4A26 /* NeumorphicView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA9990CE28D1A1C800FE4A26 /* NeumorphicView.swift */; };
+		AAAFB8A328D2E572002CE265 /* NeumorphicButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAAFB8A228D2E572002CE265 /* NeumorphicButton.swift */; };
 		AAB6BB9428D0046100AC44E9 /* NotoSans-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AAB6BB8B28D0046100AC44E9 /* NotoSans-ExtraBold.ttf */; };
 		AAB6BB9528D0046100AC44E9 /* NotoSans-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AAB6BB8C28D0046100AC44E9 /* NotoSans-Medium.ttf */; };
 		AAB6BB9628D0046100AC44E9 /* NotoSans-ExtraLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AAB6BB8D28D0046100AC44E9 /* NotoSans-ExtraLight.ttf */; };
@@ -139,6 +140,7 @@
 		7DB549AED6B2F40D9115861A /* Pods-GoalTracker2-GoalTracker2UITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GoalTracker2-GoalTracker2UITests.release.xcconfig"; path = "Target Support Files/Pods-GoalTracker2-GoalTracker2UITests/Pods-GoalTracker2-GoalTracker2UITests.release.xcconfig"; sourceTree = "<group>"; };
 		9E3026A29071F2207AD91954 /* Pods-GoalTracker2-GoalTracker2UITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GoalTracker2-GoalTracker2UITests.debug.xcconfig"; path = "Target Support Files/Pods-GoalTracker2-GoalTracker2UITests/Pods-GoalTracker2-GoalTracker2UITests.debug.xcconfig"; sourceTree = "<group>"; };
 		AA9990CE28D1A1C800FE4A26 /* NeumorphicView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NeumorphicView.swift; sourceTree = "<group>"; };
+		AAAFB8A228D2E572002CE265 /* NeumorphicButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NeumorphicButton.swift; sourceTree = "<group>"; };
 		AAB6BB8B28D0046100AC44E9 /* NotoSans-ExtraBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NotoSans-ExtraBold.ttf"; sourceTree = "<group>"; };
 		AAB6BB8C28D0046100AC44E9 /* NotoSans-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NotoSans-Medium.ttf"; sourceTree = "<group>"; };
 		AAB6BB8D28D0046100AC44E9 /* NotoSans-ExtraLight.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NotoSans-ExtraLight.ttf"; sourceTree = "<group>"; };
@@ -301,6 +303,7 @@
 			children = (
 				621AEAFD28CEF74D00D53F2C /* PresentationController.swift */,
 				AA9990CE28D1A1C800FE4A26 /* NeumorphicView.swift */,
+				AAAFB8A228D2E572002CE265 /* NeumorphicButton.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -745,6 +748,7 @@
 				62B5723928CEE6A000015354 /* AppDelegate.swift in Sources */,
 				621AEB0628CF058B00D53F2C /* UIView_Extension.swift in Sources */,
 				62B5723B28CEE6A000015354 /* SceneDelegate.swift in Sources */,
+				AAAFB8A328D2E572002CE265 /* NeumorphicButton.swift in Sources */,
 				62B5726928CEE84000015354 /* HomeViewController.swift in Sources */,
 				621AEAF728CEF74300D53F2C /* VerticalPageIndicator.swift in Sources */,
 				621AEB0328CF056400D53F2C /* AddGoalViewModel.swift in Sources */,

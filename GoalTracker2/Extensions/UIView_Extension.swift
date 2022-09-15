@@ -29,6 +29,34 @@ extension UIView {
         shadowLayer.shadowRadius = radius / 2
         shadowLayer.masksToBounds = false
         shadowLayer.shouldRasterize = true
-        shadowLayer.backgroundColor = UIColor.white.cgColor
+    }
+}
+
+extension UIView {
+    enum ShadowSize {
+        case small, medium, large
+    }
+    
+    func layoutNeumorphicShadows(layers: [CALayer]) {
+        layers.forEach { layer in
+            layer.frame = self.layer.bounds
+            layer.cornerRadius = self.layer.cornerRadius
+        }
+    }
+    
+    func setNeumorphicShadowAt(_ layers: [CALayer], shadowSize: ShadowSize) {
+        let upperShadowLayer = layers[0], underShadowLayer = layers[1]
+        
+        switch shadowSize {
+        case .small:
+            setDropShadow(layer: underShadowLayer, color: .black, width: 1, height: 1, blur: 3, spread: -1, opacity: 0.2)
+            setDropShadow(layer: upperShadowLayer, color: .white, width: -2, height: -2, blur: 4, spread: 0, opacity: 0.9)
+        case .medium:
+            setDropShadow(layer: underShadowLayer, color: .black, width: 2, height: 2, blur: 6, spread: -2, opacity: 0.4)
+            setDropShadow(layer: upperShadowLayer, color: .white, width: -3.6, height: -3.6, blur: 8, spread: 0, opacity: 0.9)
+        case .large:
+            setDropShadow(layer: underShadowLayer, color: .black, width: 2, height: 2, blur: 6, spread: -2, opacity: 0.2)
+            setDropShadow(layer: upperShadowLayer, color: .white, width: -3.6, height: -3.6, blur: 8, spread: 0, opacity: 0.9)
+        }
     }
 }
