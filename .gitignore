@@ -2,10 +2,21 @@
 
 ## CocoaPod
 Pods/
+*.lock
 Podfile.lock
 
 ## User settings
 xcuserdata/
+
+## Gcc Patch
+/*.gcno
+
+### Xcode Patch ###
+*.xcodeproj/*
+!*.xcodeproj/project.pbxproj
+!*.xcodeproj/xcshareddata/
+!*.xcworkspace/contents.xcworkspacedata
+**/xcshareddata/WorkspaceSettings.xcsettings
 
 ## compatibility with Xcode 8 and earlier (ignoring not required starting Xcode 9)
 *.xcscmblueprint
@@ -15,3 +26,6 @@ xcuserdata/
 *.ipa
 *.dSYM.zip
 *.dSYM
+
+*.DS_Store
+

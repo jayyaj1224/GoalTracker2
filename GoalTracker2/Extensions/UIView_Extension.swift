@@ -20,8 +20,8 @@ extension UIView {
         layer.mask = mask
     }
     
-    func setDropShadow(layer: CALayer?=nil, color: UIColor=UIColor.gray, width: CGFloat=1.6, height: CGFloat=2.5, blur radius: CGFloat=3, spread: CGFloat, opacity: Float) {
-        let shadowLayer = layer ?? self.layer
+    func setDropShadow(customLayer: CALayer?=nil, color: UIColor=UIColor.gray, width: CGFloat=1.6, height: CGFloat=2.5, blur radius: CGFloat=3, spread: CGFloat, opacity: Float) {
+        let shadowLayer = customLayer ?? self.layer
         
         shadowLayer.shadowColor = color.cgColor
         shadowLayer.shadowOpacity = opacity
@@ -42,14 +42,14 @@ extension UIView {
         
         switch shadowSize {
         case .small:
-            setDropShadow(layer: underShadowLayer, color: .black, width: 1, height: 1, blur: 3, spread: -1, opacity: 0.2)
-            setDropShadow(layer: upperShadowLayer, color: .white, width: -2, height: -2, blur: 4, spread: 0, opacity: 0.9)
+            setDropShadow(customLayer: underShadowLayer, color: .black, width: 1, height: 1, blur: 3, spread: -1, opacity: 0.2)
+            setDropShadow(customLayer: upperShadowLayer, color: .white, width: -2, height: -2, blur: 4, spread: 0, opacity: 0.9)
         case .medium:
-            setDropShadow(layer: underShadowLayer, color: .black, width: 2, height: 2, blur: 6, spread: -2, opacity: 0.2)
-            setDropShadow(layer: upperShadowLayer, color: .white, width: -3.6, height: -3.6, blur: 8, spread: 0, opacity: 0.9)
+            setDropShadow(customLayer: underShadowLayer, color: .black, width: 2, height: 2, blur: 6, spread: -2, opacity: 0.2)
+            setDropShadow(customLayer: upperShadowLayer, color: .white, width: -3.6, height: -3.6, blur: 8, spread: 0, opacity: 0.9)
         case .large:
-            setDropShadow(layer: underShadowLayer, color: .black, width: 2, height: 2, blur: 6, spread: -2, opacity: 0.2)
-            setDropShadow(layer: upperShadowLayer, color: .white, width: -3.6, height: -3.6, blur: 8, spread: 0, opacity: 0.9)
+            setDropShadow(customLayer: underShadowLayer, color: .black, width: 2, height: 2, blur: 6, spread: -2, opacity: 0.2)
+            setDropShadow(customLayer: upperShadowLayer, color: .white, width: -3.6, height: -3.6, blur: 8, spread: 0, opacity: 0.9)
         }
     }
 }
