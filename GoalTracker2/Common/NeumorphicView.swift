@@ -8,11 +8,13 @@
 import UIKit
 
 /// UIView with Neumorphism Shadow
-/// *     convenience init(shadowSize: ShadowSize)
+/// *     init(color: UIColor, shadowSize: ShadowSize)
 /// *     enum NeumorphicSize { case small, medium, large }
 ///
 class NeumorphicView: UIView {
-    private var neumorphicShadowLayers: [CALayer]!
+    private let upperWhiteShadowLayer = CALayer()
+    
+    private let underBlackShadowLayer = CALayer()
     
     override private init(frame: CGRect) {
         super.init(frame: frame)
@@ -20,26 +22,24 @@ class NeumorphicView: UIView {
     
     convenience init(color: UIColor, shadowSize: ShadowSize) {
         self.init(frame: .zero)
-        backgroundColor = .crayon
+        backgroundColor = color
         
-        var shadowLayer: CALayer {
-            let shadowLayer = CALayer()
+        [upperWhiteShadowLayer, underBlackShadowLayer].forEach { shadowLayer in
             shadowLayer.backgroundColor = color.cgColor
             
             layer.insertSublayer(shadowLayer, at: 0)
-            
-            return shadowLayer
         }
         
-        neumorphicShadowLayers = [CALayer](repeating: shadowLayer, count: 2)
-        
-        setNeumorphicShadowAt(neumorphicShadowLayers, shadowSize: .medium)
+        setNeumorphicShadow(at: [upperWhiteShadowLayer, underBlackShadowLayer], shadowSize: .medium)
     }
     
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        layoutNeumorphicShadows(layers: neumorphicShadowLayers)
+        [upperWhiteShadowLayer, underBlackShadowLayer].forEach { layer in
+            layer.frame = self.layer.bounds
+            layer.cornerRadius = self.layer.cornerRadius
+        }
     }
     
     required init?(coder: NSCoder) {
