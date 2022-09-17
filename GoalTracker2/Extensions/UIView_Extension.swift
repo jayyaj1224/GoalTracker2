@@ -32,6 +32,7 @@ extension UIView {
     }
 }
 
+//MARK: -  Neumorphic View, Button
 extension UIView {
     enum ShadowSize {
         case small, medium, large
@@ -42,14 +43,28 @@ extension UIView {
         
         switch shadowSize {
         case .small:
-            setDropShadow(customLayer: underShadowLayer, color: .black, width: 1, height: 1, blur: 3, spread: -1, opacity: 0.2)
-            setDropShadow(customLayer: upperShadowLayer, color: .white, width: -2, height: -2, blur: 4, spread: 0, opacity: 0.9)
+            setDropShadow(customLayer: underShadowLayer, color: .black, width: 1, height: 1, blur: 1, spread: -1, opacity: 0.4)
+            setDropShadow(customLayer: upperShadowLayer, color: .white, width: -3, height: -3, blur: 2, spread: 3, opacity: 0.8)
         case .medium:
             setDropShadow(customLayer: underShadowLayer, color: .black, width: 2, height: 2, blur: 6, spread: -2, opacity: 0.2)
-            setDropShadow(customLayer: upperShadowLayer, color: .white, width: -3.6, height: -3.6, blur: 8, spread: 0, opacity: 0.9)
+            setDropShadow(customLayer: upperShadowLayer, color: .white, width: -3.6, height: -3.6, blur: 5, spread: 1, opacity: 0.9)
         case .large:
-            setDropShadow(customLayer: underShadowLayer, color: .black, width: 2, height: 2, blur: 6, spread: -2, opacity: 0.2)
-            setDropShadow(customLayer: upperShadowLayer, color: .white, width: -3.6, height: -3.6, blur: 8, spread: 0, opacity: 0.9)
+            setDropShadow(customLayer: underShadowLayer, color: .black, width: 10, height: 10, blur: 8, spread: 4, opacity: 0.25)
+            setDropShadow(customLayer: upperShadowLayer, color: .white, width: -9, height: -9, blur: 8, spread: 5, opacity: 0.9)
         }
+        
+//        switch shadowSize {
+//        case .small:
+//            setDropShadow(customLayer: underShadowLayer, color: .black, width: 1, height: 1, blur: 3, spread: -1, opacity: 0.2)
+//            setDropShadow(customLayer: upperShadowLayer, color: .white, width: -2, height: -2, blur: 4, spread: 0, opacity: 0.9)
+//        case .medium:
+//            setDropShadow(customLayer: underShadowLayer, color: .black, width: 2, height: 2, blur: 6, spread: -2, opacity: 0.2)
+//            setDropShadow(customLayer: upperShadowLayer, color: .white, width: -3.6, height: -3.6, blur: 8, spread: 0, opacity: 0.9)
+//        case .large:
+//            setDropShadow(customLayer: underShadowLayer, color: .black, width: 2, height: 2, blur: 6, spread: -2, opacity: 0.2)
+//            setDropShadow(customLayer: upperShadowLayer, color: .white, width: -3.6, height: -3.6, blur: 8, spread: 0, opacity: 0.9)
+//        }
     }
+    
+    
 }

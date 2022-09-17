@@ -17,7 +17,6 @@ import RxCocoa
 class HomeVieWModel {
     let goalViewModelsRelay = BehaviorRelay<[GoalViewModel]>.init(value: [])
     
-    
     init() {
         let goals = GoalManager.shared.goals
         let goalViewModels = goals.compactMap(GoalViewModel.init)
@@ -68,9 +67,3 @@ class GoalAnalysisViewModel {
         self.goal = goal
     }
 }
-
-struct MessageBarViewModel {
-    
-}
-
-

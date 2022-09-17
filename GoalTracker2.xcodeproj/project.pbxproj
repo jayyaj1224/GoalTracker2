@@ -71,6 +71,8 @@
 		622690BE28D589E600E4AA01 /* Outfit-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 622690B528D589E600E4AA01 /* Outfit-ExtraBold.ttf */; };
 		622690BF28D589E600E4AA01 /* Outfit-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 622690B628D589E600E4AA01 /* Outfit-Medium.ttf */; };
 		622690C028D589E600E4AA01 /* Outfit-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 622690B728D589E600E4AA01 /* Outfit-Light.ttf */; };
+		622690C728D58DF400E4AA01 /* MessageBarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 622690C628D58DF400E4AA01 /* MessageBarViewModel.swift */; };
+		622690CA28D5920300E4AA01 /* RotatingNeumorphicButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 622690C928D5920300E4AA01 /* RotatingNeumorphicButton.swift */; };
 		62B5723928CEE6A000015354 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62B5723828CEE6A000015354 /* AppDelegate.swift */; };
 		62B5723B28CEE6A000015354 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62B5723A28CEE6A000015354 /* SceneDelegate.swift */; };
 		62B5724228CEE6A100015354 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 62B5724128CEE6A100015354 /* Assets.xcassets */; };
@@ -168,6 +170,8 @@
 		622690B528D589E600E4AA01 /* Outfit-ExtraBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Outfit-ExtraBold.ttf"; sourceTree = "<group>"; };
 		622690B628D589E600E4AA01 /* Outfit-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Outfit-Medium.ttf"; sourceTree = "<group>"; };
 		622690B728D589E600E4AA01 /* Outfit-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Outfit-Light.ttf"; sourceTree = "<group>"; };
+		622690C628D58DF400E4AA01 /* MessageBarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageBarViewModel.swift; sourceTree = "<group>"; };
+		622690C928D5920300E4AA01 /* RotatingNeumorphicButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RotatingNeumorphicButton.swift; sourceTree = "<group>"; };
 		62B5723528CEE6A000015354 /* GoalTracker2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GoalTracker2.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		62B5723828CEE6A000015354 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		62B5723A28CEE6A000015354 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -225,6 +229,7 @@
 				62B5726828CEE84000015354 /* HomeViewController.swift */,
 				621AEB0928CF089400D53F2C /* HomeViewModel.swift */,
 				621AEAD528CEF71D00D53F2C /* MainViewModel.swift */,
+				622690C128D58B1C00E4AA01 /* Components */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -236,18 +241,6 @@
 				621AEB0128CF056400D53F2C /* AddGoalViewModel.swift */,
 			);
 			path = AddGoal;
-			sourceTree = "<group>";
-		};
-		621AEADA28CEF74300D53F2C /* Components */ = {
-			isa = PBXGroup;
-			children = (
-				621AEADE28CEF74300D53F2C /* HomeCircularGoalCell */,
-				621AEADB28CEF74300D53F2C /* TileBoard */,
-				621AEAE428CEF74300D53F2C /* OtherComponents */,
-				621AEAEA28CEF74300D53F2C /* MessageBar.swift */,
-				621AEAEB28CEF74300D53F2C /* CircularCollectionView */,
-			);
-			path = Components;
 			sourceTree = "<group>";
 		};
 		621AEADB28CEF74300D53F2C /* TileBoard */ = {
@@ -263,29 +256,10 @@
 			isa = PBXGroup;
 			children = (
 				621AEADF28CEF74300D53F2C /* HomeCircularGoalCell.swift */,
-				621AEAE028CEF74300D53F2C /* Components */,
+				621AEADB28CEF74300D53F2C /* TileBoard */,
+				622690C328D58B3C00E4AA01 /* GoalCircle */,
 			);
 			path = HomeCircularGoalCell;
-			sourceTree = "<group>";
-		};
-		621AEAE028CEF74300D53F2C /* Components */ = {
-			isa = PBXGroup;
-			children = (
-				621AEAE328CEF74300D53F2C /* GoalCircle.swift */,
-				621AEAE228CEF74300D53F2C /* ArcProcessBar.swift */,
-				621AEAE128CEF74300D53F2C /* DigitalCountPannel.swift */,
-			);
-			path = Components;
-			sourceTree = "<group>";
-		};
-		621AEAE428CEF74300D53F2C /* OtherComponents */ = {
-			isa = PBXGroup;
-			children = (
-				621AEAE528CEF74300D53F2C /* GTAlertViewController.swift */,
-				621AEAE828CEF74300D53F2C /* VerticalPageIndicator.swift */,
-				621AEAE928CEF74300D53F2C /* MainDimView.swift */,
-			);
-			path = OtherComponents;
 			sourceTree = "<group>";
 		};
 		621AEAEB28CEF74300D53F2C /* CircularCollectionView */ = {
@@ -297,14 +271,17 @@
 			path = CircularCollectionView;
 			sourceTree = "<group>";
 		};
-		621AEAFC28CEF74D00D53F2C /* Common */ = {
+		621AEAFC28CEF74D00D53F2C /* CommonComponents */ = {
 			isa = PBXGroup;
 			children = (
+				621AEAE528CEF74300D53F2C /* GTAlertViewController.swift */,
+				621AEAE828CEF74300D53F2C /* VerticalPageIndicator.swift */,
+				621AEAE928CEF74300D53F2C /* MainDimView.swift */,
 				621AEAFD28CEF74D00D53F2C /* PresentationController.swift */,
 				AA9990CE28D1A1C800FE4A26 /* NeumorphicView.swift */,
 				AAAFB8A228D2E572002CE265 /* NeumorphicButton.swift */,
 			);
-			path = Common;
+			path = CommonComponents;
 			sourceTree = "<group>";
 		};
 		6226907528D5895900E4AA01 /* Fonts */ = {
@@ -374,6 +351,44 @@
 			path = Outfit;
 			sourceTree = "<group>";
 		};
+		622690C128D58B1C00E4AA01 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				622690C828D591D200E4AA01 /* RotatingNeumorphicButton */,
+				622690C428D58DD900E4AA01 /* MessageBar */,
+				621AEAEB28CEF74300D53F2C /* CircularCollectionView */,
+				621AEADE28CEF74300D53F2C /* HomeCircularGoalCell */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		622690C328D58B3C00E4AA01 /* GoalCircle */ = {
+			isa = PBXGroup;
+			children = (
+				621AEAE328CEF74300D53F2C /* GoalCircle.swift */,
+				621AEAE228CEF74300D53F2C /* ArcProcessBar.swift */,
+				621AEAE128CEF74300D53F2C /* DigitalCountPannel.swift */,
+			);
+			path = GoalCircle;
+			sourceTree = "<group>";
+		};
+		622690C428D58DD900E4AA01 /* MessageBar */ = {
+			isa = PBXGroup;
+			children = (
+				621AEAEA28CEF74300D53F2C /* MessageBar.swift */,
+				622690C628D58DF400E4AA01 /* MessageBarViewModel.swift */,
+			);
+			path = MessageBar;
+			sourceTree = "<group>";
+		};
+		622690C828D591D200E4AA01 /* RotatingNeumorphicButton */ = {
+			isa = PBXGroup;
+			children = (
+				622690C928D5920300E4AA01 /* RotatingNeumorphicButton.swift */,
+			);
+			path = RotatingNeumorphicButton;
+			sourceTree = "<group>";
+		};
 		62B5722C28CEE6A000015354 = {
 			isa = PBXGroup;
 			children = (
@@ -408,8 +423,7 @@
 				621AEACB28CEF64C00D53F2C /* Entities.swift */,
 				621AEAD328CEF71700D53F2C /* GoalManager.swift */,
 				621AEAFF28CEF81C00D53F2C /* Constants.swift */,
-				621AEADA28CEF74300D53F2C /* Components */,
-				621AEAFC28CEF74D00D53F2C /* Common */,
+				621AEAFC28CEF74D00D53F2C /* CommonComponents */,
 				62B5726A28CEE87A00015354 /* Extensions */,
 				6226907528D5895900E4AA01 /* Fonts */,
 				62B5724128CEE6A100015354 /* Assets.xcassets */,
@@ -762,6 +776,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				621AEACE28CEF66A00D53F2C /* Date_Extension.swift in Sources */,
+				622690CA28D5920300E4AA01 /* RotatingNeumorphicButton.swift in Sources */,
 				62B5723928CEE6A000015354 /* AppDelegate.swift in Sources */,
 				621AEB0628CF058B00D53F2C /* UIView_Extension.swift in Sources */,
 				62B5723B28CEE6A000015354 /* SceneDelegate.swift in Sources */,
@@ -772,6 +787,7 @@
 				62B5726C28CEE88500015354 /* UIColor_Extensions.swift in Sources */,
 				621AEAC528CEF58800D53F2C /* UIFont_Extension.swift in Sources */,
 				621AEAC828CEF5A300D53F2C /* UIImage_Extension.swift in Sources */,
+				622690C728D58DF400E4AA01 /* MessageBarViewModel.swift in Sources */,
 				621AEACC28CEF64C00D53F2C /* Entities.swift in Sources */,
 				621AEAFE28CEF74D00D53F2C /* PresentationController.swift in Sources */,
 				621AEAF228CEF74300D53F2C /* ArcProcessBar.swift in Sources */,

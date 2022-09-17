@@ -20,9 +20,6 @@ class NeumorphicView: UIView {
         super.init(frame: .zero)
         backgroundColor = color
         
-//        layer.borderColor = UIColor.crayon.cgColor
-//        layer.borderWidth = 0.5
-        
         [upperWhiteShadowLayer, underBlackShadowLayer].forEach { shadowLayer in
             shadowLayer.backgroundColor = color.cgColor
             

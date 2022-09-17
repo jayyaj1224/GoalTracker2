@@ -12,6 +12,12 @@ import RxCocoa
 class HomeViewController: UIViewController {
     //MARK: - UI Components
     private let goalCircularCollectionView = CircularCollectionView()
+    
+    private let plusRotatingButton: UIButton = {
+        let button = UIButton()
+        
+        return button
+    }()
 
     private let messageBar = MessageBar()
 
@@ -58,7 +64,7 @@ extension HomeViewController {
     }
     
     private func messageBarBind() {
-        messageBar.message("You are doing great!", color: .blue, emoji: .smileFace)
+        messageBar.mock_setMessage()
     }
     
     private func layout() {
