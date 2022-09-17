@@ -9,7 +9,7 @@ import UIKit
 
 class MessageBar: UIView {
     private let backgroundView: NeumorphicView = {
-        let view = NeumorphicView(color: .white, shadowSize: .medium)
+        let view = NeumorphicView(color: .crayon, shadowSize: .medium)
         view.layer.cornerRadius = 7
         return view
     }()
