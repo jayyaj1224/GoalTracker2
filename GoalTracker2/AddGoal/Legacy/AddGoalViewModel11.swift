@@ -8,8 +8,8 @@
 import RxSwift
 import RxCocoa
 
-class AddGoalViewModel: ReactiveCompatible {
-    typealias PickerLabelView = AddGoalViewController.PickerSelectView
+class AddGoalViewModel11: ReactiveCompatible {
+    typealias PickerLabelView = AddGoalViewController11.PickerSelectView
     
     let totalDaysPickerViewValue = PublishSubject<(row: Int, component: Int)>()
     

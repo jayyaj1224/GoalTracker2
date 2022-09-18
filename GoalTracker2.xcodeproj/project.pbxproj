@@ -30,8 +30,8 @@
 		621AEAFB28CEF74300D53F2C /* CollectionViewCircularLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 621AEAED28CEF74300D53F2C /* CollectionViewCircularLayout.swift */; };
 		621AEAFE28CEF74D00D53F2C /* PresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 621AEAFD28CEF74D00D53F2C /* PresentationController.swift */; };
 		621AEB0028CEF81C00D53F2C /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 621AEAFF28CEF81C00D53F2C /* Constants.swift */; };
-		621AEB0328CF056400D53F2C /* AddGoalViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 621AEB0128CF056400D53F2C /* AddGoalViewModel.swift */; };
-		621AEB0428CF056400D53F2C /* AddGoalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 621AEB0228CF056400D53F2C /* AddGoalViewController.swift */; };
+		621AEB0328CF056400D53F2C /* AddGoalViewModel11.swift in Sources */ = {isa = PBXBuildFile; fileRef = 621AEB0128CF056400D53F2C /* AddGoalViewModel11.swift */; };
+		621AEB0428CF056400D53F2C /* AddGoalViewController11.swift in Sources */ = {isa = PBXBuildFile; fileRef = 621AEB0228CF056400D53F2C /* AddGoalViewController11.swift */; };
 		621AEB0628CF058B00D53F2C /* UIView_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 621AEB0528CF058B00D53F2C /* UIView_Extension.swift */; };
 		621AEB0828CF05A000D53F2C /* UIButton_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 621AEB0728CF05A000D53F2C /* UIButton_Extension.swift */; };
 		621AEB0A28CF089400D53F2C /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 621AEB0928CF089400D53F2C /* HomeViewModel.swift */; };
@@ -83,6 +83,7 @@
 		62B5725C28CEE6A100015354 /* GoalTracker2UITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62B5725B28CEE6A100015354 /* GoalTracker2UITestsLaunchTests.swift */; };
 		62B5726928CEE84000015354 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62B5726828CEE84000015354 /* HomeViewController.swift */; };
 		62B5726C28CEE88500015354 /* UIColor_Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62B5726B28CEE88500015354 /* UIColor_Extensions.swift */; };
+		62CE1ED728D6F62C00F08EF0 /* AddGoalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62CE1ED628D6F62C00F08EF0 /* AddGoalViewController.swift */; };
 		AA9990CF28D1A1C800FE4A26 /* NeumorphicView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA9990CE28D1A1C800FE4A26 /* NeumorphicView.swift */; };
 		AAAFB8A328D2E572002CE265 /* NeumorphicButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAAFB8A228D2E572002CE265 /* NeumorphicButton.swift */; };
 		F684813D80B4962657465F9A /* Pods_GoalTracker2Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D255B2A165BE8163F24C05BB /* Pods_GoalTracker2Tests.framework */; };
@@ -130,8 +131,8 @@
 		621AEAED28CEF74300D53F2C /* CollectionViewCircularLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionViewCircularLayout.swift; sourceTree = "<group>"; };
 		621AEAFD28CEF74D00D53F2C /* PresentationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PresentationController.swift; sourceTree = "<group>"; };
 		621AEAFF28CEF81C00D53F2C /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
-		621AEB0128CF056400D53F2C /* AddGoalViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddGoalViewModel.swift; sourceTree = "<group>"; };
-		621AEB0228CF056400D53F2C /* AddGoalViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddGoalViewController.swift; sourceTree = "<group>"; };
+		621AEB0128CF056400D53F2C /* AddGoalViewModel11.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddGoalViewModel11.swift; sourceTree = "<group>"; };
+		621AEB0228CF056400D53F2C /* AddGoalViewController11.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddGoalViewController11.swift; sourceTree = "<group>"; };
 		621AEB0528CF058B00D53F2C /* UIView_Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIView_Extension.swift; sourceTree = "<group>"; };
 		621AEB0728CF05A000D53F2C /* UIButton_Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIButton_Extension.swift; sourceTree = "<group>"; };
 		621AEB0928CF089400D53F2C /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
@@ -187,6 +188,7 @@
 		62B5725B28CEE6A100015354 /* GoalTracker2UITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalTracker2UITestsLaunchTests.swift; sourceTree = "<group>"; };
 		62B5726828CEE84000015354 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		62B5726B28CEE88500015354 /* UIColor_Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor_Extensions.swift; sourceTree = "<group>"; };
+		62CE1ED628D6F62C00F08EF0 /* AddGoalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddGoalViewController.swift; sourceTree = "<group>"; };
 		6E3403375D2E08953A642A97 /* Pods-GoalTracker2Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GoalTracker2Tests.release.xcconfig"; path = "Target Support Files/Pods-GoalTracker2Tests/Pods-GoalTracker2Tests.release.xcconfig"; sourceTree = "<group>"; };
 		7DB549AED6B2F40D9115861A /* Pods-GoalTracker2-GoalTracker2UITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GoalTracker2-GoalTracker2UITests.release.xcconfig"; path = "Target Support Files/Pods-GoalTracker2-GoalTracker2UITests/Pods-GoalTracker2-GoalTracker2UITests.release.xcconfig"; sourceTree = "<group>"; };
 		9E3026A29071F2207AD91954 /* Pods-GoalTracker2-GoalTracker2UITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GoalTracker2-GoalTracker2UITests.debug.xcconfig"; path = "Target Support Files/Pods-GoalTracker2-GoalTracker2UITests/Pods-GoalTracker2-GoalTracker2UITests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -239,8 +241,8 @@
 		621AEAD928CEF73200D53F2C /* AddGoal */ = {
 			isa = PBXGroup;
 			children = (
-				621AEB0228CF056400D53F2C /* AddGoalViewController.swift */,
-				621AEB0128CF056400D53F2C /* AddGoalViewModel.swift */,
+				62CE1ED628D6F62C00F08EF0 /* AddGoalViewController.swift */,
+				62CE1ED528D6F62100F08EF0 /* Legacy */,
 			);
 			path = AddGoal;
 			sourceTree = "<group>";
@@ -391,12 +393,12 @@
 			path = RotatingNeumorphicButton;
 			sourceTree = "<group>";
 		};
-		622690CB28D59DAA00E4AA01 /* PlusMenu */ = {
+		622690CB28D59DAA00E4AA01 /* PlusButtonMenu */ = {
 			isa = PBXGroup;
 			children = (
 				622690CC28D59DFE00E4AA01 /* PlusMenuViewController.swift */,
 			);
-			path = PlusMenu;
+			path = PlusButtonMenu;
 			sourceTree = "<group>";
 		};
 		62B5722C28CEE6A000015354 = {
@@ -427,7 +429,7 @@
 				62B5723828CEE6A000015354 /* AppDelegate.swift */,
 				62B5723A28CEE6A000015354 /* SceneDelegate.swift */,
 				621AEACA28CEF5DE00D53F2C /* Home */,
-				622690CB28D59DAA00E4AA01 /* PlusMenu */,
+				622690CB28D59DAA00E4AA01 /* PlusButtonMenu */,
 				621AEAD928CEF73200D53F2C /* AddGoal */,
 				AAB6BB8828D0035B00AC44E9 /* Calendar */,
 				AAB6BB8928D0035E00AC44E9 /* Settings */,
@@ -473,6 +475,15 @@
 				621AEACD28CEF66A00D53F2C /* Date_Extension.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		62CE1ED528D6F62100F08EF0 /* Legacy */ = {
+			isa = PBXGroup;
+			children = (
+				621AEB0128CF056400D53F2C /* AddGoalViewModel11.swift */,
+				621AEB0228CF056400D53F2C /* AddGoalViewController11.swift */,
+			);
+			path = Legacy;
 			sourceTree = "<group>";
 		};
 		AAB6BB8828D0035B00AC44E9 /* Calendar */ = {
@@ -794,7 +805,8 @@
 				AAAFB8A328D2E572002CE265 /* NeumorphicButton.swift in Sources */,
 				62B5726928CEE84000015354 /* HomeViewController.swift in Sources */,
 				621AEAF728CEF74300D53F2C /* VerticalPageIndicator.swift in Sources */,
-				621AEB0328CF056400D53F2C /* AddGoalViewModel.swift in Sources */,
+				621AEB0328CF056400D53F2C /* AddGoalViewModel11.swift in Sources */,
+				62CE1ED728D6F62C00F08EF0 /* AddGoalViewController.swift in Sources */,
 				62B5726C28CEE88500015354 /* UIColor_Extensions.swift in Sources */,
 				621AEAC528CEF58800D53F2C /* UIFont_Extension.swift in Sources */,
 				621AEAC828CEF5A300D53F2C /* UIImage_Extension.swift in Sources */,
@@ -810,7 +822,7 @@
 				621AEB0828CF05A000D53F2C /* UIButton_Extension.swift in Sources */,
 				621AEAEF28CEF74300D53F2C /* TileBoardCollectionView.swift in Sources */,
 				621AEAF428CEF74300D53F2C /* GTAlertViewController.swift in Sources */,
-				621AEB0428CF056400D53F2C /* AddGoalViewController.swift in Sources */,
+				621AEB0428CF056400D53F2C /* AddGoalViewController11.swift in Sources */,
 				621AEAF928CEF74300D53F2C /* MessageBar.swift in Sources */,
 				621AEAF028CEF74300D53F2C /* HomeCircularGoalCell.swift in Sources */,
 				621AEAFA28CEF74300D53F2C /* CircularCollectionView.swift in Sources */,
@@ -918,7 +930,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -972,7 +984,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;

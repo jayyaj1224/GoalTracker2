@@ -1,368 +1,195 @@
 //
-//  AddViewController.swift
-//  GoalTracker
+//  AddGoalViewController.swift
+//  GoalTracker2
 //
-//  Created by Jay Lee on 2022/06/18.
+//  Created by Jay Lee on 18/09/2022.
 //
 
 import UIKit
-import RxSwift
-import RxCocoa
 
-final class AddGoalViewController: UIViewController {
+
+class AddGoalViewController: UIViewController {
+    //MARK: - Components SubClass
+    
+    
     //MARK: - Components
-    class SectionTitleLabel: UILabel {
-        convenience init(_ title: String, lines: Int=0) {
-            self.init(frame: .zero)
-            text = title
-            font = .noto(size: 17, family: .Light)
-            textColor = .grayB
-            textAlignment = .left
-            numberOfLines = lines
-        }
-    }
-    
-    class PickerSelectView: UIView {
-        let label = UILabel()
-        
-        override init(frame: CGRect) {
-            super.init(frame: frame)
-            label.font = .noto(size: 14, family: .Light)
-            label.textColor = .black
-            
-            self.addSubview(label)
-            label.snp.makeConstraints { make in
-                make.center.equalToSuperview()
-            }
-        }
-        
-        required init?(coder: NSCoder) {
-            fatalError("init(coder:) has not been implemented")
-        }
-    }
-    
-    //MARK: - Top Components
-    let slideIndicator = NeumorphicView(color: .crayon, shadowSize: .medium)
-    
-    let closeButton: UIButton = {
+    private let cancelButton: UIButton = {
         let button = UIButton()
-        button.setImage(UIImage(named: "icon_cancel"), for: .normal)
-        button.setImage(UIImage(named: "icon_cancel"), for: .highlighted)
-        button.alpha = 0.6
+        let attributedString = NSMutableAttributedString(
+            string: "Cancel",
+            attributes: [
+                NSMutableAttributedString.Key.font: UIFont.sfPro(size: 18, family: .Light),
+                NSMutableAttributedString.Key.foregroundColor: UIColor.grayB
+            ]
+        )
+        button.setAttributedTitle(attributedString, for: .normal)
         return button
     }()
     
-    //MARK: - Goal Track Type Section
-    let trackTypeSectionTitleLabel = SectionTitleLabel("Goal Type")
-    
-    let trackTypeSelectPickerView = UIPickerView()
-    
-    
-    //MARK: - Goal Text Section
-    let goalSectionTitleLabel = SectionTitleLabel("Goal")
-    
-    let textFieldBackGroundView: UIView = {
-        let view = UIView()
-        let imageView = UIImageView()
-        imageView.image = UIImage(named: "boxInnerShadow")
-        view.addSubview(imageView)
-        imageView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
-        }
-        return view
+    private let saveButton: UIButton = {
+        let button = UIButton()
+        let attributedString = NSMutableAttributedString(
+            string: "Save",
+            attributes: [
+                NSMutableAttributedString.Key.font: UIFont.sfPro(size: 18, family: .Light),
+                NSMutableAttributedString.Key.foregroundColor: UIColor.orangeA
+            ]
+        )
+        button.setAttributedTitle(attributedString, for: .normal)
+        return button
     }()
     
-    let goalTextView: UITextView = {
+    private let goalInputTextView: UITextView = {
         let textView = UITextView()
-        textView.showsVerticalScrollIndicator = true
+        textView.font = .sfPro(size: 18, family: .Light)
         textView.backgroundColor = .clear
-        textView.textColor = .black
-        textView.font = .noto(size: 14, family: .Light)
         return textView
     }()
     
-    let goalPlaceHolderLabel: UILabel = {
-        let label = UILabel()
-        label.text = "What is your goal?"
-        label.font = .noto(size: 14, family: .Regular)
-        label.textColor = .crayon
-        return label
-    }()
-    
-    let textCountLabel: UILabel = {
+    private let goalInputTextViewPlaceholder: UILabel = {
         let label = UILabel()
         label.textColor = .grayB
-        label.font = .noto(size: 12, family: .Regular)
-        label.textAlignment = .right
-        label.text = "0/100"
+        label.alpha = 0.7
+        label.font = .outFit(size: 18, family: .Light)
+        label.text = "Please enter your goal."
         return label
     }()
     
-    //MARK: - Days Set Section
-    private let daysTotalLabel = SectionTitleLabel("Days Total")
-    
-    let totalPickerView = UIPickerView()
-    
-    private let maxFailLabel = SectionTitleLabel("Set Maximum Fail Count")
-    
-    let maxFailPickerView = UIPickerView()
-    
-    let saveButton: NeuphShadowButton = {
-        let button = NeuphShadowButton(cornerRadius: 10)
-        let attString = NSMutableAttributedString(
-            string: "Save",
-            attributes: [
-                NSAttributedString.Key.foregroundColor: UIColor.redA,
-                NSAttributedString.Key.font: UIFont.noto(size: 16, family: .Regular)
-            ]
-        )
-        button.setAttributedTitle(attString, for: .normal)
-        return button
+    private let characterCountLabel: UILabel = {
+        let label = UILabel()
+        label.font = .outFit(size: 13, family: .Medium)
+        label.textColor = .grayB
+        label.text = "0 /100 Character"
+        return label
     }()
-    
-    //MARK: - Layout
-    private func layout() {
-        let contentsStackView = UIStackView()
-        contentsStackView.axis = .vertical
-        contentsStackView.distribution = .fill
-
-        [contentsStackView, slideIndicator, saveButton]
-            .forEach { self.view.addSubview($0) }
-        
-        contentsStackView.snp.makeConstraints { make in
-            make.top.equalToSuperview().inset(50)
-            make.leading.trailing.equalToSuperview().inset(20)
-        }
-        
-        slideIndicator.snp.makeConstraints { make in
-            make.width.equalTo(120)
-            make.height.equalTo(4)
-            make.centerX.equalToSuperview()
-            make.top.equalToSuperview().inset(20)
-        }
-
-        let spacer: (CGFloat) -> UIView = { height in
-            let view = UIView()
-            view.snp.makeConstraints { make in
-                make.height.equalTo(height)
-            }
-            return view
-        }
-
-        let viewComponentsStack = [
-            // Goal Track Type
-            trackTypeSectionTitleLabel,
-            trackTypeSelectPickerView,
-            
-            // Goal Text
-            goalSectionTitleLabel,
-            spacer(10),
-            textFieldBackGroundView,
-            spacer(3),
-            textCountLabel,
-            spacer(7),
-            
-            // Days Total
-            daysTotalLabel,
-            totalPickerView,
-            spacer(10),
-            
-            // Fail Cap
-            maxFailLabel,
-            maxFailPickerView
-        ]
-        
-        trackTypeSelectPickerView.snp.makeConstraints { make in
-            make.height.equalTo(100)
-        }
-        
-        viewComponentsStack
-            .forEach { contentsStackView.addArrangedSubview($0) }
-        
-        textFieldBackGroundView.snp.makeConstraints { make in
-            make.height.equalTo(73)
-        }
-        
-        textFieldBackGroundView.addSubview(goalTextView)
-        
-        goalTextView.snp.makeConstraints { make in
-            make.edges.equalToSuperview().inset(10)
-        }
-        
-        totalPickerView.snp.makeConstraints { make in
-            make.height.equalTo(100)
-        }
-        
-        maxFailPickerView.snp.makeConstraints { make in
-            make.height.equalTo(100)
-        }
-        
-        self.view.addSubview(closeButton)
-        
-        closeButton.snp.makeConstraints { make in
-            make.size.equalTo(60)
-            make.top.equalToSuperview().inset(5)
-            make.trailing.equalToSuperview()
-        }
-        
-        goalTextView.addSubview(goalPlaceHolderLabel)
-        
-        goalPlaceHolderLabel.snp.makeConstraints { make in
-            make.leading.equalToSuperview().inset(5)
-            make.top.equalToSuperview().inset(7)
-            make.trailing.equalToSuperview()
-        }
-        
-        saveButton.snp.makeConstraints { make in
-            make.centerX.equalToSuperview()
-            make.width.equalTo(300)
-            make.height.equalTo(40)
-            make.bottom.equalToSuperview().inset(45)
-        }
-    }
-    
-    //MARK: - Logic
-    var hasSetPointOrigin = false
-    
-    var pointOrigin: CGPoint?
-    
-    var newGoalAddedSubject = PublishSubject<Goal>()
-    
-    let viewModel = AddGoalViewModel()
-    
-    let disposeBag = DisposeBag()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        configure()
-        layout()
-        bind()
-        bindPickerViewDatasource()
+        setupView()
+        addButtonTargets()
+        
+        goalInputTextView.delegate = self
+        goalInputTextView.becomeFirstResponder()
     }
     
-    override func viewDidLayoutSubviews() {
-        if !hasSetPointOrigin {
-            hasSetPointOrigin = true
-            pointOrigin = self.view.frame.origin
+    //MARK: - Button Actions
+    private func addButtonTargets() {
+        cancelButton.addTarget(self, action: #selector(cancelButtonTapped(_:)), for: .touchUpInside)
+        saveButton.addTarget(self, action: #selector(saveButtonTapped(_:)), for: .touchUpInside)
+        
+    }
+    
+    @objc private func cancelButtonTapped(_ sender: UIButton) {
+        dismiss(animated: true, completion: nil)
+    }
+    
+    @objc private func saveButtonTapped(_ sender: UIButton) {
+        dismiss(animated: true, completion: nil)
+    }
+    
+    
+    //MARK: - view setting
+    private func setupView() {
+        view.backgroundColor = .crayon
+        
+        layoutComponents()
+    }
+    
+    private func componentDividerLine() -> UIView {
+        let view = UIView()
+        view.backgroundColor = .grayA
+        return view
+    }
+    
+    private func layoutComponents() {
+        /// Under the cancel, save button
+        let firstDividerLine = componentDividerLine()
+        
+        /// Under the goal input textView
+        let secondDividerLine = componentDividerLine()
+        
+        [
+            cancelButton, saveButton,
+            firstDividerLine,
+            goalInputTextViewPlaceholder,
+            goalInputTextView,
+            characterCountLabel,
+            secondDividerLine
+            
+        ].forEach {
+            view.addSubview($0)
         }
-    }
-
-    private func configure() {
-        let panGesture = UIPanGestureRecognizer(target: self, action: #selector(panGestureRecognizerAction))
-        self.view.addGestureRecognizer(panGesture)
-        self.view.backgroundColor = .crayon
-
-        goalTextView.delegate = self
         
-        saveButton.addTarget(self, action: #selector(saveGoalButtonTapped), for: .touchUpInside)
-        
-        closeButton.addTarget(self, action: #selector(closeButtonTapped), for: .touchUpInside)
-    }
-    
-    private func bind() {
-        goalTextView.rx.text
-            .bind(to: self.rx.textFieldDidChange)
-            .disposed(by: disposeBag)
-    }
-    
-    private func bindPickerViewDatasource() {
-        let vm = viewModel
-        
-        vm.goalTrackTypePickerDatasource
-            .bind(to: trackTypeSelectPickerView.rx.items)(vm.trackTypePickerFactory)
-            .disposed(by: disposeBag)
-        
-        vm.totalDaysDatasource
-            .bind(to: totalPickerView.rx.items){ [weak self] row, num, view in
-                self?.goalTextView.resignFirstResponder()
-                return vm.daysSelectPickerFactory(row, num, view)
-            }
-            .disposed(by: disposeBag)
-        
-        viewModel.maxFailDatasource
-            .bind(to: maxFailPickerView.rx.items)(vm.daysSelectPickerFactory)
-            .disposed(by: disposeBag)
-        
-        totalPickerView.rx.itemSelected
-            .subscribe(vm.totalDaysPickerViewValue)
-            .disposed(by: disposeBag)
-    }
-    
-    
-    @objc func panGestureRecognizerAction(sender: UIPanGestureRecognizer) {
-        let translation = sender.translation(in: view)
-        
-        guard translation.y >= 0 else { return }
-        
-        self.goalTextView.resignFirstResponder()
-        
-        view.frame.origin = CGPoint(x: 0, y: self.pointOrigin!.y + translation.y)
-        
-        if sender.state == .ended {
-            let velocity = sender.velocity(in: view)
-            if velocity.y >= 1300 {
-                self.dismiss(animated: true, completion: nil)
-            } else {
-                UIView.animate(withDuration: 0.3) {
-                    self.view.frame.origin = self.pointOrigin ?? CGPoint(x: 0, y: 400)
-                }
-            }
+        cancelButton.snp.makeConstraints { make in
+            make.leading.equalToSuperview().inset(20)
+            make.top.equalToSuperview().inset(25)
         }
-    }
-    
-    @objc func saveGoalButtonTapped() {
-        goalTextView.endEditing(true)
         
-        let trackTypePickerSelectedRow = trackTypeSelectPickerView.selectedRow(inComponent: 0)
-        let trackType = GoalTrackType.init(rawValue: trackTypePickerSelectedRow)!
+        saveButton.snp.makeConstraints { make in
+            make.trailing.equalToSuperview().inset(20)
+            make.top.equalToSuperview().inset(25)
+        }
         
-        let totalDaysPickerSelectedRow = totalPickerView.selectedRow(inComponent: 0)
-        let totalDays = totalPickerView.view(forRow: totalDaysPickerSelectedRow, forComponent: 0)?.tag ?? 0
+        firstDividerLine.snp.makeConstraints { make in
+            make.height.equalTo(1)
+            make.leading.trailing.equalToSuperview().inset(15)
+            make.top.equalTo(goalInputTextView).offset(-9)
+        }
         
-        let maxFail = maxFailPickerView.selectedRow(inComponent: 0)
+        goalInputTextView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview().inset(15)
+            make.top.equalToSuperview().inset(70)
+            make.height.equalTo(140)
+        }
         
-        let goal = Goal(
-            title: goalTextView.text!,
-            totalDays: totalDays,
-            failCap: maxFail,
-            setType: trackType
-        )
+        goalInputTextViewPlaceholder.snp.makeConstraints { make in
+            make.trailing.equalTo(goalInputTextView)
+            make.leading.equalTo(goalInputTextView).inset(6)
+            make.top.equalTo(goalInputTextView).inset(10)
+        }
         
-        GoalManager.shared.newGoal(goal)
+        secondDividerLine.snp.makeConstraints { make in
+            make.height.equalTo(1)
+            make.leading.trailing.equalToSuperview().inset(15)
+            make.top.equalTo(goalInputTextView.snp.bottom)
+        }
         
-        newGoalAddedSubject.onNext(goal)
-        
-        self.dismiss(animated: true)
-    }
-    
-    @objc func closeButtonTapped() {
-        self.dismiss(animated: true)
+        characterCountLabel.snp.makeConstraints { make in
+            make.trailing.equalTo(goalInputTextView)
+            make.top.equalTo(goalInputTextView.snp.bottom).offset(6)
+        }
     }
 }
 
 extension AddGoalViewController: UITextViewDelegate {
+    func textViewDidChange(_ textView: UITextView) {
+        var text = textView.text ?? ""
+        
+        if text.isEmpty {
+            goalInputTextViewPlaceholder.isHidden = false
+        } else {
+            goalInputTextViewPlaceholder.isHidden = true
+        }
+        
+        if text.count > 100 {
+            let endIndex = text.index(text.startIndex, offsetBy: 100)
+            text = String(text[..<endIndex])
+            textView.text = text
+        } else {
+            let characterCount = goalInputTextView.text.count
+            characterCountLabel.text = "\(characterCount) /100 Character"
+        }
+    }
+    
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
-        if (textView.text ?? "").count >= 100 && text != "" {
+        guard let textViewText = textView.text else { return false }
+        
+        let newLength = textViewText.count + text.count - range.length
+        if newLength > 100 && range.location < 100 {
             return false
         }
         return true
-    }
-}
-
-extension Reactive where Base: AddGoalViewController {
-    var textFieldDidChange: Binder<String?> {
-        Binder(base) { base, text in
-            guard let text = text  else  { return }
-            
-            DispatchQueue.main.async {
-                // placeholder label
-                base.goalPlaceHolderLabel.isHidden = !text.isEmpty
-                
-                // text count label
-                base.textCountLabel.text = "\(text.count)/100"
-            }
-        }
     }
 }
 
