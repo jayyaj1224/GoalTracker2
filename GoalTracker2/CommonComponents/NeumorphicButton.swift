@@ -26,7 +26,7 @@ class NeumorphicButton: UIButton {
             layer.insertSublayer(shadowLayer, at: 0)
         }
         
-        setNeumorphicShadow(at: [upperWhiteShadowLayer, underBlackShadowLayer], shadowSize: .medium)
+        setNeumorphicShadow(at: [upperWhiteShadowLayer, underBlackShadowLayer], shadowSize: shadowSize)
     }
     
     override func layoutSubviews() {
@@ -36,6 +36,11 @@ class NeumorphicButton: UIButton {
             layer.frame = self.layer.bounds
             layer.cornerRadius = self.layer.cornerRadius
         }
+    }
+    
+    public func setShadowOpacity(_ opacity: Float) {
+        upperWhiteShadowLayer.shadowOpacity = opacity
+        underBlackShadowLayer.shadowOpacity = opacity
     }
     
     required init?(coder: NSCoder) {

@@ -13,11 +13,7 @@ class HomeViewController: UIViewController {
     //MARK: - UI Components
     private let goalCircularCollectionView = CircularCollectionView()
     
-    private let plusRotatingButton: UIButton = {
-        let button = UIButton()
-        
-        return button
-    }()
+    private let plusRotatingButtonView = RotatingButtonView(imageName: "plus.neumorphism")
 
     private let messageBar = MessageBar()
 
@@ -28,7 +24,7 @@ class HomeViewController: UIViewController {
     //MARK: - Logics
     private let homeViewModel = HomeVieWModel()
     
-    let disposeBag = DisposeBag()
+    private let disposeBag = DisposeBag()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,6 +34,8 @@ class HomeViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        
+        plusIconImageRotate180Degree()
     }
 
 }
@@ -50,11 +48,10 @@ extension HomeViewController {
         modalTransitionStyle = .coverVertical
         modalPresentationStyle = .automatic
         
-        layout()
-        
+        layoutComponents()
         collectionViewBind()
-        
         messageBarBind()
+        addButtonTargets()
     }
     
     private func collectionViewBind() {
@@ -67,8 +64,8 @@ extension HomeViewController {
         messageBar.mock_setMessage()
     }
     
-    private func layout() {
-        [goalCircularCollectionView, dotPageIndicator, topAlphaScreenView, messageBar]
+    private func layoutComponents() {
+        [goalCircularCollectionView, dotPageIndicator, plusRotatingButtonView, topAlphaScreenView, messageBar]
             .forEach { components in
                 self.view.addSubview(components)
             }
@@ -83,6 +80,12 @@ extension HomeViewController {
             make.top.leading.trailing.equalToSuperview()
             make.bottom.equalTo(self.goalCircularCollectionView.snp.top).offset(100)
         }
+        
+        plusRotatingButtonView.snp.makeConstraints { make in
+            make.size.equalTo(34)
+            make.trailing.equalToSuperview().inset(18)
+            make.bottom.equalToSuperview().inset((K.hasNotch ? 125 : 86)*K.ratioFactor)
+        }
 
         messageBar.snp.makeConstraints { make in
             make.height.equalTo(50*K.ratioFactor)
@@ -93,6 +96,34 @@ extension HomeViewController {
         dotPageIndicator.snp.makeConstraints { make in
             make.centerY.equalTo(goalCircularCollectionView)
             make.leading.equalTo(goalCircularCollectionView).inset(14)
+        }
+    }
+    
+//MARK: -  Button Actions
+    private func addButtonTargets() {
+        plusRotatingButtonView.addTarget(self, action: #selector(plusButtonTapped), for: .touchUpInside)
+    }
+    
+    // selector functions
+    @objc private func plusButtonTapped() {
+        let plusMenuViewController = PlusMenuViewController()
+        plusMenuViewController.modalPresentationStyle = .overFullScreen
+        plusMenuViewController.dismissCompletionHandler = {
+            self.plusRotatingButtonView.iconImageView.alpha = 1
+        }
+        
+        present(plusMenuViewController, animated: false) {
+            self.plusRotatingButtonView.iconImageView.alpha = 0
+        }
+    }
+    
+    private func plusIconImageRotate180Degree() {
+        let plusIconImage = self.plusRotatingButtonView.iconImageView
+        
+        UIView.animate(withDuration: 0.3, delay: 0, options: .curveLinear) {
+            plusIconImage.transform = CGAffineTransform(rotationAngle: 180.pi.cgFloat)
+        } completion: { _ in
+            plusIconImage.transform = .identity
         }
     }
 }

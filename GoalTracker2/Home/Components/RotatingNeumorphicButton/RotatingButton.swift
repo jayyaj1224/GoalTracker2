@@ -7,29 +7,28 @@
 
 import UIKit
 
-class RotatingNeumorphicButton: NeumorphicButton {
-    private let rotatingButtonImageView = UIImageView()
+/// * size: 34 x 34
+class RotatingButtonView: NeumorphicButton {
+    let iconImageView = UIImageView()
     
     init(imageName: String) {
         super.init(color: .crayon, shadowSize: .medium)
-        
+            
         layer.cornerRadius = 17
         
-        rotatingButtonImageView.image = UIImage(named: imageName)
+        iconImageView.image = UIImage(named: imageName)
         
-        layout()
+        layoutComponents()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func layout() {
-        addSubview(rotatingButtonImageView)
-        
-        rotatingButtonImageView.snp.makeConstraints { make in
+    private func layoutComponents() {
+        addSubview(iconImageView)
+        iconImageView.snp.makeConstraints { make in
             make.center.equalToSuperview()
-            make.
         }
     }
 }

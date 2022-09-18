@@ -72,7 +72,8 @@
 		622690BF28D589E600E4AA01 /* Outfit-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 622690B628D589E600E4AA01 /* Outfit-Medium.ttf */; };
 		622690C028D589E600E4AA01 /* Outfit-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 622690B728D589E600E4AA01 /* Outfit-Light.ttf */; };
 		622690C728D58DF400E4AA01 /* MessageBarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 622690C628D58DF400E4AA01 /* MessageBarViewModel.swift */; };
-		622690CA28D5920300E4AA01 /* RotatingNeumorphicButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 622690C928D5920300E4AA01 /* RotatingNeumorphicButton.swift */; };
+		622690CA28D5920300E4AA01 /* RotatingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 622690C928D5920300E4AA01 /* RotatingButton.swift */; };
+		622690CD28D59DFE00E4AA01 /* PlusMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 622690CC28D59DFE00E4AA01 /* PlusMenuViewController.swift */; };
 		62B5723928CEE6A000015354 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62B5723828CEE6A000015354 /* AppDelegate.swift */; };
 		62B5723B28CEE6A000015354 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62B5723A28CEE6A000015354 /* SceneDelegate.swift */; };
 		62B5724228CEE6A100015354 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 62B5724128CEE6A100015354 /* Assets.xcassets */; };
@@ -171,7 +172,8 @@
 		622690B628D589E600E4AA01 /* Outfit-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Outfit-Medium.ttf"; sourceTree = "<group>"; };
 		622690B728D589E600E4AA01 /* Outfit-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Outfit-Light.ttf"; sourceTree = "<group>"; };
 		622690C628D58DF400E4AA01 /* MessageBarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageBarViewModel.swift; sourceTree = "<group>"; };
-		622690C928D5920300E4AA01 /* RotatingNeumorphicButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RotatingNeumorphicButton.swift; sourceTree = "<group>"; };
+		622690C928D5920300E4AA01 /* RotatingButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RotatingButton.swift; sourceTree = "<group>"; };
+		622690CC28D59DFE00E4AA01 /* PlusMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlusMenuViewController.swift; sourceTree = "<group>"; };
 		62B5723528CEE6A000015354 /* GoalTracker2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GoalTracker2.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		62B5723828CEE6A000015354 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		62B5723A28CEE6A000015354 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -384,9 +386,17 @@
 		622690C828D591D200E4AA01 /* RotatingNeumorphicButton */ = {
 			isa = PBXGroup;
 			children = (
-				622690C928D5920300E4AA01 /* RotatingNeumorphicButton.swift */,
+				622690C928D5920300E4AA01 /* RotatingButton.swift */,
 			);
 			path = RotatingNeumorphicButton;
+			sourceTree = "<group>";
+		};
+		622690CB28D59DAA00E4AA01 /* PlusMenu */ = {
+			isa = PBXGroup;
+			children = (
+				622690CC28D59DFE00E4AA01 /* PlusMenuViewController.swift */,
+			);
+			path = PlusMenu;
 			sourceTree = "<group>";
 		};
 		62B5722C28CEE6A000015354 = {
@@ -417,6 +427,7 @@
 				62B5723828CEE6A000015354 /* AppDelegate.swift */,
 				62B5723A28CEE6A000015354 /* SceneDelegate.swift */,
 				621AEACA28CEF5DE00D53F2C /* Home */,
+				622690CB28D59DAA00E4AA01 /* PlusMenu */,
 				621AEAD928CEF73200D53F2C /* AddGoal */,
 				AAB6BB8828D0035B00AC44E9 /* Calendar */,
 				AAB6BB8928D0035E00AC44E9 /* Settings */,
@@ -776,7 +787,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				621AEACE28CEF66A00D53F2C /* Date_Extension.swift in Sources */,
-				622690CA28D5920300E4AA01 /* RotatingNeumorphicButton.swift in Sources */,
+				622690CA28D5920300E4AA01 /* RotatingButton.swift in Sources */,
 				62B5723928CEE6A000015354 /* AppDelegate.swift in Sources */,
 				621AEB0628CF058B00D53F2C /* UIView_Extension.swift in Sources */,
 				62B5723B28CEE6A000015354 /* SceneDelegate.swift in Sources */,
@@ -809,6 +820,7 @@
 				AA9990CF28D1A1C800FE4A26 /* NeumorphicView.swift in Sources */,
 				621AEAF128CEF74300D53F2C /* DigitalCountPannel.swift in Sources */,
 				621AEB0028CEF81C00D53F2C /* Constants.swift in Sources */,
+				622690CD28D59DFE00E4AA01 /* PlusMenuViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
