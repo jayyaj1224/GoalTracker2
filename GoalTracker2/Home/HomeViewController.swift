@@ -82,7 +82,7 @@ extension HomeViewController {
         }
         
         plusRotatingButtonView.snp.makeConstraints { make in
-            make.size.equalTo(34)
+            make.size.equalTo(40)
             make.trailing.equalToSuperview().inset(18)
             make.bottom.equalToSuperview().inset((K.hasNotch ? 125 : 86)*K.ratioFactor)
         }

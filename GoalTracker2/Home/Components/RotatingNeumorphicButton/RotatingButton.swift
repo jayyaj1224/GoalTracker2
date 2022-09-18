@@ -14,7 +14,7 @@ class RotatingButtonView: NeumorphicButton {
     init(imageName: String) {
         super.init(color: .crayon, shadowSize: .medium)
             
-        layer.cornerRadius = 17
+        layer.cornerRadius = 20
         
         iconImageView.image = UIImage(named: imageName)
         
@@ -29,6 +29,7 @@ class RotatingButtonView: NeumorphicButton {
         addSubview(iconImageView)
         iconImageView.snp.makeConstraints { make in
             make.center.equalToSuperview()
+            make.size.equalTo(22)
         }
     }
 }

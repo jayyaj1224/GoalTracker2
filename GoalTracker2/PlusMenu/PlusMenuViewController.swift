@@ -15,8 +15,9 @@ class PlusMenuViewController: UIViewController {
         
         private let menuLabel: UILabel = {
             let label = UILabel()
-            label.font = .sfPro(size: 14, family: .Regular)
-            label.textColor = .grayB
+            label.font = .sfPro(size: 16, family: .Medium)
+//            label.textColor = .grayB
+            label.textColor = .crayon
             return label
         }()
         
@@ -25,7 +26,6 @@ class PlusMenuViewController: UIViewController {
             
             iconImageView.image = UIImage(named: imageName)
             menuLabel.text = title
-            
             layout()
         }
         
@@ -42,6 +42,7 @@ class PlusMenuViewController: UIViewController {
             iconImageView.snp.makeConstraints { make in
                 make.centerY.equalToSuperview()
                 make.leading.equalToSuperview().inset(7)
+                make.size.equalTo(22)
             }
             
             menuLabel.snp.makeConstraints { make in
@@ -52,17 +53,21 @@ class PlusMenuViewController: UIViewController {
     }
     
     //MARK: - Components
-    private let firstMenuBox: NeumorphicView = {
-        let boxView = NeumorphicView(color: .crayon, shadowSize: .medium)
-        boxView.layer.cornerRadius = 13
-        boxView.setShadowOpacity(0.1)
+    private let firstMenuBox: UIView = {
+//        let boxView = NeumorphicView(color: .crayon, shadowSize: .medium)
+        let boxView = UIView()
+        boxView.backgroundColor = .crayon
+        boxView.layer.cornerRadius = 15
+//        boxView.setShadowOpacity(0.1)
         return boxView
     }()
-    
-    private let secondMenuBox: NeumorphicView = {
-        let boxView = NeumorphicView(color: .crayon, shadowSize: .medium)
-        boxView.layer.cornerRadius = 13
-        boxView.setShadowOpacity(0.1)
+
+    private let secondMenuBox: UIView = {
+//        let boxView = NeumorphicView(color: .crayon, shadowSize: .medium)
+        let boxView = UIView()
+        boxView.backgroundColor = .crayon
+        boxView.layer.cornerRadius = 15
+//        boxView.setShadowOpacity(0.1)
         return boxView
     }()
     
@@ -128,7 +133,7 @@ class PlusMenuViewController: UIViewController {
         
         secondMenuBox.translatesAutoresizingMaskIntoConstraints = false
         secondBoxBottomConstraint = secondMenuBox.bottomAnchor.constraint(equalTo: cancelRotatingButton.bottomAnchor)
-        secondBoxBottomConstraint.constant = -40
+        secondBoxBottomConstraint.constant = -55
         secondBoxBottomConstraint.isActive = true
         
         firstMenuBox.addSubview(settingButton)
@@ -159,13 +164,14 @@ class PlusMenuViewController: UIViewController {
         }
         
         cancelRotatingButton.snp.makeConstraints { make in
-            make.size.equalTo(34)
+            make.size.equalTo(40)
             make.trailing.equalToSuperview().inset(18)
             make.bottom.equalToSuperview().inset((K.hasNotch ? 125 : 86)*K.ratioFactor)
         }
 
         plusIconImageView.snp.makeConstraints { make in
             make.center.equalTo(cancelRotatingButton)
+            make.size.equalTo(22)
         }
     }
     
