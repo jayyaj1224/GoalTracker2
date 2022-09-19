@@ -106,6 +106,9 @@ extension HomeViewController {
     
     // selector functions
     @objc private func plusButtonTapped() {
+        let feedBackGenerator = UIImpactFeedbackGenerator(style: .medium)
+        feedBackGenerator.impactOccurred()
+        
         let plusMenuViewController = PlusMenuViewController()
         plusMenuViewController.modalPresentationStyle = .overFullScreen
         plusMenuViewController.dismissCompletionHandler = {
