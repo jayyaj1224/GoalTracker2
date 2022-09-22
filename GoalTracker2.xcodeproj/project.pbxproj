@@ -74,6 +74,8 @@
 		622690C728D58DF400E4AA01 /* MessageBarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 622690C628D58DF400E4AA01 /* MessageBarViewModel.swift */; };
 		622690CA28D5920300E4AA01 /* RotatingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 622690C928D5920300E4AA01 /* RotatingButton.swift */; };
 		622690CD28D59DFE00E4AA01 /* PlusMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 622690CC28D59DFE00E4AA01 /* PlusMenuViewController.swift */; };
+		622F135228DCAD2A0072E5BF /* CalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 622F135128DCAD2A0072E5BF /* CalendarViewController.swift */; };
+		622F135528DCAD390072E5BF /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 622F135428DCAD390072E5BF /* SettingsViewController.swift */; };
 		62B5723928CEE6A000015354 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62B5723828CEE6A000015354 /* AppDelegate.swift */; };
 		62B5723B28CEE6A000015354 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62B5723A28CEE6A000015354 /* SceneDelegate.swift */; };
 		62B5724228CEE6A100015354 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 62B5724128CEE6A100015354 /* Assets.xcassets */; };
@@ -175,6 +177,8 @@
 		622690C628D58DF400E4AA01 /* MessageBarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageBarViewModel.swift; sourceTree = "<group>"; };
 		622690C928D5920300E4AA01 /* RotatingButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RotatingButton.swift; sourceTree = "<group>"; };
 		622690CC28D59DFE00E4AA01 /* PlusMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlusMenuViewController.swift; sourceTree = "<group>"; };
+		622F135128DCAD2A0072E5BF /* CalendarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewController.swift; sourceTree = "<group>"; };
+		622F135428DCAD390072E5BF /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		62B5723528CEE6A000015354 /* GoalTracker2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GoalTracker2.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		62B5723828CEE6A000015354 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		62B5723A28CEE6A000015354 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -489,6 +493,7 @@
 		AAB6BB8828D0035B00AC44E9 /* Calendar */ = {
 			isa = PBXGroup;
 			children = (
+				622F135128DCAD2A0072E5BF /* CalendarViewController.swift */,
 			);
 			path = Calendar;
 			sourceTree = "<group>";
@@ -496,6 +501,7 @@
 		AAB6BB8928D0035E00AC44E9 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
+				622F135428DCAD390072E5BF /* SettingsViewController.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -802,6 +808,7 @@
 				62B5723928CEE6A000015354 /* AppDelegate.swift in Sources */,
 				621AEB0628CF058B00D53F2C /* UIView_Extension.swift in Sources */,
 				62B5723B28CEE6A000015354 /* SceneDelegate.swift in Sources */,
+				622F135528DCAD390072E5BF /* SettingsViewController.swift in Sources */,
 				AAAFB8A328D2E572002CE265 /* NeumorphicButton.swift in Sources */,
 				62B5726928CEE84000015354 /* HomeViewController.swift in Sources */,
 				621AEAF728CEF74300D53F2C /* VerticalPageIndicator.swift in Sources */,
@@ -820,6 +827,7 @@
 				621AEAD628CEF71D00D53F2C /* MainViewModel.swift in Sources */,
 				621AEAF328CEF74300D53F2C /* GoalCircle.swift in Sources */,
 				621AEB0828CF05A000D53F2C /* UIButton_Extension.swift in Sources */,
+				622F135228DCAD2A0072E5BF /* CalendarViewController.swift in Sources */,
 				621AEAEF28CEF74300D53F2C /* TileBoardCollectionView.swift in Sources */,
 				621AEAF428CEF74300D53F2C /* GTAlertViewController.swift in Sources */,
 				621AEB0428CF056400D53F2C /* AddGoalViewController11.swift in Sources */,
