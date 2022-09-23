@@ -246,6 +246,7 @@
 			isa = PBXGroup;
 			children = (
 				62CE1ED628D6F62C00F08EF0 /* AddGoalViewController.swift */,
+				62CDA7CA28DD7AE400AFB61C /* Components */,
 				62CE1ED528D6F62100F08EF0 /* Legacy */,
 			);
 			path = AddGoal;
@@ -479,6 +480,13 @@
 				621AEACD28CEF66A00D53F2C /* Date_Extension.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		62CDA7CA28DD7AE400AFB61C /* Components */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Components;
 			sourceTree = "<group>";
 		};
 		62CE1ED528D6F62100F08EF0 /* Legacy */ = {

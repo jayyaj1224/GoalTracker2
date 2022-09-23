@@ -12,7 +12,7 @@ class AddGoalViewController: UIViewController {
     //MARK: - Components SubClass
     
     
-    //MARK: - Components
+    //MARK: - UI Components
     private let cancelButton: UIButton = {
         let button = UIButton()
         let attributedString = NSMutableAttributedString(
@@ -67,19 +67,13 @@ class AddGoalViewController: UIViewController {
         super.viewDidLoad()
         
         setupView()
-        addButtonTargets()
+        
         
         goalInputTextView.delegate = self
         goalInputTextView.becomeFirstResponder()
     }
     
     //MARK: - Button Actions
-    private func addButtonTargets() {
-        cancelButton.addTarget(self, action: #selector(cancelButtonTapped(_:)), for: .touchUpInside)
-        saveButton.addTarget(self, action: #selector(saveButtonTapped(_:)), for: .touchUpInside)
-        
-    }
-    
     @objc private func cancelButtonTapped(_ sender: UIButton) {
         dismiss(animated: true, completion: nil)
     }
@@ -89,11 +83,19 @@ class AddGoalViewController: UIViewController {
     }
     
     
-    //MARK: - view setting
+    //MARK: - View Setting
     private func setupView() {
         view.backgroundColor = .crayon
         
         layoutComponents()
+        
+        addButtonTargets()
+    }
+    
+    private func addButtonTargets() {
+        cancelButton.addTarget(self, action: #selector(cancelButtonTapped(_:)), for: .touchUpInside)
+        saveButton.addTarget(self, action: #selector(saveButtonTapped(_:)), for: .touchUpInside)
+        
     }
     
     private func componentDividerLine() -> UIView {
@@ -132,7 +134,7 @@ class AddGoalViewController: UIViewController {
         }
         
         firstDividerLine.snp.makeConstraints { make in
-            make.height.equalTo(1)
+            make.height.equalTo(0.5)
             make.leading.trailing.equalToSuperview().inset(15)
             make.top.equalTo(goalInputTextView).offset(-9)
         }
@@ -140,7 +142,7 @@ class AddGoalViewController: UIViewController {
         goalInputTextView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(15)
             make.top.equalToSuperview().inset(70)
-            make.height.equalTo(140)
+            make.height.equalTo(120)
         }
         
         goalInputTextViewPlaceholder.snp.makeConstraints { make in
@@ -150,7 +152,7 @@ class AddGoalViewController: UIViewController {
         }
         
         secondDividerLine.snp.makeConstraints { make in
-            make.height.equalTo(1)
+            make.height.equalTo(0.5)
             make.leading.trailing.equalToSuperview().inset(15)
             make.top.equalTo(goalInputTextView.snp.bottom)
         }

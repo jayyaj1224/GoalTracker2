@@ -98,7 +98,11 @@ class PlusMenuViewController: UIViewController {
     }
     
     @objc private func settingButtonTapped(_ sender: UIButton) {
-        print("settingButtonTapped")
+        let settingsViewController = SettingsViewController()
+        settingsViewController.modalPresentationStyle = .custom
+        settingsViewController.transitioningDelegate = self
+        
+        present(settingsViewController, animated: true, completion: nil)
     }
     
     @objc private func deleteGoalButtonTapped(_ sender: UIButton) {
@@ -120,8 +124,8 @@ class PlusMenuViewController: UIViewController {
     
     //MARK: - animations
     @objc private func cancelButtonActionWithAnimation() {
-        let feedBackGenerator = UIImpactFeedbackGenerator(style: .heavy)
-        feedBackGenerator.impactOccurred()
+        //let feedBackGenerator = UIImpactFeedbackGenerator(style: .medium)
+        //feedBackGenerator.impactOccurred()
 
         UIView.animate(withDuration: 0.3, delay: 0, options: .curveLinear) {
             self.cancelRotatingButton.iconImageView.transform = CGAffineTransform(rotationAngle: -135.pi.cgFloat)
