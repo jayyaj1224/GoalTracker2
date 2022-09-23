@@ -18,7 +18,7 @@ class AddGoalViewController: UIViewController {
         let attributedString = NSMutableAttributedString(
             string: "Cancel",
             attributes: [
-                NSMutableAttributedString.Key.font: UIFont.sfPro(size: 18, family: .Light),
+                NSMutableAttributedString.Key.font: UIFont.sfPro(size: 16, family: .Light),
                 NSMutableAttributedString.Key.foregroundColor: UIColor.grayB
             ]
         )
@@ -31,7 +31,7 @@ class AddGoalViewController: UIViewController {
         let attributedString = NSMutableAttributedString(
             string: "Save",
             attributes: [
-                NSMutableAttributedString.Key.font: UIFont.sfPro(size: 18, family: .Light),
+                NSMutableAttributedString.Key.font: UIFont.sfPro(size: 16, family: .Light),
                 NSMutableAttributedString.Key.foregroundColor: UIColor.orangeA
             ]
         )
@@ -39,8 +39,17 @@ class AddGoalViewController: UIViewController {
         return button
     }()
     
+    private let goalInputSectorTitleLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Goal Title (0 /100)"
+        label.textColor = .grayB
+        label.font = .sfPro(size: 13, family: .Medium)
+        return label
+    }()
+    
     private let goalInputTextView: UITextView = {
         let textView = UITextView()
+        textView.textColor = .grayC
         textView.font = .sfPro(size: 18, family: .Light)
         textView.backgroundColor = .clear
         return textView
@@ -48,18 +57,33 @@ class AddGoalViewController: UIViewController {
     
     private let goalInputTextViewPlaceholder: UILabel = {
         let label = UILabel()
-        label.textColor = .grayB
-        label.alpha = 0.7
-        label.font = .outFit(size: 18, family: .Light)
+        label.textColor = .grayA
+        label.font = .outFit(size: 16, family: .Light)
         label.text = "Please enter your goal."
         return label
     }()
     
-    private let characterCountLabel: UILabel = {
+    private let descriptionInputSectorTitleLabel: UILabel = {
         let label = UILabel()
-        label.font = .outFit(size: 13, family: .Medium)
+        label.text = "Description (optional) 􀁜"
         label.textColor = .grayB
-        label.text = "0 /100 Character"
+        label.font = .sfPro(size: 13, family: .Medium)
+        return label
+    }()
+    
+    private let descriptionInputTextView: UITextView = {
+        let textView = UITextView()
+        textView.textColor = .grayC
+        textView.font = .sfPro(size: 18, family: .Light)
+        textView.backgroundColor = .clear
+        return textView
+    }()
+    
+    private let descriptionInputTextViewPlaceholder: UILabel = {
+        let label = UILabel()
+        label.textColor = .grayA
+        label.font = .outFit(size: 16, family: .Light)
+        label.text = "Additional info about your goal"
         return label
     }()
     
@@ -98,26 +122,32 @@ class AddGoalViewController: UIViewController {
         
     }
     
-    private func componentDividerLine() -> UIView {
-        let view = UIView()
-        view.backgroundColor = .grayA
-        return view
-    }
-    
     private func layoutComponents() {
+        let sectionDivider: ()-> UIView = {
+            let view = UIView()
+            view.backgroundColor = .grayA
+            return view
+        }
+        
         /// Under the cancel, save button
-        let firstDividerLine = componentDividerLine()
+        let goalTitleSectionDivider = sectionDivider()
         
         /// Under the goal input textView
-        let secondDividerLine = componentDividerLine()
+        let descriptionSectionDivider = sectionDivider()
         
         [
             cancelButton, saveButton,
-            firstDividerLine,
+            
+            goalInputSectorTitleLabel,
+            goalTitleSectionDivider,
             goalInputTextViewPlaceholder,
             goalInputTextView,
-            characterCountLabel,
-            secondDividerLine
+//            characterCountLabel,
+            
+            descriptionInputSectorTitleLabel,
+            descriptionSectionDivider,
+            descriptionInputTextView,
+            descriptionInputTextViewPlaceholder
             
         ].forEach {
             view.addSubview($0)
@@ -125,24 +155,29 @@ class AddGoalViewController: UIViewController {
         
         cancelButton.snp.makeConstraints { make in
             make.leading.equalToSuperview().inset(20)
-            make.top.equalToSuperview().inset(25)
+            make.top.equalToSuperview().inset(15)
         }
         
         saveButton.snp.makeConstraints { make in
             make.trailing.equalToSuperview().inset(20)
-            make.top.equalToSuperview().inset(25)
+            make.top.equalToSuperview().inset(15)
         }
         
-        firstDividerLine.snp.makeConstraints { make in
+        goalInputSectorTitleLabel.snp.makeConstraints { make in
+            make.bottom.equalTo(goalTitleSectionDivider.snp.top).offset(-3)
+            make.leading.equalTo(goalTitleSectionDivider.snp.leading).offset(4)
+        }
+        
+        goalTitleSectionDivider.snp.makeConstraints { make in
             make.height.equalTo(0.5)
             make.leading.trailing.equalToSuperview().inset(15)
-            make.top.equalTo(goalInputTextView).offset(-9)
+            make.top.equalToSuperview().inset(100)
         }
         
         goalInputTextView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(15)
-            make.top.equalToSuperview().inset(70)
-            make.height.equalTo(120)
+            make.top.equalTo(goalTitleSectionDivider).inset(5)
+            make.height.equalTo(80)
         }
         
         goalInputTextViewPlaceholder.snp.makeConstraints { make in
@@ -151,15 +186,27 @@ class AddGoalViewController: UIViewController {
             make.top.equalTo(goalInputTextView).inset(10)
         }
         
-        secondDividerLine.snp.makeConstraints { make in
-            make.height.equalTo(0.5)
-            make.leading.trailing.equalToSuperview().inset(15)
-            make.top.equalTo(goalInputTextView.snp.bottom)
+        descriptionInputSectorTitleLabel.snp.makeConstraints { make in
+            make.bottom.equalTo(descriptionSectionDivider.snp.top).offset(-3)
+            make.leading.equalTo(descriptionSectionDivider.snp.leading).offset(4)
         }
         
-        characterCountLabel.snp.makeConstraints { make in
-            make.trailing.equalTo(goalInputTextView)
-            make.top.equalTo(goalInputTextView.snp.bottom).offset(6)
+        descriptionSectionDivider.snp.makeConstraints { make in
+            make.height.equalTo(0.5)
+            make.leading.trailing.equalToSuperview().inset(15)
+            make.top.equalTo(goalTitleSectionDivider.snp.bottom).offset(140)
+        }
+        
+        descriptionInputTextView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview().inset(15)
+            make.top.equalTo(descriptionSectionDivider).inset(5)
+            make.height.equalTo(80)
+        }
+        
+        descriptionInputTextViewPlaceholder.snp.makeConstraints { make in
+            make.trailing.equalTo(descriptionInputTextView)
+            make.leading.equalTo(descriptionInputTextView).inset(6)
+            make.top.equalTo(descriptionInputTextView).inset(10)
         }
     }
 }
@@ -174,13 +221,13 @@ extension AddGoalViewController: UITextViewDelegate {
             goalInputTextViewPlaceholder.isHidden = true
         }
         
-        if text.count > 100 {
-            let endIndex = text.index(text.startIndex, offsetBy: 100)
+        if text.count > 80 {
+            let endIndex = text.index(text.startIndex, offsetBy: 80)
             text = String(text[..<endIndex])
             textView.text = text
         } else {
             let characterCount = goalInputTextView.text.count
-            characterCountLabel.text = "\(characterCount) /100 Character"
+            goalInputSectorTitleLabel.text = "Goal Title (\(characterCount) /80)"
         }
     }
     
@@ -188,7 +235,7 @@ extension AddGoalViewController: UITextViewDelegate {
         guard let textViewText = textView.text else { return false }
         
         let newLength = textViewText.count + text.count - range.length
-        if newLength > 100 && range.location < 100 {
+        if newLength > 80 && range.location < 80 {
             return false
         }
         return true
