@@ -47,7 +47,7 @@ class AddGoalViewController: UIViewController {
         return label
     }()
     
-    private let goalInputTextView: UITextView = {
+    private let goalTitleInputTextView: UITextView = {
         let textView = UITextView()
         textView.textColor = .grayC
         textView.font = .sfPro(size: 18, family: .Light)
@@ -92,9 +92,10 @@ class AddGoalViewController: UIViewController {
         
         setupView()
         
+        goalTitleInputTextView.delegate = self
+        descriptionInputTextView.delegate = self
         
-        goalInputTextView.delegate = self
-        goalInputTextView.becomeFirstResponder()
+        goalTitleInputTextView.becomeFirstResponder()
     }
     
     //MARK: - Button Actions
@@ -141,7 +142,7 @@ class AddGoalViewController: UIViewController {
             goalInputSectorTitleLabel,
             goalTitleSectionDivider,
             goalInputTextViewPlaceholder,
-            goalInputTextView,
+            goalTitleInputTextView,
 //            characterCountLabel,
             
             descriptionInputSectorTitleLabel,
@@ -174,16 +175,16 @@ class AddGoalViewController: UIViewController {
             make.top.equalToSuperview().inset(100)
         }
         
-        goalInputTextView.snp.makeConstraints { make in
+        goalTitleInputTextView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(15)
             make.top.equalTo(goalTitleSectionDivider).inset(5)
             make.height.equalTo(80)
         }
         
         goalInputTextViewPlaceholder.snp.makeConstraints { make in
-            make.trailing.equalTo(goalInputTextView)
-            make.leading.equalTo(goalInputTextView).inset(6)
-            make.top.equalTo(goalInputTextView).inset(10)
+            make.trailing.equalTo(goalTitleInputTextView)
+            make.leading.equalTo(goalTitleInputTextView).inset(6)
+            make.top.equalTo(goalTitleInputTextView).inset(10)
         }
         
         descriptionInputSectorTitleLabel.snp.makeConstraints { make in
@@ -213,29 +214,55 @@ class AddGoalViewController: UIViewController {
 
 extension AddGoalViewController: UITextViewDelegate {
     func textViewDidChange(_ textView: UITextView) {
+        if textView === goalTitleInputTextView {
+            goalTitleTextViewDidChange(textView)
+        }
+        if textView === descriptionInputTextView {
+            descriptionTextViewDidChange(textView)
+        }
+    }
+    
+    private func goalTitleTextViewDidChange(_ textView: UITextView) {
         var text = textView.text ?? ""
         
-        if text.isEmpty {
-            goalInputTextViewPlaceholder.isHidden = false
-        } else {
-            goalInputTextViewPlaceholder.isHidden = true
-        }
+        goalInputTextViewPlaceholder.isHidden = text.isEmpty ? false : true
         
         if text.count > 80 {
             let endIndex = text.index(text.startIndex, offsetBy: 80)
             text = String(text[..<endIndex])
-            textView.text = text
+            goalTitleInputTextView.text = text
         } else {
-            let characterCount = goalInputTextView.text.count
+            let characterCount = goalTitleInputTextView.text.count
             goalInputSectorTitleLabel.text = "Goal Title (\(characterCount) /80)"
         }
     }
     
+    private func descriptionTextViewDidChange(_ textView: UITextView) {
+        var text = textView.text ?? ""
+        
+        descriptionInputTextViewPlaceholder.isHidden = text.isEmpty ? false : true
+        
+        if text.count > 150 {
+            let endIndex = text.index(text.startIndex, offsetBy: 150)
+            text = String(text[..<endIndex])
+            descriptionInputTextView.text = text
+        }
+    }
+    
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        var maximumTextLength = 0
+        
+        if textView === goalTitleInputTextView {
+            maximumTextLength = 80
+        }
+        if textView === descriptionInputTextView {
+            maximumTextLength = 150
+        }
+        
         guard let textViewText = textView.text else { return false }
         
         let newLength = textViewText.count + text.count - range.length
-        if newLength > 80 && range.location < 80 {
+        if newLength > maximumTextLength && range.location < maximumTextLength {
             return false
         }
         return true
