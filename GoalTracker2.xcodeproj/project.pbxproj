@@ -76,6 +76,9 @@
 		622690CD28D59DFE00E4AA01 /* PlusMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 622690CC28D59DFE00E4AA01 /* PlusMenuViewController.swift */; };
 		622F135228DCAD2A0072E5BF /* CalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 622F135128DCAD2A0072E5BF /* CalendarViewController.swift */; };
 		622F135528DCAD390072E5BF /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 622F135428DCAD390072E5BF /* SettingsViewController.swift */; };
+		624C365028E007A200E838C2 /* DialDatePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 624C364F28E007A200E838C2 /* DialDatePicker.swift */; };
+		624C365428E00D8100E838C2 /* DialDatePickerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 624C365328E00D8100E838C2 /* DialDatePickerViewModel.swift */; };
+		624C365628E00FA800E838C2 /* DialDatePickerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 624C365528E00FA800E838C2 /* DialDatePickerCell.swift */; };
 		62B5723928CEE6A000015354 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62B5723828CEE6A000015354 /* AppDelegate.swift */; };
 		62B5723B28CEE6A000015354 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62B5723A28CEE6A000015354 /* SceneDelegate.swift */; };
 		62B5724228CEE6A100015354 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 62B5724128CEE6A100015354 /* Assets.xcassets */; };
@@ -179,6 +182,9 @@
 		622690CC28D59DFE00E4AA01 /* PlusMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlusMenuViewController.swift; sourceTree = "<group>"; };
 		622F135128DCAD2A0072E5BF /* CalendarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewController.swift; sourceTree = "<group>"; };
 		622F135428DCAD390072E5BF /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		624C364F28E007A200E838C2 /* DialDatePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DialDatePicker.swift; sourceTree = "<group>"; };
+		624C365328E00D8100E838C2 /* DialDatePickerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DialDatePickerViewModel.swift; sourceTree = "<group>"; };
+		624C365528E00FA800E838C2 /* DialDatePickerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DialDatePickerCell.swift; sourceTree = "<group>"; };
 		62B5723528CEE6A000015354 /* GoalTracker2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GoalTracker2.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		62B5723828CEE6A000015354 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		62B5723A28CEE6A000015354 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -485,6 +491,9 @@
 		62CDA7CA28DD7AE400AFB61C /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				624C364F28E007A200E838C2 /* DialDatePicker.swift */,
+				624C365328E00D8100E838C2 /* DialDatePickerViewModel.swift */,
+				624C365528E00FA800E838C2 /* DialDatePickerCell.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -811,6 +820,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				624C365028E007A200E838C2 /* DialDatePicker.swift in Sources */,
 				621AEACE28CEF66A00D53F2C /* Date_Extension.swift in Sources */,
 				622690CA28D5920300E4AA01 /* RotatingButton.swift in Sources */,
 				62B5723928CEE6A000015354 /* AppDelegate.swift in Sources */,
@@ -820,11 +830,13 @@
 				AAAFB8A328D2E572002CE265 /* NeumorphicButton.swift in Sources */,
 				62B5726928CEE84000015354 /* HomeViewController.swift in Sources */,
 				621AEAF728CEF74300D53F2C /* VerticalPageIndicator.swift in Sources */,
+				624C365428E00D8100E838C2 /* DialDatePickerViewModel.swift in Sources */,
 				621AEB0328CF056400D53F2C /* AddGoalViewModel11.swift in Sources */,
 				62CE1ED728D6F62C00F08EF0 /* AddGoalViewController.swift in Sources */,
 				62B5726C28CEE88500015354 /* UIColor_Extensions.swift in Sources */,
 				621AEAC528CEF58800D53F2C /* UIFont_Extension.swift in Sources */,
 				621AEAC828CEF5A300D53F2C /* UIImage_Extension.swift in Sources */,
+				624C365628E00FA800E838C2 /* DialDatePickerCell.swift in Sources */,
 				622690C728D58DF400E4AA01 /* MessageBarViewModel.swift in Sources */,
 				621AEACC28CEF64C00D53F2C /* Entities.swift in Sources */,
 				621AEAFE28CEF74D00D53F2C /* PresentationController.swift in Sources */,

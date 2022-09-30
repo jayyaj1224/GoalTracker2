@@ -41,7 +41,7 @@ class AddGoalViewController: UIViewController {
     
     private let goalInputSectorTitleLabel: UILabel = {
         let label = UILabel()
-        label.text = "Goal Title (0 /100)"
+        label.text = "Goal Title 0 /50"
         label.textColor = .grayB
         label.font = .sfPro(size: 13, family: .Medium)
         return label
@@ -63,9 +63,19 @@ class AddGoalViewController: UIViewController {
         return label
     }()
     
+    
+    private let goalTitleTextViewEndShadowView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .crayon
+        view.setDropShadow(customLayer: nil, color: .grayB, width: 0.6, height: 0.6, blur: 3, spread: -1, opacity: 0.5)
+        view.isHidden = true
+        return view
+    }()
+    
+    
     private let descriptionInputSectorTitleLabel: UILabel = {
         let label = UILabel()
-        label.text = "Description (optional) 􀁜"
+        label.text = "Description (optional) 􀁜  0 /100"
         label.textColor = .grayB
         label.font = .sfPro(size: 13, family: .Medium)
         return label
@@ -86,6 +96,16 @@ class AddGoalViewController: UIViewController {
         label.text = "Additional info about your goal"
         return label
     }()
+    
+    private let descriptionTextViewEndShadowView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .crayon
+        view.setDropShadow(customLayer: nil, color: .grayB, width: 0.6, height: 0.6, blur: 3, spread: -1, opacity: 0.5)
+        view.isHidden = true
+        return view
+    }()
+    
+    private let datePickerView = DialDatePickerView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -143,12 +163,15 @@ class AddGoalViewController: UIViewController {
             goalTitleSectionDivider,
             goalInputTextViewPlaceholder,
             goalTitleInputTextView,
-//            characterCountLabel,
+            goalTitleTextViewEndShadowView,
             
             descriptionInputSectorTitleLabel,
             descriptionSectionDivider,
             descriptionInputTextView,
-            descriptionInputTextViewPlaceholder
+            descriptionInputTextViewPlaceholder,
+            descriptionTextViewEndShadowView,
+            
+            datePickerView
             
         ].forEach {
             view.addSubview($0)
@@ -177,14 +200,19 @@ class AddGoalViewController: UIViewController {
         
         goalTitleInputTextView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(15)
-            make.top.equalTo(goalTitleSectionDivider).inset(5)
-            make.height.equalTo(80)
+            make.top.equalTo(goalTitleSectionDivider).inset(2)
+            make.height.equalTo(100)
         }
         
         goalInputTextViewPlaceholder.snp.makeConstraints { make in
             make.trailing.equalTo(goalTitleInputTextView)
             make.leading.equalTo(goalTitleInputTextView).inset(6)
             make.top.equalTo(goalTitleInputTextView).inset(10)
+        }
+        
+        goalTitleTextViewEndShadowView.snp.makeConstraints { make in
+            make.bottom.leading.trailing.equalTo(goalTitleSectionDivider)
+            make.height.equalTo(2)
         }
         
         descriptionInputSectorTitleLabel.snp.makeConstraints { make in
@@ -200,14 +228,24 @@ class AddGoalViewController: UIViewController {
         
         descriptionInputTextView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(15)
-            make.top.equalTo(descriptionSectionDivider).inset(5)
-            make.height.equalTo(80)
+            make.top.equalTo(descriptionSectionDivider).inset(2)
+            make.height.equalTo(120)
         }
         
         descriptionInputTextViewPlaceholder.snp.makeConstraints { make in
             make.trailing.equalTo(descriptionInputTextView)
             make.leading.equalTo(descriptionInputTextView).inset(6)
             make.top.equalTo(descriptionInputTextView).inset(10)
+        }
+        
+        descriptionTextViewEndShadowView.snp.makeConstraints { make in
+            make.bottom.leading.trailing.equalTo(descriptionSectionDivider)
+            make.height.equalTo(2)
+        }
+        
+        datePickerView.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.top.equalTo(descriptionInputTextView.snp.bottom).offset(10)
         }
     }
 }
@@ -227,13 +265,13 @@ extension AddGoalViewController: UITextViewDelegate {
         
         goalInputTextViewPlaceholder.isHidden = text.isEmpty ? false : true
         
-        if text.count > 80 {
-            let endIndex = text.index(text.startIndex, offsetBy: 80)
+        if text.count > 50 {
+            let endIndex = text.index(text.startIndex, offsetBy: 50)
             text = String(text[..<endIndex])
             goalTitleInputTextView.text = text
         } else {
             let characterCount = goalTitleInputTextView.text.count
-            goalInputSectorTitleLabel.text = "Goal Title (\(characterCount) /80)"
+            goalInputSectorTitleLabel.text = "Goal Title (\(characterCount) /50)"
         }
     }
     
@@ -242,10 +280,13 @@ extension AddGoalViewController: UITextViewDelegate {
         
         descriptionInputTextViewPlaceholder.isHidden = text.isEmpty ? false : true
         
-        if text.count > 150 {
-            let endIndex = text.index(text.startIndex, offsetBy: 150)
+        if text.count > 100 {
+            let endIndex = text.index(text.startIndex, offsetBy: 100)
             text = String(text[..<endIndex])
             descriptionInputTextView.text = text
+        } else {
+            let characterCount = descriptionInputTextView.text.count
+            descriptionInputSectorTitleLabel.text = "Description (optional) 􀁜  \(characterCount) /100"
         }
     }
     
@@ -253,10 +294,10 @@ extension AddGoalViewController: UITextViewDelegate {
         var maximumTextLength = 0
         
         if textView === goalTitleInputTextView {
-            maximumTextLength = 80
+            maximumTextLength = 50
         }
         if textView === descriptionInputTextView {
-            maximumTextLength = 150
+            maximumTextLength = 100
         }
         
         guard let textViewText = textView.text else { return false }
@@ -266,6 +307,26 @@ extension AddGoalViewController: UITextViewDelegate {
             return false
         }
         return true
+    }
+    
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        if textView === goalTitleInputTextView {
+            goalTitleTextViewEndShadowView.isHidden = false
+        }
+        
+        if textView === descriptionInputTextView {
+            descriptionTextViewEndShadowView.isHidden = false
+        }
+    }
+    
+    func textViewDidEndEditing(_ textView: UITextView) {
+        if textView === goalTitleInputTextView {
+            goalTitleTextViewEndShadowView.isHidden = true
+        }
+        
+        if textView === descriptionInputTextView {
+            descriptionTextViewEndShadowView.isHidden = true
+        }
     }
 }
 

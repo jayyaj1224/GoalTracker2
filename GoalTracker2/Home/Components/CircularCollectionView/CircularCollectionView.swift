@@ -18,8 +18,8 @@ class CircularCollectionView: UICollectionView {
     
     private let disposeBag = DisposeBag()
     
-    convenience init() {
-        self.init(frame: .zero, collectionViewLayout: CircularLayout())
+    init() {
+        super.init(frame: .zero, collectionViewLayout: CircularLayout())
         
         self.register(HomeCircularGoalCell.self, forCellWithReuseIdentifier: "CircleGoalCell")
         self.backgroundColor = .crayon
@@ -28,6 +28,10 @@ class CircularCollectionView: UICollectionView {
         self.showsVerticalScrollIndicator = false
         
         bind()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     private func bind() {
