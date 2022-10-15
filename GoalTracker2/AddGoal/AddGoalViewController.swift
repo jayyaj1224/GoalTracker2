@@ -9,10 +9,8 @@ import UIKit
 
 
 class AddGoalViewController: UIViewController {
-    //MARK: - Components SubClass
     
-    
-    //MARK: - UI Components
+    //MARK: UI Components
     private let cancelButton: UIButton = {
         let button = UIButton()
         let attributedString = NSMutableAttributedString(
@@ -105,20 +103,41 @@ class AddGoalViewController: UIViewController {
         return view
     }()
     
-    private let datePickerView = DialDatePickerView()
+    private let daysSettingSectionTitleLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Days Setting"
+        label.textColor = .grayB
+        label.font = .sfPro(size: 13, family: .Medium)
+        return label
+    }()
     
+    private let daysSettingPickerView = UIPickerView()
+    
+    //MARK: Logics
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        setupView()
+        setupUI()
         
         goalTitleInputTextView.delegate = self
+        
         descriptionInputTextView.delegate = self
         
-        goalTitleInputTextView.becomeFirstResponder()
+        daysSettingPickerView.dataSource = self
+        daysSettingPickerView.delegate = self
+        
+        daysSettingPickerView.selectRow(9, inComponent: 0, animated: false)
+        daysSettingPickerView.selectRow(9, inComponent: 1, animated: false)
     }
     
-    //MARK: - Button Actions
+    private func addActionTargets() {
+        cancelButton.addTarget(self, action: #selector(cancelButtonTapped(_:)), for: .touchUpInside)
+        saveButton.addTarget(self, action: #selector(saveButtonTapped(_:)), for: .touchUpInside)
+        
+        let panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handleDismiss))
+        view.addGestureRecognizer(panGestureRecognizer)
+    }
+    
     @objc private func cancelButtonTapped(_ sender: UIButton) {
         dismiss(animated: true, completion: nil)
     }
@@ -127,22 +146,52 @@ class AddGoalViewController: UIViewController {
         dismiss(animated: true, completion: nil)
     }
     
-    
-    //MARK: - View Setting
-    private func setupView() {
+    @objc func handleDismiss(sender: UIPanGestureRecognizer) {
+        let touchPoint = sender.location(in: view?.window)
+        
+        let modalScreenHieght = K.screenHeight*0.7
+        let initialHeightPoint = K.screenHeight-modalScreenHieght
+        
+        switch sender.state {
+        case .changed:
+            if touchPoint.y > initialHeightPoint {
+                view.frame.origin.y = touchPoint.y
+            }
+        case .ended, .cancelled:
+            if touchPoint.y - initialHeightPoint >  K.screenHeight*0.3 {
+                dismiss(animated: true, completion: nil)
+                
+            } else {
+                UIView.animate(
+                    withDuration: 0.2,
+                    animations: {
+                        self.view.frame = CGRect(
+                            x: 0,
+                            y: K.screenHeight-modalScreenHieght,
+                            width: self.view.frame.size.width,
+                            height: self.view.frame.size.height
+                        )
+                    }
+                )
+            }
+            
+        default:
+            break
+        }
+    }
+}
+
+
+//MARK: UI initial Setting
+extension AddGoalViewController {
+    private func setupUI() {
         view.backgroundColor = .crayon
         
         layoutComponents()
         
-        addButtonTargets()
+        addActionTargets()
     }
-    
-    private func addButtonTargets() {
-        cancelButton.addTarget(self, action: #selector(cancelButtonTapped(_:)), for: .touchUpInside)
-        saveButton.addTarget(self, action: #selector(saveButtonTapped(_:)), for: .touchUpInside)
-        
-    }
-    
+
     private func layoutComponents() {
         let sectionDivider: ()-> UIView = {
             let view = UIView()
@@ -153,8 +202,11 @@ class AddGoalViewController: UIViewController {
         /// Under the cancel, save button
         let goalTitleSectionDivider = sectionDivider()
         
-        /// Under the goal input textView
+        /// Under the description input section title
         let descriptionSectionDivider = sectionDivider()
+        
+        /// Under the number of days input section title
+        let daysNumberSettingSectionDivider = sectionDivider()
         
         [
             cancelButton, saveButton,
@@ -171,7 +223,9 @@ class AddGoalViewController: UIViewController {
             descriptionInputTextViewPlaceholder,
             descriptionTextViewEndShadowView,
             
-            datePickerView
+            daysSettingSectionTitleLabel,
+            daysNumberSettingSectionDivider,
+            daysSettingPickerView
             
         ].forEach {
             view.addSubview($0)
@@ -187,15 +241,17 @@ class AddGoalViewController: UIViewController {
             make.top.equalToSuperview().inset(15)
         }
         
-        goalInputSectorTitleLabel.snp.makeConstraints { make in
-            make.bottom.equalTo(goalTitleSectionDivider.snp.top).offset(-3)
-            make.leading.equalTo(goalTitleSectionDivider.snp.leading).offset(4)
-        }
         
+        //goalTitleSection
         goalTitleSectionDivider.snp.makeConstraints { make in
             make.height.equalTo(0.5)
             make.leading.trailing.equalToSuperview().inset(15)
-            make.top.equalToSuperview().inset(100)
+            make.top.equalToSuperview().inset(80)
+        }
+        
+        goalInputSectorTitleLabel.snp.makeConstraints { make in
+            make.bottom.equalTo(goalTitleSectionDivider.snp.top).offset(-3)
+            make.leading.equalTo(goalTitleSectionDivider.snp.leading).offset(4)
         }
         
         goalTitleInputTextView.snp.makeConstraints { make in
@@ -215,15 +271,17 @@ class AddGoalViewController: UIViewController {
             make.height.equalTo(2)
         }
         
-        descriptionInputSectorTitleLabel.snp.makeConstraints { make in
-            make.bottom.equalTo(descriptionSectionDivider.snp.top).offset(-3)
-            make.leading.equalTo(descriptionSectionDivider.snp.leading).offset(4)
-        }
         
+        // descriptionSection
         descriptionSectionDivider.snp.makeConstraints { make in
             make.height.equalTo(0.5)
             make.leading.trailing.equalToSuperview().inset(15)
-            make.top.equalTo(goalTitleSectionDivider.snp.bottom).offset(140)
+            make.top.equalTo(goalTitleInputTextView.snp.bottom)
+        }
+        
+        descriptionInputSectorTitleLabel.snp.makeConstraints { make in
+            make.bottom.equalTo(descriptionSectionDivider.snp.top).offset(-3)
+            make.leading.equalTo(descriptionSectionDivider.snp.leading).offset(4)
         }
         
         descriptionInputTextView.snp.makeConstraints { make in
@@ -243,13 +301,45 @@ class AddGoalViewController: UIViewController {
             make.height.equalTo(2)
         }
         
-        datePickerView.snp.makeConstraints { make in
-            make.centerX.equalToSuperview()
-            make.top.equalTo(descriptionInputTextView.snp.bottom).offset(10)
+        
+        // daysNumberSettingSection
+        daysNumberSettingSectionDivider.snp.makeConstraints { make in
+            make.height.equalTo(0.5)
+            make.leading.trailing.equalToSuperview().inset(15)
+            make.top.equalTo(descriptionInputTextView.snp.bottom).offset(20)
+        }
+        
+        daysSettingSectionTitleLabel.snp.makeConstraints { make in
+            make.bottom.equalTo(daysNumberSettingSectionDivider.snp.top).offset(-3)
+            make.leading.equalTo(daysNumberSettingSectionDivider.snp.leading).offset(4)
+        }
+        
+        daysSettingPickerView.snp.makeConstraints { make in
+            make.top.equalTo(daysNumberSettingSectionDivider.snp.bottom)//.offset(10)
+            make.leading.trailing.equalToSuperview().inset(30)
+            make.height.equalTo(200)
         }
     }
 }
 
+//MARK: UIPickerView Datasource & Delgate
+extension AddGoalViewController: UIPickerViewDataSource, UIPickerViewDelegate {
+    func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
+        let reuseView = (view as? AddGoalDatePickerRowView) ?? AddGoalDatePickerRowView()
+        reuseView.rowLabel.text = " -- \(row)"
+        return reuseView
+    }
+    
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 2
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return 100
+    }
+}
+
+//MARK: UITextView Delgate
 extension AddGoalViewController: UITextViewDelegate {
     func textViewDidChange(_ textView: UITextView) {
         if textView === goalTitleInputTextView {

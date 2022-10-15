@@ -99,8 +99,8 @@ class PlusMenuViewController: UIViewController {
     
     @objc private func settingButtonTapped(_ sender: UIButton) {
         let settingsViewController = SettingsViewController()
-        settingsViewController.modalPresentationStyle = .custom
-        settingsViewController.transitioningDelegate = self
+//        settingsViewController.modalPresentationStyle = .custom
+//        settingsViewController.transitioningDelegate = self
         
         present(settingsViewController, animated: true, completion: nil)
     }
@@ -110,7 +110,6 @@ class PlusMenuViewController: UIViewController {
     }
     
     @objc private func addGoalButtonTapped(_ sender: UIButton) {
-        
         let addgoalViewController = AddGoalViewController()
         addgoalViewController.modalPresentationStyle = .custom
         addgoalViewController.transitioningDelegate = self
@@ -212,7 +211,7 @@ class PlusMenuViewController: UIViewController {
 extension PlusMenuViewController: UIViewControllerTransitioningDelegate {
     func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
 
-        return PresentationController(contentHeight: K.screenHeight*0.9, presentedViewController: presented, presenting: presenting)
+        return PresentationController(contentHeight: K.screenHeight*0.7, presentedViewController: presented, presenting: presenting)
     }
 }
 
