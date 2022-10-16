@@ -6,10 +6,10 @@
 //
 
 import UIKit
-
+import RxSwift
+import RxCocoa
 
 class AddGoalViewController: UIViewController {
-    
     //MARK: UI Components
     private let cancelButton: UIButton = {
         let button = UIButton()
@@ -61,7 +61,6 @@ class AddGoalViewController: UIViewController {
         return label
     }()
     
-    
     private let goalTitleTextViewEndShadowView: UIView = {
         let view = UIView()
         view.backgroundColor = .crayon
@@ -69,7 +68,6 @@ class AddGoalViewController: UIViewController {
         view.isHidden = true
         return view
     }()
-    
     
     private let descriptionInputSectorTitleLabel: UILabel = {
         let label = UILabel()
@@ -103,31 +101,28 @@ class AddGoalViewController: UIViewController {
         return view
     }()
     
-    private let daysSettingSectionTitleLabel: UILabel = {
+    private let toggleSwitch = NeumorphicSwitch(toggleAnimationType: .withSpring, size: CGSize(width: 48, height: 20))
+    
+    private let trackTypeLabel: UILabel = {
         let label = UILabel()
-        label.text = "Days Setting"
+        label.text = "Track in period"
         label.textColor = .grayB
-        label.font = .sfPro(size: 13, family: .Medium)
+        label.font = .sfPro(size: 15, family: .Medium)
         return label
     }()
     
     private let daysSettingPickerView = UIPickerView()
     
+    private let disposeBag = DisposeBag()
+    
     //MARK: Logics
     override func viewDidLoad() {
         super.viewDidLoad()
+        datasourcesDelegatesSettings()
+        uiSettings()
+        bindings()
         
-        setupUI()
-        
-        goalTitleInputTextView.delegate = self
-        
-        descriptionInputTextView.delegate = self
-        
-        daysSettingPickerView.dataSource = self
-        daysSettingPickerView.delegate = self
-        
-        daysSettingPickerView.selectRow(9, inComponent: 0, animated: false)
-        daysSettingPickerView.selectRow(9, inComponent: 1, animated: false)
+        addActionTargets()
     }
     
     private func addActionTargets() {
@@ -179,146 +174,24 @@ class AddGoalViewController: UIViewController {
             break
         }
     }
-}
-
-
-//MARK: UI initial Setting
-extension AddGoalViewController {
-    private func setupUI() {
-        view.backgroundColor = .crayon
-        
-        layoutComponents()
-        
-        addActionTargets()
+    
+    private func bindings() {
+        toggleSwitch.isOnSubjuect.subscribe(onNext: { [weak self] isOn in
+            if isOn {
+                self?.trackTypeLabel.text = "Track Annually"
+            } else {
+                self?.trackTypeLabel.text = "Track In Period"
+            }
+        })
+        .disposed(by: disposeBag)
     }
-
-    private func layoutComponents() {
-        let sectionDivider: ()-> UIView = {
-            let view = UIView()
-            view.backgroundColor = .grayA
-            return view
-        }
+    
+    private func datasourcesDelegatesSettings() {
+        goalTitleInputTextView.delegate = self
+        descriptionInputTextView.delegate = self
         
-        /// Under the cancel, save button
-        let goalTitleSectionDivider = sectionDivider()
-        
-        /// Under the description input section title
-        let descriptionSectionDivider = sectionDivider()
-        
-        /// Under the number of days input section title
-        let daysNumberSettingSectionDivider = sectionDivider()
-        
-        [
-            cancelButton, saveButton,
-            
-            goalInputSectorTitleLabel,
-            goalTitleSectionDivider,
-            goalInputTextViewPlaceholder,
-            goalTitleInputTextView,
-            goalTitleTextViewEndShadowView,
-            
-            descriptionInputSectorTitleLabel,
-            descriptionSectionDivider,
-            descriptionInputTextView,
-            descriptionInputTextViewPlaceholder,
-            descriptionTextViewEndShadowView,
-            
-            daysSettingSectionTitleLabel,
-            daysNumberSettingSectionDivider,
-            daysSettingPickerView
-            
-        ].forEach {
-            view.addSubview($0)
-        }
-        
-        cancelButton.snp.makeConstraints { make in
-            make.leading.equalToSuperview().inset(20)
-            make.top.equalToSuperview().inset(15)
-        }
-        
-        saveButton.snp.makeConstraints { make in
-            make.trailing.equalToSuperview().inset(20)
-            make.top.equalToSuperview().inset(15)
-        }
-        
-        
-        //goalTitleSection
-        goalTitleSectionDivider.snp.makeConstraints { make in
-            make.height.equalTo(0.5)
-            make.leading.trailing.equalToSuperview().inset(15)
-            make.top.equalToSuperview().inset(80)
-        }
-        
-        goalInputSectorTitleLabel.snp.makeConstraints { make in
-            make.bottom.equalTo(goalTitleSectionDivider.snp.top).offset(-3)
-            make.leading.equalTo(goalTitleSectionDivider.snp.leading).offset(4)
-        }
-        
-        goalTitleInputTextView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview().inset(15)
-            make.top.equalTo(goalTitleSectionDivider).inset(2)
-            make.height.equalTo(100)
-        }
-        
-        goalInputTextViewPlaceholder.snp.makeConstraints { make in
-            make.trailing.equalTo(goalTitleInputTextView)
-            make.leading.equalTo(goalTitleInputTextView).inset(6)
-            make.top.equalTo(goalTitleInputTextView).inset(10)
-        }
-        
-        goalTitleTextViewEndShadowView.snp.makeConstraints { make in
-            make.bottom.leading.trailing.equalTo(goalTitleSectionDivider)
-            make.height.equalTo(2)
-        }
-        
-        
-        // descriptionSection
-        descriptionSectionDivider.snp.makeConstraints { make in
-            make.height.equalTo(0.5)
-            make.leading.trailing.equalToSuperview().inset(15)
-            make.top.equalTo(goalTitleInputTextView.snp.bottom)
-        }
-        
-        descriptionInputSectorTitleLabel.snp.makeConstraints { make in
-            make.bottom.equalTo(descriptionSectionDivider.snp.top).offset(-3)
-            make.leading.equalTo(descriptionSectionDivider.snp.leading).offset(4)
-        }
-        
-        descriptionInputTextView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview().inset(15)
-            make.top.equalTo(descriptionSectionDivider).inset(2)
-            make.height.equalTo(120)
-        }
-        
-        descriptionInputTextViewPlaceholder.snp.makeConstraints { make in
-            make.trailing.equalTo(descriptionInputTextView)
-            make.leading.equalTo(descriptionInputTextView).inset(6)
-            make.top.equalTo(descriptionInputTextView).inset(10)
-        }
-        
-        descriptionTextViewEndShadowView.snp.makeConstraints { make in
-            make.bottom.leading.trailing.equalTo(descriptionSectionDivider)
-            make.height.equalTo(2)
-        }
-        
-        
-        // daysNumberSettingSection
-        daysNumberSettingSectionDivider.snp.makeConstraints { make in
-            make.height.equalTo(0.5)
-            make.leading.trailing.equalToSuperview().inset(15)
-            make.top.equalTo(descriptionInputTextView.snp.bottom).offset(20)
-        }
-        
-        daysSettingSectionTitleLabel.snp.makeConstraints { make in
-            make.bottom.equalTo(daysNumberSettingSectionDivider.snp.top).offset(-3)
-            make.leading.equalTo(daysNumberSettingSectionDivider.snp.leading).offset(4)
-        }
-        
-        daysSettingPickerView.snp.makeConstraints { make in
-            make.top.equalTo(daysNumberSettingSectionDivider.snp.bottom)//.offset(10)
-            make.leading.trailing.equalToSuperview().inset(30)
-            make.height.equalTo(200)
-        }
+        daysSettingPickerView.dataSource = self
+        daysSettingPickerView.delegate = self
     }
 }
 
@@ -420,3 +293,148 @@ extension AddGoalViewController: UITextViewDelegate {
     }
 }
 
+//MARK: UI Setting
+extension AddGoalViewController {
+    private func uiSettings() {
+        view.backgroundColor = .crayon
+        
+        daysSettingPickerView.selectRow(9, inComponent: 0, animated: false)
+        daysSettingPickerView.selectRow(9, inComponent: 1, animated: false)
+        
+        layoutComponents()
+    }
+
+    private func layoutComponents() {
+        let sectionDivider: ()-> UIView = {
+            let view = UIView()
+            view.backgroundColor = .grayA
+            return view
+        }
+        
+        /// Under the cancel, save button
+        let goalTitleSectionDivider = sectionDivider()
+        
+        /// Under the description input section title
+        let descriptionSectionDivider = sectionDivider()
+        
+        /// Under the number of days input section title
+        let daysNumberSettingSectionDivider = sectionDivider()
+        
+        [
+            cancelButton, saveButton,
+            
+            goalInputSectorTitleLabel,
+            goalTitleSectionDivider,
+            goalInputTextViewPlaceholder,
+            goalTitleInputTextView,
+            goalTitleTextViewEndShadowView,
+            
+            descriptionInputSectorTitleLabel,
+            descriptionSectionDivider,
+            descriptionInputTextView,
+            descriptionInputTextViewPlaceholder,
+            descriptionTextViewEndShadowView,
+            
+            toggleSwitch,
+            
+            trackTypeLabel,
+            daysNumberSettingSectionDivider,
+            daysSettingPickerView
+            
+        ].forEach {
+            view.addSubview($0)
+        }
+        
+        cancelButton.snp.makeConstraints { make in
+            make.leading.equalToSuperview().inset(20)
+            make.top.equalToSuperview().inset(15)
+        }
+        
+        saveButton.snp.makeConstraints { make in
+            make.trailing.equalToSuperview().inset(20)
+            make.top.equalToSuperview().inset(15)
+        }
+        
+        //goalTitleSection
+        goalTitleSectionDivider.snp.makeConstraints { make in
+            make.height.equalTo(0.5)
+            make.leading.trailing.equalToSuperview().inset(15)
+            make.top.equalToSuperview().inset(80)
+        }
+        
+        goalInputSectorTitleLabel.snp.makeConstraints { make in
+            make.bottom.equalTo(goalTitleSectionDivider.snp.top).offset(-3)
+            make.leading.equalTo(goalTitleSectionDivider.snp.leading).offset(4)
+        }
+        
+        goalTitleInputTextView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview().inset(15)
+            make.top.equalTo(goalTitleSectionDivider).inset(2)
+            make.height.equalTo(100)
+        }
+        
+        goalInputTextViewPlaceholder.snp.makeConstraints { make in
+            make.trailing.equalTo(goalTitleInputTextView)
+            make.leading.equalTo(goalTitleInputTextView).inset(6)
+            make.top.equalTo(goalTitleInputTextView).inset(10)
+        }
+        
+        goalTitleTextViewEndShadowView.snp.makeConstraints { make in
+            make.bottom.leading.trailing.equalTo(goalTitleSectionDivider)
+            make.height.equalTo(2)
+        }
+        
+        
+        // descriptionSection
+        descriptionSectionDivider.snp.makeConstraints { make in
+            make.height.equalTo(0.5)
+            make.leading.trailing.equalToSuperview().inset(15)
+            make.top.equalTo(goalTitleInputTextView.snp.bottom)
+        }
+        
+        descriptionInputSectorTitleLabel.snp.makeConstraints { make in
+            make.bottom.equalTo(descriptionSectionDivider.snp.top).offset(-3)
+            make.leading.equalTo(descriptionSectionDivider.snp.leading).offset(4)
+        }
+        
+        descriptionInputTextView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview().inset(15)
+            make.top.equalTo(descriptionSectionDivider).inset(2)
+            make.height.equalTo(120)
+        }
+        
+        descriptionInputTextViewPlaceholder.snp.makeConstraints { make in
+            make.trailing.equalTo(descriptionInputTextView)
+            make.leading.equalTo(descriptionInputTextView).inset(6)
+            make.top.equalTo(descriptionInputTextView).inset(10)
+        }
+        
+        descriptionTextViewEndShadowView.snp.makeConstraints { make in
+            make.bottom.leading.trailing.equalTo(descriptionSectionDivider)
+            make.height.equalTo(2)
+        }
+        
+        toggleSwitch.snp.makeConstraints { make in
+            make.bottom.equalTo(daysNumberSettingSectionDivider.snp.top).offset(-3.5)
+            make.leading.equalTo(trackTypeLabel.snp.trailing).offset(7)
+        }
+        
+        // daysNumberSettingSection
+        daysNumberSettingSectionDivider.snp.makeConstraints { make in
+            make.height.equalTo(0.5)
+            make.leading.trailing.equalToSuperview().inset(15)
+            make.top.equalTo(descriptionInputTextView.snp.bottom).offset(20)
+        }
+        
+        trackTypeLabel.snp.makeConstraints { make in
+            make.bottom.equalTo(daysNumberSettingSectionDivider.snp.top).offset(-6)
+            make.leading.equalTo(daysNumberSettingSectionDivider.snp.leading).offset(4)
+        }
+        
+        daysSettingPickerView.snp.makeConstraints { make in
+            make.top.equalTo(daysNumberSettingSectionDivider.snp.bottom)//.offset(10)
+            make.leading.trailing.equalToSuperview().inset(30)
+            make.height.equalTo(200)
+        }
+    }
+}

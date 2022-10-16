@@ -16,8 +16,9 @@ class NeumorphicView: UIView {
     
     private let underBlackShadowLayer = CALayer()
     
-    init(color: UIColor, shadowSize: ShadowSize) {
+    init(backgroundColor color: UIColor = .crayon, shadowSize: ShadowSize) {
         super.init(frame: .zero)
+        
         backgroundColor = color
         
         [upperWhiteShadowLayer, underBlackShadowLayer].forEach { shadowLayer in
@@ -25,7 +26,7 @@ class NeumorphicView: UIView {
             
             layer.insertSublayer(shadowLayer, at: 0)
         }
-        
+
         setNeumorphicShadow(at: [upperWhiteShadowLayer, underBlackShadowLayer], shadowSize: .medium)
     }
     

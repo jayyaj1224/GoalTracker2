@@ -76,6 +76,7 @@
 		622690CD28D59DFE00E4AA01 /* PlusMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 622690CC28D59DFE00E4AA01 /* PlusMenuViewController.swift */; };
 		622F135228DCAD2A0072E5BF /* CalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 622F135128DCAD2A0072E5BF /* CalendarViewController.swift */; };
 		622F135528DCAD390072E5BF /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 622F135428DCAD390072E5BF /* SettingsViewController.swift */; };
+		6248936028FC154A004580CB /* SwitchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6248935F28FC154A004580CB /* SwitchController.swift */; };
 		62B5723928CEE6A000015354 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62B5723828CEE6A000015354 /* AppDelegate.swift */; };
 		62B5723B28CEE6A000015354 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62B5723A28CEE6A000015354 /* SceneDelegate.swift */; };
 		62B5724228CEE6A100015354 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 62B5724128CEE6A100015354 /* Assets.xcassets */; };
@@ -180,6 +181,7 @@
 		622690CC28D59DFE00E4AA01 /* PlusMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlusMenuViewController.swift; sourceTree = "<group>"; };
 		622F135128DCAD2A0072E5BF /* CalendarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewController.swift; sourceTree = "<group>"; };
 		622F135428DCAD390072E5BF /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		6248935F28FC154A004580CB /* SwitchController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwitchController.swift; sourceTree = "<group>"; };
 		62B5723528CEE6A000015354 /* GoalTracker2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GoalTracker2.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		62B5723828CEE6A000015354 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		62B5723A28CEE6A000015354 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -291,6 +293,7 @@
 				621AEAFD28CEF74D00D53F2C /* PresentationController.swift */,
 				AA9990CE28D1A1C800FE4A26 /* NeumorphicView.swift */,
 				AAAFB8A228D2E572002CE265 /* NeumorphicButton.swift */,
+				6248935F28FC154A004580CB /* SwitchController.swift */,
 			);
 			path = CommonComponents;
 			sourceTree = "<group>";
@@ -845,6 +848,7 @@
 				621AEB0428CF056400D53F2C /* AddGoalViewController11.swift in Sources */,
 				621AEAF928CEF74300D53F2C /* MessageBar.swift in Sources */,
 				621AEAF028CEF74300D53F2C /* HomeCircularGoalCell.swift in Sources */,
+				6248936028FC154A004580CB /* SwitchController.swift in Sources */,
 				621AEAFA28CEF74300D53F2C /* CircularCollectionView.swift in Sources */,
 				621AEAF828CEF74300D53F2C /* MainDimView.swift in Sources */,
 				621AEAFB28CEF74300D53F2C /* CollectionViewCircularLayout.swift in Sources */,

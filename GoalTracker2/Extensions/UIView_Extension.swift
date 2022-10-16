@@ -29,6 +29,14 @@ extension UIView {
         shadowLayer.shadowRadius = radius / 2
         shadowLayer.masksToBounds = false
         shadowLayer.shouldRasterize = true
+        
+        if spread == 0 {
+            shadowLayer.shadowPath = nil
+        } else {
+            let dx = -spread
+            let rect = bounds.insetBy(dx: dx, dy: dx)
+            shadowLayer.shadowPath = UIBezierPath(rect: rect).cgPath
+        }
     }
 }
 

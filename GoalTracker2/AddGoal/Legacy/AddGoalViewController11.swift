@@ -42,7 +42,7 @@ final class AddGoalViewController11: UIViewController {
     }
     
     //MARK: - Top Components
-    let slideIndicator = NeumorphicView(color: .crayon, shadowSize: .medium)
+    let slideIndicator = NeumorphicView(backgroundColor: .crayon, shadowSize: .medium)
     
     let closeButton: UIButton = {
         let button = UIButton()

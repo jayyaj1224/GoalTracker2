@@ -15,7 +15,7 @@ class MessageBar: NeumorphicView {
     }()
     
     init() {
-        super.init(color: .crayon, shadowSize: .medium)
+        super.init(backgroundColor: .crayon, shadowSize: .medium)
         layer.cornerRadius = 12
         
         layoutMessageBar()
