@@ -11,6 +11,7 @@ target 'GoalTracker2' do
   pod 'RealmSwift', '~> 10.25.0'
   pod 'RxSwift'
   pod 'RxCocoa'
+  pod 'RxDataSources'
   pod 'Toast-Swift'
 
   # Pods for GoalTracker2

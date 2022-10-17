@@ -8,7 +8,7 @@
 import UIKit
 
 class AddGoalDatePickerRowView: UIView {
-    let rowLabel: UILabel = {
+    let componentLabel: UILabel = {
         let label = UILabel()
         label.textColor = .black
         label.font = .outFit(size: 14, family: .Regular)
@@ -18,9 +18,9 @@ class AddGoalDatePickerRowView: UIView {
     init() {
         super.init(frame: .zero)
         
-        addSubview(rowLabel)
+        addSubview(componentLabel)
         
-        rowLabel.snp.makeConstraints { make in
+        componentLabel.snp.makeConstraints { make in
             make.center.equalToSuperview()
         }
     }

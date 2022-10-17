@@ -101,21 +101,31 @@ class AddGoalViewController: UIViewController {
         return view
     }()
     
-    private let toggleSwitch = NeumorphicSwitch(toggleAnimationType: .withSpring, size: CGSize(width: 48, height: 20))
-    
-    private let trackTypeLabel: UILabel = {
+    private let aimedPeriodSectionLabel: UILabel = {
         let label = UILabel()
-        label.text = "Track in period"
+        label.text = "Aimed Period"
         label.textColor = .grayB
         label.font = .sfPro(size: 15, family: .Medium)
         return label
     }()
     
+    private let yearlyTrackSwitchLabel: UILabel = {
+        let label = UILabel()
+        label.text = "yearly track"
+        label.textColor = .grayB
+        label.font = .sfPro(size: 13, family: .Medium)
+        return label
+    }()
+    
+    private let yearlyTrackSwitch = NeumorphicSwitch(toggleAnimationType: .withSpring, size: CGSize(width: 48, height: 20))
+    
     private let daysSettingPickerView = UIPickerView()
+    
+    //MARK: - Logics
+    private let periodSettingViewModel = PeriodSettingViewModel()
     
     private let disposeBag = DisposeBag()
     
-    //MARK: Logics
     override func viewDidLoad() {
         super.viewDidLoad()
         datasourcesDelegatesSettings()
@@ -176,22 +186,63 @@ class AddGoalViewController: UIViewController {
     }
     
     private func bindings() {
-        toggleSwitch.isOnSubjuect.subscribe(onNext: { [weak self] isOn in
-            if isOn {
-                self?.trackTypeLabel.text = "Track Annually"
-            } else {
-                self?.trackTypeLabel.text = "Track In Period"
-            }
+        yearlyTrackSwitch.isOnSubjuect.subscribe(onNext: { [weak self] onOffValue in
+            
+            self?.changeTrackTypeLabel(trackAnually: onOffValue)
+            
         })
         .disposed(by: disposeBag)
+        
+        let vm = periodSettingViewModel
+        
+//        daysSettingPickerView.rx.itemSelected
+        
+    }
+    
+    private func aimedPeriodPickerSettings() {
+        periodSettingViewModel.datasourceRelay
+            .bind(to: daysSettingPickerView.rx.dataSource) { (row, element, view) in
+                let reuseView = (view as? AddGoalDatePickerRowView) ?? AddGoalDatePickerRowView()
+                reuseView.rowLabel.text = " -- \(row)"
+                return reuseView
+            }
+            .disposed(by: disposeBag)
+       
+        
+        /*
+         let items = Observable.just([
+                "First Item",
+                "Second Item",
+                "Third Item"
+            ])
+         
+         items
+            .bind(to: pickerView.rx.items) { (row, element, view) in
+                guard let myView = view as? MyView else {
+                    let view = MyView()
+                    view.configure(with: element)
+                    return view
+                }
+                myView.configure(with: element)
+                return myView
+            }
+            .disposed(by: disposeBag)
+         
+         */
+        
+    }
+    
+    private func changeTrackTypeLabel(trackAnually: Bool) {
+        if trackAnually {
+            self.aimedPeriodSectionLabel.text = "Track Annually"
+        } else {
+            self.aimedPeriodSectionLabel.text = "Aimed Period"
+        }
     }
     
     private func datasourcesDelegatesSettings() {
         goalTitleInputTextView.delegate = self
         descriptionInputTextView.delegate = self
-        
-        daysSettingPickerView.dataSource = self
-        daysSettingPickerView.delegate = self
     }
 }
 
@@ -207,8 +258,23 @@ extension AddGoalViewController: UIPickerViewDataSource, UIPickerViewDelegate {
         return 2
     }
     
+    /*
+     1-10
+     10, 20, ... 110 ... 990, 1000
+     */
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return 100
+        switch component {
+        case 0:
+            if yearlyTrackSwitch.isOn {
+                return 1
+            } else {
+                return 1001
+            }
+        case 1:
+            return 1000
+        default:
+            return 0
+        }
     }
 }
 
@@ -293,7 +359,7 @@ extension AddGoalViewController: UITextViewDelegate {
     }
 }
 
-//MARK: UI Setting
+//MARK: Initial UI Setting
 extension AddGoalViewController {
     private func uiSettings() {
         view.backgroundColor = .crayon
@@ -335,9 +401,10 @@ extension AddGoalViewController {
             descriptionInputTextViewPlaceholder,
             descriptionTextViewEndShadowView,
             
-            toggleSwitch,
+            yearlyTrackSwitchLabel,
+            yearlyTrackSwitch,
             
-            trackTypeLabel,
+            aimedPeriodSectionLabel,
             daysNumberSettingSectionDivider,
             daysSettingPickerView
             
@@ -414,9 +481,14 @@ extension AddGoalViewController {
             make.height.equalTo(2)
         }
         
-        toggleSwitch.snp.makeConstraints { make in
+        yearlyTrackSwitchLabel.snp.makeConstraints { make in
+            make.centerY.equalTo(yearlyTrackSwitch)
+            make.trailing.equalTo(yearlyTrackSwitch.snp.leading).offset(-6)
+        }
+        
+        yearlyTrackSwitch.snp.makeConstraints { make in
             make.bottom.equalTo(daysNumberSettingSectionDivider.snp.top).offset(-3.5)
-            make.leading.equalTo(trackTypeLabel.snp.trailing).offset(7)
+            make.trailing.equalToSuperview().inset(15)
         }
         
         // daysNumberSettingSection
@@ -426,13 +498,13 @@ extension AddGoalViewController {
             make.top.equalTo(descriptionInputTextView.snp.bottom).offset(20)
         }
         
-        trackTypeLabel.snp.makeConstraints { make in
+        aimedPeriodSectionLabel.snp.makeConstraints { make in
             make.bottom.equalTo(daysNumberSettingSectionDivider.snp.top).offset(-6)
             make.leading.equalTo(daysNumberSettingSectionDivider.snp.leading).offset(4)
         }
         
         daysSettingPickerView.snp.makeConstraints { make in
-            make.top.equalTo(daysNumberSettingSectionDivider.snp.bottom)//.offset(10)
+            make.top.equalTo(daysNumberSettingSectionDivider.snp.bottom)
             make.leading.trailing.equalToSuperview().inset(30)
             make.height.equalTo(200)
         }

@@ -76,6 +76,7 @@
 		622690CD28D59DFE00E4AA01 /* PlusMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 622690CC28D59DFE00E4AA01 /* PlusMenuViewController.swift */; };
 		622F135228DCAD2A0072E5BF /* CalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 622F135128DCAD2A0072E5BF /* CalendarViewController.swift */; };
 		622F135528DCAD390072E5BF /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 622F135428DCAD390072E5BF /* SettingsViewController.swift */; };
+		624453E828FD3D0F003A9117 /* PeriodSettingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 624453E728FD3D0F003A9117 /* PeriodSettingViewModel.swift */; };
 		6248936028FC154A004580CB /* SwitchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6248935F28FC154A004580CB /* SwitchController.swift */; };
 		62B5723928CEE6A000015354 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62B5723828CEE6A000015354 /* AppDelegate.swift */; };
 		62B5723B28CEE6A000015354 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62B5723A28CEE6A000015354 /* SceneDelegate.swift */; };
@@ -181,6 +182,7 @@
 		622690CC28D59DFE00E4AA01 /* PlusMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlusMenuViewController.swift; sourceTree = "<group>"; };
 		622F135128DCAD2A0072E5BF /* CalendarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewController.swift; sourceTree = "<group>"; };
 		622F135428DCAD390072E5BF /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		624453E728FD3D0F003A9117 /* PeriodSettingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeriodSettingViewModel.swift; sourceTree = "<group>"; };
 		6248935F28FC154A004580CB /* SwitchController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwitchController.swift; sourceTree = "<group>"; };
 		62B5723528CEE6A000015354 /* GoalTracker2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GoalTracker2.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		62B5723828CEE6A000015354 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -250,6 +252,7 @@
 			isa = PBXGroup;
 			children = (
 				62CE1ED628D6F62C00F08EF0 /* AddGoalViewController.swift */,
+				624453E728FD3D0F003A9117 /* PeriodSettingViewModel.swift */,
 				62CDA7CA28DD7AE400AFB61C /* Components */,
 				62CE1ED528D6F62100F08EF0 /* Legacy */,
 			);
@@ -852,6 +855,7 @@
 				621AEAFA28CEF74300D53F2C /* CircularCollectionView.swift in Sources */,
 				621AEAF828CEF74300D53F2C /* MainDimView.swift in Sources */,
 				621AEAFB28CEF74300D53F2C /* CollectionViewCircularLayout.swift in Sources */,
+				624453E828FD3D0F003A9117 /* PeriodSettingViewModel.swift in Sources */,
 				621AEAEE28CEF74300D53F2C /* TileCell.swift in Sources */,
 				AA9990CF28D1A1C800FE4A26 /* NeumorphicView.swift in Sources */,
 				621AEAF128CEF74300D53F2C /* DigitalCountPannel.swift in Sources */,
