@@ -32,7 +32,7 @@ class NeumorphicSwitch: UIView {
         return button
     }()
     
-    public var isOnSubjuect = PublishSubject<Bool>()
+    public var isOnSubject = PublishSubject<Bool>()
     
     public var isOn: Bool = false
     
@@ -67,7 +67,7 @@ class NeumorphicSwitch: UIView {
     @objc private func switchToggled(_ sender: UIButton) {
         isOn.toggle()
         
-        isOnSubjuect.onNext(isOn)
+        isOnSubject.onNext(isOn)
         
         if isOn {
             switchOnAnimation()

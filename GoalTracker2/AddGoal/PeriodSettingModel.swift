@@ -6,13 +6,7 @@
 //
 
 struct PeriodSettingModel {
-    typealias PickerViewItems = ([String],[String])
-    
-    var totalDaysModel: [String]
-    
-    init() {
-        totalDaysModel = Array(1...1000).map { "\($0) days" }
-    }
+    let totalDaysModel = Array(1...1000).map { "\($0) days" }
     
     func pickerViewItems(isYearlyTrack: Bool, totalDays: Int) -> ([String],[String]) {
         var totalDaysTextsArray: [String] = []
@@ -23,7 +17,7 @@ struct PeriodSettingModel {
             failureTextsArray = Array(0...365).map { "\($0) days" }
         } else {
             totalDaysTextsArray = totalDaysModel
-            failureTextsArray = Array(0...totalDays).map { "\($0) days" }
+            failureTextsArray = Array(0..<totalDays).map { "\($0) days" }
         }
         
         return (totalDaysTextsArray, failureTextsArray)

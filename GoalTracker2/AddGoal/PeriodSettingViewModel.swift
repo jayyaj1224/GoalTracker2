@@ -11,14 +11,18 @@ import RxCocoa
 import RxDataSources
 
 class PeriodSettingViewModel: ReactiveCompatible {
-    let model = PeriodSettingModel()
+    let periodModel = PeriodSettingModel()
     
     let datasourceRelay = BehaviorRelay<([String],[String])>(value: ([],[]))
     
     var isYearlyTrack: Bool = false
     
+    public let pickerViewHieght: Observable<CGFloat> = Observable.just(26)
+    
+    public let pickerViewWidth: Observable<CGFloat> = Observable.just(120)
+    
     init() {
-        let initialItems = model.pickerViewItems(isYearlyTrack: false, totalDays: 100)
+        let initialItems = periodModel.pickerViewItems(isYearlyTrack: false, totalDays: 100)
         
         datasourceRelay.accept(initialItems)
     }
@@ -59,13 +63,23 @@ class PeriodSettingViewModel: ReactiveCompatible {
 }
 
 extension Reactive where Base: PeriodSettingViewModel {
-    var shouldUpdateModel: Binder<(totalDays: Int, isYearlyTrack: Bool)> {
-        Binder(base) { base, selected in
-            let items = base.model.pickerViewItems(
-                isYearlyTrack: selected.isYearlyTrack,
-                totalDays: selected.totalDays
+    var totalPeriodChanged: Binder<Int> {
+        Binder(base) { base, totalPeriod in
+            let items = base.periodModel.pickerViewItems(
+                isYearlyTrack: false,
+                totalDays: totalPeriod
             )
             
+            base.datasourceRelay.accept(items)
+        }
+    }
+    
+    var yearlyTrackChanged: Binder<Bool> {
+        Binder(base) { base, isYearlyChanged in
+            let items = base.periodModel.pickerViewItems(
+                isYearlyTrack: isYearlyChanged,
+                totalDays: 100
+            )
             base.datasourceRelay.accept(items)
         }
     }

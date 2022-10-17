@@ -90,6 +90,7 @@
 		62B5726C28CEE88500015354 /* UIColor_Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62B5726B28CEE88500015354 /* UIColor_Extensions.swift */; };
 		62B882BA28FACF1000FF4FBC /* AddGoalDatePickerRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62B882B928FACF1000FF4FBC /* AddGoalDatePickerRowView.swift */; };
 		62CE1ED728D6F62C00F08EF0 /* AddGoalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62CE1ED628D6F62C00F08EF0 /* AddGoalViewController.swift */; };
+		62D5D2AE28FDF81E003E222F /* Rx_Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62D5D2AD28FDF81E003E222F /* Rx_Extensions.swift */; };
 		AA9990CF28D1A1C800FE4A26 /* NeumorphicView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA9990CE28D1A1C800FE4A26 /* NeumorphicView.swift */; };
 		AAAFB8A328D2E572002CE265 /* NeumorphicButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAAFB8A228D2E572002CE265 /* NeumorphicButton.swift */; };
 		F684813D80B4962657465F9A /* Pods_GoalTracker2Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D255B2A165BE8163F24C05BB /* Pods_GoalTracker2Tests.framework */; };
@@ -201,6 +202,7 @@
 		62B5726B28CEE88500015354 /* UIColor_Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor_Extensions.swift; sourceTree = "<group>"; };
 		62B882B928FACF1000FF4FBC /* AddGoalDatePickerRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddGoalDatePickerRowView.swift; sourceTree = "<group>"; };
 		62CE1ED628D6F62C00F08EF0 /* AddGoalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddGoalViewController.swift; sourceTree = "<group>"; };
+		62D5D2AD28FDF81E003E222F /* Rx_Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Rx_Extensions.swift; sourceTree = "<group>"; };
 		6E3403375D2E08953A642A97 /* Pods-GoalTracker2Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GoalTracker2Tests.release.xcconfig"; path = "Target Support Files/Pods-GoalTracker2Tests/Pods-GoalTracker2Tests.release.xcconfig"; sourceTree = "<group>"; };
 		7DB549AED6B2F40D9115861A /* Pods-GoalTracker2-GoalTracker2UITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GoalTracker2-GoalTracker2UITests.release.xcconfig"; path = "Target Support Files/Pods-GoalTracker2-GoalTracker2UITests/Pods-GoalTracker2-GoalTracker2UITests.release.xcconfig"; sourceTree = "<group>"; };
 		9E3026A29071F2207AD91954 /* Pods-GoalTracker2-GoalTracker2UITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GoalTracker2-GoalTracker2UITests.debug.xcconfig"; path = "Target Support Files/Pods-GoalTracker2-GoalTracker2UITests/Pods-GoalTracker2-GoalTracker2UITests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -489,6 +491,7 @@
 				621AEAC728CEF5A300D53F2C /* Numeric_Extension.swift */,
 				621AEAC628CEF5A300D53F2C /* UIImage_Extension.swift */,
 				621AEACD28CEF66A00D53F2C /* Date_Extension.swift */,
+				62D5D2AD28FDF81E003E222F /* Rx_Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -864,6 +867,7 @@
 				AA9990CF28D1A1C800FE4A26 /* NeumorphicView.swift in Sources */,
 				621AEAF128CEF74300D53F2C /* DigitalCountPannel.swift in Sources */,
 				621AEB0028CEF81C00D53F2C /* Constants.swift in Sources */,
+				62D5D2AE28FDF81E003E222F /* Rx_Extensions.swift in Sources */,
 				622690CD28D59DFE00E4AA01 /* PlusMenuViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

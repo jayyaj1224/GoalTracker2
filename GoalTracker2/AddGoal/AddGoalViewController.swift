@@ -117,6 +117,22 @@ class AddGoalViewController: UIViewController {
         return label
     }()
     
+    private let totalLabel: UILabel = {
+        let label = UILabel()
+        label.text = "total"
+        label.textColor = .black
+        label.font = .outFit(size: 14, family: .Regular)
+        return label
+    }()
+    
+    private let maxFailLabel: UILabel = {
+        let label = UILabel()
+        label.text = "max fail"
+        label.textColor = .black
+        label.font = .outFit(size: 14, family: .Regular)
+        return label
+    }()
+    
     private let yearlyTrackSwitch = NeumorphicSwitch(toggleAnimationType: .withSpring, size: CGSize(width: 48, height: 20))
     
     private let daysSettingPickerView = UIPickerView()
@@ -128,12 +144,20 @@ class AddGoalViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         datasourcesDelegatesSettings()
+        
         uiSettings()
-        bindings()
+        
         aimedPeriodPickerSettings()
         
         addActionTargets()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        periedPickerViewinitialSetting()
     }
     
     private func addActionTargets() {
@@ -149,6 +173,8 @@ class AddGoalViewController: UIViewController {
     }
     
     @objc private func saveButtonTapped(_ sender: UIButton) {
+        // save and update methods
+        
         dismiss(animated: true, completion: nil)
     }
     
@@ -186,17 +212,7 @@ class AddGoalViewController: UIViewController {
         }
     }
     
-    private func bindings() {
-        yearlyTrackSwitch.isOnSubjuect.subscribe(onNext: { [weak self] onOffValue in
-            
-            self?.changeTrackTypeLabel(trackAnually: onOffValue)
-            
-        })
-        .disposed(by: disposeBag)
-
-    }
-    
-    private func changeTrackTypeLabel(trackAnually: Bool) {
+    private func changeTrackTypeLabel(_ trackAnually: Bool) {
         if trackAnually {
             self.aimedPeriodSectionLabel.text = "Track Annually"
         } else {
@@ -209,29 +225,53 @@ class AddGoalViewController: UIViewController {
         descriptionInputTextView.delegate = self
     }
     
+    private func periedPickerViewinitialSetting() {
+        daysSettingPickerView.selectRow(99, inComponent: 0, animated: false)
+        daysSettingPickerView.selectRow(99, inComponent: 1, animated: false)
+    }
+    
     private func aimedPeriodPickerSettings() {
         let vm = periodSettingViewModel
         
         vm.datasourceRelay
             .bind(to: daysSettingPickerView.rx.items(adapter: vm.viewPickerAdapter))
             .disposed(by: disposeBag)
+
+        periodSettingViewModel.pickerViewHieght
+            .bind(to: daysSettingPickerView.rx.rowHeight)
+            .disposed(by: disposeBag)
         
+        periodSettingViewModel.pickerViewWidth
+            .bind(to: daysSettingPickerView.rx.rowWidth)
+            .disposed(by: disposeBag)
         
-        let totalDaysChanged = daysSettingPickerView.rx.itemSelected
+        daysSettingPickerView.rx.itemSelected
             .filter { $0.component == 0 }
-            .asObservable()
+            .map { $0.row+1 }
+            .bind(to: vm.rx.totalPeriodChanged)
+            .disposed(by: disposeBag)
         
-        Observable.combineLatest(
-            totalDaysChanged,
-            yearlyTrackSwitch.isOnSubjuect.asObservable()
-        )
-        .map { selected, isYearly in
-            return (totalDays: selected.row+1, isYearlyTrack: isYearly)
-        }
-        .bind(to: vm.rx.shouldUpdateModel)
-        .disposed(by: disposeBag)
+        let yearlyTrackSwitchSubjectShare = yearlyTrackSwitch.isOnSubject.share()
+        
+        yearlyTrackSwitchSubjectShare
+            .bind(to: vm.rx.yearlyTrackChanged)
+            .disposed(by: disposeBag)
+        
+        yearlyTrackSwitchSubjectShare
+            .subscribe(onNext: { [weak self] isYearlyTrack in
+                
+                self?.changeTrackTypeLabel(isYearlyTrack)
+                
+                if isYearlyTrack == false {
+                    self?.periedPickerViewinitialSetting()
+                }
+                
+                self?.totalLabel.isHidden = isYearlyTrack
+            })
+            .disposed(by: disposeBag)
     }
 }
+
 
 //MARK: UITextView Delgate
 extension AddGoalViewController: UITextViewDelegate {
@@ -319,9 +359,6 @@ extension AddGoalViewController {
     private func uiSettings() {
         view.backgroundColor = .crayon
         
-//        daysSettingPickerView.selectRow(9, inComponent: 0, animated: false)
-//        daysSettingPickerView.selectRow(9, inComponent: 1, animated: false)
-        
         layoutComponents()
     }
 
@@ -361,7 +398,10 @@ extension AddGoalViewController {
             
             aimedPeriodSectionLabel,
             daysNumberSettingSectionDivider,
-            daysSettingPickerView
+            daysSettingPickerView,
+            
+            totalLabel,
+            maxFailLabel
             
         ].forEach {
             view.addSubview($0)
@@ -459,9 +499,19 @@ extension AddGoalViewController {
         }
         
         daysSettingPickerView.snp.makeConstraints { make in
-            make.top.equalTo(daysNumberSettingSectionDivider.snp.bottom)
+            make.top.equalTo(daysNumberSettingSectionDivider.snp.bottom).offset(10)
             make.leading.trailing.equalToSuperview().inset(30)
             make.height.equalTo(200)
+        }
+        
+        totalLabel.snp.makeConstraints { make in
+            make.centerY.equalTo(daysSettingPickerView).offset(0.5)
+            make.leading.equalTo(daysSettingPickerView).inset(118.5)
+        }
+        
+        maxFailLabel.snp.makeConstraints { make in
+            make.centerY.equalTo(daysSettingPickerView).offset(0.5)
+            make.leading.equalTo(daysSettingPickerView).inset(118.5)
         }
     }
 }
