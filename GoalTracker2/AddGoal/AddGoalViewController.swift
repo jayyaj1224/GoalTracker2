@@ -131,6 +131,7 @@ class AddGoalViewController: UIViewController {
         datasourcesDelegatesSettings()
         uiSettings()
         bindings()
+        aimedPeriodPickerSettings()
         
         addActionTargets()
     }
@@ -192,44 +193,7 @@ class AddGoalViewController: UIViewController {
             
         })
         .disposed(by: disposeBag)
-        
-        let vm = periodSettingViewModel
-        
-//        daysSettingPickerView.rx.itemSelected
-        
-    }
-    
-    private func aimedPeriodPickerSettings() {
-        periodSettingViewModel.datasourceRelay
-            .bind(to: daysSettingPickerView.rx.dataSource) { (row, element, view) in
-                let reuseView = (view as? AddGoalDatePickerRowView) ?? AddGoalDatePickerRowView()
-                reuseView.rowLabel.text = " -- \(row)"
-                return reuseView
-            }
-            .disposed(by: disposeBag)
-       
-        
-        /*
-         let items = Observable.just([
-                "First Item",
-                "Second Item",
-                "Third Item"
-            ])
-         
-         items
-            .bind(to: pickerView.rx.items) { (row, element, view) in
-                guard let myView = view as? MyView else {
-                    let view = MyView()
-                    view.configure(with: element)
-                    return view
-                }
-                myView.configure(with: element)
-                return myView
-            }
-            .disposed(by: disposeBag)
-         
-         */
-        
+
     }
     
     private func changeTrackTypeLabel(trackAnually: Bool) {
@@ -244,37 +208,28 @@ class AddGoalViewController: UIViewController {
         goalTitleInputTextView.delegate = self
         descriptionInputTextView.delegate = self
     }
-}
-
-//MARK: UIPickerView Datasource & Delgate
-extension AddGoalViewController: UIPickerViewDataSource, UIPickerViewDelegate {
-    func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
-        let reuseView = (view as? AddGoalDatePickerRowView) ?? AddGoalDatePickerRowView()
-        reuseView.rowLabel.text = " -- \(row)"
-        return reuseView
-    }
     
-    func numberOfComponents(in pickerView: UIPickerView) -> Int {
-        return 2
-    }
-    
-    /*
-     1-10
-     10, 20, ... 110 ... 990, 1000
-     */
-    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        switch component {
-        case 0:
-            if yearlyTrackSwitch.isOn {
-                return 1
-            } else {
-                return 1001
-            }
-        case 1:
-            return 1000
-        default:
-            return 0
+    private func aimedPeriodPickerSettings() {
+        let vm = periodSettingViewModel
+        
+        vm.datasourceRelay
+            .bind(to: daysSettingPickerView.rx.items(adapter: vm.viewPickerAdapter))
+            .disposed(by: disposeBag)
+        
+        
+        let totalDaysChanged = daysSettingPickerView.rx.itemSelected
+            .filter { $0.component == 0 }
+            .asObservable()
+        
+        Observable.combineLatest(
+            totalDaysChanged,
+            yearlyTrackSwitch.isOnSubjuect.asObservable()
+        )
+        .map { selected, isYearly in
+            return (totalDays: selected.row+1, isYearlyTrack: isYearly)
         }
+        .bind(to: vm.rx.shouldUpdateModel)
+        .disposed(by: disposeBag)
     }
 }
 
@@ -364,8 +319,8 @@ extension AddGoalViewController {
     private func uiSettings() {
         view.backgroundColor = .crayon
         
-        daysSettingPickerView.selectRow(9, inComponent: 0, animated: false)
-        daysSettingPickerView.selectRow(9, inComponent: 1, animated: false)
+//        daysSettingPickerView.selectRow(9, inComponent: 0, animated: false)
+//        daysSettingPickerView.selectRow(9, inComponent: 1, animated: false)
         
         layoutComponents()
     }

@@ -10,61 +10,63 @@ import RxSwift
 import RxCocoa
 import RxDataSources
 
-struct PeriodSettingModel {
-    let totalDaysModel = Array(1...1000).map { "\($0) days" }
+class PeriodSettingViewModel: ReactiveCompatible {
+    let model = PeriodSettingModel()
     
-    
-}
-
-class PeriodSettingViewModel {
-    
-    let datasourceRelay = BehaviorRelay<[String]>(value: [])
+    let datasourceRelay = BehaviorRelay<([String],[String])>(value: ([],[]))
     
     var isYearlyTrack: Bool = false
     
     init() {
+        let initialItems = model.pickerViewItems(isYearlyTrack: false, totalDays: 100)
         
+        datasourceRelay.accept(initialItems)
     }
     
-    let totalDaysModel = Array(1...1000)
-        .map { "\($0) days" }
-    
-    lazy var viewPickerAdapter = RxPickerViewViewAdapter<[String]>(
-        components: [],
+    lazy var viewPickerAdapter = RxPickerViewViewAdapter<([String],[String])>(
+        components: ([],[]),
         numberOfComponents: { _,_,_  in
             return 2
         },
-        numberOfRowsInComponent: { [weak self] datasource, pickerView, model, component -> Int in
+        numberOfRowsInComponent: { [weak self] datasource, pickerView, items, component -> Int in
             guard let self = self else { return 0 }
             
             switch component {
             case 0:
-                return self.isYearlyTrack ? 1 : model.count
+                return items.0.count
             case 1:
-                return self.isYearlyTrack ? 365 : pickerView.selectedRow(inComponent: 0)+1
+                return items.1.count
             default:
                 return 0
             }
         },
-        // datasource, pickerView, models, row, component, view
-        viewForRow: { [weak self] _, _, model, row, component, view -> UIView in
+        viewForRow: { [weak self] datasource, pickerView, items, row, component, view -> UIView in
             let reuseView = (view as? AddGoalDatePickerRowView) ?? AddGoalDatePickerRowView()
             
             guard let self = self else { return reuseView }
             
             switch component {
             case 0:
-                if self.isYearlyTrack {
-                    reuseView.componentLabel.text = "--"
-                } else {
-                    reuseView.componentLabel.text = model[row]
-                }
+                reuseView.componentLabel.text =  items.0[row]
             case 1:
-                reuseView.componentLabel.text = model[row]
+                reuseView.componentLabel.text = items.1[row]
             default:
                 break
             }
             return reuseView
         }
     )
+}
+
+extension Reactive where Base: PeriodSettingViewModel {
+    var shouldUpdateModel: Binder<(totalDays: Int, isYearlyTrack: Bool)> {
+        Binder(base) { base, selected in
+            let items = base.model.pickerViewItems(
+                isYearlyTrack: selected.isYearlyTrack,
+                totalDays: selected.totalDays
+            )
+            
+            base.datasourceRelay.accept(items)
+        }
+    }
 }
