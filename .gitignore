@@ -1,8 +1,22 @@
 
 
 ## CocoaPod
-Pods/
-!RxCocoa/RxPickerViewDelegateProxy.swift
+
+Pods/*
+!Pods/RxCocoa/
+
+Pods/RxCocoa/*
+!Pods/RxCocoa/RxCocoa/
+
+Pods/RxCocoa/RxCocoa/*
+!Pods/RxCocoa/RxCocoa/iOS/
+
+Pods/RxCocoa/RxCocoa/iOS/*
+!Pods/RxCocoa/RxCocoa/iOS/Proxies/
+
+Pods/RxCocoa/RxCocoa/iOS/Proxies/*
+!Pods/RxCocoa/RxCocoa/iOS/Proxies/RxPickerViewDelegateProxy.swift
+
 
 *.lock
 Podfile.lock

@@ -8,13 +8,12 @@
 import RxSwift
 import RxCocoa
 import RxDataSources
-import CoreGraphics
 
 extension Reactive where Base: UIPickerView {
     var rowHeight: Binder<CGFloat> {
         Binder(base) { base, value in
             if let delegateProxy = base.delegate as? RxPickerViewDelegateProxy {
-                delegateProxy.rowHeightRelay.accept(value)
+                delegateProxy.pickerViewRowHeight = value
             }
         }
     }
@@ -22,7 +21,7 @@ extension Reactive where Base: UIPickerView {
     var rowWidth: Binder<CGFloat> {
         Binder(base) { base, value in
             if let delegateProxy = base.delegate as? RxPickerViewDelegateProxy {
-                delegateProxy.rowWidthRelay.accept(value)
+                delegateProxy.pickerViewRowWidth = value
             }
         }
     }

@@ -8,7 +8,7 @@
 struct PeriodSettingModel {
     let totalDaysModel = Array(1...1000).map { "\($0) days" }
     
-    func pickerViewItems(isYearlyTrack: Bool, totalDays: Int) -> ([String],[String]) {
+    func makePickerViewItems(isYearlyTrack: Bool, totalDays: Int) -> ([String],[String]) {
         var totalDaysTextsArray: [String] = []
         var failureTextsArray: [String] = []
         

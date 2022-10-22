@@ -17,12 +17,8 @@ class PeriodSettingViewModel: ReactiveCompatible {
     
     var isYearlyTrack: Bool = false
     
-    public let pickerViewHieght: Observable<CGFloat> = Observable.just(26)
-    
-    public let pickerViewWidth: Observable<CGFloat> = Observable.just(120)
-    
     init() {
-        let initialItems = periodModel.pickerViewItems(isYearlyTrack: false, totalDays: 100)
+        let initialItems = periodModel.makePickerViewItems(isYearlyTrack: false, totalDays: 100)
         
         datasourceRelay.accept(initialItems)
     }
@@ -51,9 +47,19 @@ class PeriodSettingViewModel: ReactiveCompatible {
             
             switch component {
             case 0:
-                reuseView.componentLabel.text =  items.0[row]
+                var totalDaysText = items.0[row]
+                
+                if pickerView.selectedRow(inComponent: 0) == row {
+                    totalDaysText += " total"
+                }
+                reuseView.componentLabel.text =  totalDaysText
             case 1:
-                reuseView.componentLabel.text = items.1[row]
+                var maxFailLabelText = items.1[row]
+                
+                if pickerView.selectedRow(inComponent: 1) == row {
+                    maxFailLabelText += " max fail"
+                }
+                reuseView.componentLabel.text = maxFailLabelText
             default:
                 break
             }
@@ -63,12 +69,10 @@ class PeriodSettingViewModel: ReactiveCompatible {
 }
 
 extension Reactive where Base: PeriodSettingViewModel {
-    var totalPeriodChanged: Binder<Int> {
+    var shouldChangeMaxFailRange: Binder<Int> {
         Binder(base) { base, totalPeriod in
-            let items = base.periodModel.pickerViewItems(
-                isYearlyTrack: false,
-                totalDays: totalPeriod
-            )
+            let model = base.periodModel
+            let items = model.makePickerViewItems(isYearlyTrack: false, totalDays: totalPeriod)
             
             base.datasourceRelay.accept(items)
         }
@@ -76,10 +80,9 @@ extension Reactive where Base: PeriodSettingViewModel {
     
     var yearlyTrackChanged: Binder<Bool> {
         Binder(base) { base, isYearlyChanged in
-            let items = base.periodModel.pickerViewItems(
-                isYearlyTrack: isYearlyChanged,
-                totalDays: 100
-            )
+            let model = base.periodModel
+            let items = model.makePickerViewItems(isYearlyTrack: isYearlyChanged, totalDays: 100)
+            
             base.datasourceRelay.accept(items)
         }
     }
