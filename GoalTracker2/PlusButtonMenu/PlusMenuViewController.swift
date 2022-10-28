@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import RxCocoa
 
 class PlusMenuViewController: UIViewController {
     //MARK: - Components SubClass
@@ -69,6 +70,9 @@ class PlusMenuViewController: UIViewController {
     var dismissCompletionHandler: (()->Void)?
     
     //MARK: - Logics
+    
+    var newGoalSavedSignal: Signal<Void>!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         

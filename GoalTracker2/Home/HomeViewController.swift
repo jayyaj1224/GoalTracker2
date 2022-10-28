@@ -115,6 +115,8 @@ extension HomeViewController {
             self.plusRotatingButtonView.iconImageView.alpha = 1
         }
         
+        plusMenuViewController.newGoalSavedSignal
+        
         present(plusMenuViewController, animated: false) {
             self.plusRotatingButtonView.iconImageView.alpha = 0
         }

@@ -40,7 +40,7 @@ class GoalManager {
 }
 
 extension GoalManager {
-    func newGoal(_ goal: Goal) {
+    func realmWriteGoal(_ goal: Goal) {
         var info = getProfile()
         info.totalTrialCount+=1
         saveProfile(profile: info)

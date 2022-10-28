@@ -5,6 +5,7 @@
 //  Created by Jay Lee on 18/09/2022.
 //
 
+import Foundation
 import UIKit
 import RxSwift
 import RxCocoa
@@ -26,14 +27,24 @@ class AddGoalViewController: UIViewController {
     
     private let saveButton: UIButton = {
         let button = UIButton()
-        let attributedString = NSMutableAttributedString(
+        let enabledAttributedString = NSMutableAttributedString(
             string: "Save",
             attributes: [
                 NSMutableAttributedString.Key.font: UIFont.sfPro(size: 16, family: .Light),
                 NSMutableAttributedString.Key.foregroundColor: UIColor.orangeA
             ]
         )
-        button.setAttributedTitle(attributedString, for: .normal)
+        let disabledAttributedString = NSMutableAttributedString(
+            string: "Save",
+            attributes: [
+                NSMutableAttributedString.Key.font: UIFont.sfPro(size: 16, family: .Light),
+                NSMutableAttributedString.Key.foregroundColor: UIColor.grayB
+            ]
+        )
+        button.setAttributedTitle(enabledAttributedString, for: .normal)
+        button.setAttributedTitle(disabledAttributedString, for: .disabled)
+        button.isEnabled = false
+        
         return button
     }()
     
@@ -77,7 +88,7 @@ class AddGoalViewController: UIViewController {
         return label
     }()
     
-    private let descriptionInputTextView: UITextView = {
+    private let detailInputTextView: UITextView = {
         let textView = UITextView()
         textView.textColor = .grayC
         textView.font = .sfPro(size: 18, family: .Light)
@@ -157,9 +168,25 @@ class AddGoalViewController: UIViewController {
     }
     
     @objc private func saveButtonTapped(_ sender: UIButton) {
-        // save and update methods
+//        let goalType: GoalTrackType = yearlyTrackSwitch.isOn ? .Yearly : .Period
+//
+//        let goal = Goal(
+//            title: goalTitleInputTextView.text ?? "",
+//            detail: detailInputTextView.text ?? "",
+//            totalDays: daysSettingPickerView.selectedRow(inComponent: 0),
+//            failCap: daysSettingPickerView.selectedRow(inComponent: 1)-1,
+//            setType: goalType
+//        )
+//
+//        GoalManager.shared.realmWriteGoal(goal)
         
-        dismiss(animated: true, completion: nil)
+        if let plusMenuViewController = self.presentingViewController {
+            plusMenuViewController.view.alpha = 0
+        }
+        
+        if let homeNavigationController = self.presentingViewController?.presentingViewController {
+            homeNavigationController.dismiss(animated: true)
+        }
     }
     
     @objc func handleDismiss(sender: UIPanGestureRecognizer) {
@@ -204,9 +231,23 @@ class AddGoalViewController: UIViewController {
         }
     }
     
+    private func checkAbleToSave() {
+        let goalTitleText = (goalTitleInputTextView.text ?? "")
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+        
+        if goalTitleText.isEmpty {
+            saveButton.isEnabled = false
+        } else {
+            saveButton.isEnabled = true
+        }
+    }
+}
+
+//MARK: Datasource & Delegate setting
+extension AddGoalViewController {
     private func datasourcesDelegatesSettings() {
         goalTitleInputTextView.delegate = self
-        descriptionInputTextView.delegate = self
+        detailInputTextView.delegate = self
     }
     
     private func periedPickerViewinitialSetting() {
@@ -276,7 +317,7 @@ extension AddGoalViewController: UITextViewDelegate {
         if textView === goalTitleInputTextView {
             goalTitleTextViewDidChange(textView)
         }
-        if textView === descriptionInputTextView {
+        if textView === detailInputTextView {
             descriptionTextViewDidChange(textView)
         }
     }
@@ -294,6 +335,8 @@ extension AddGoalViewController: UITextViewDelegate {
             let characterCount = goalTitleInputTextView.text.count
             goalInputSectorTitleLabel.text = "Goal Title (\(characterCount) /50)"
         }
+        
+        checkAbleToSave()
     }
     
     private func descriptionTextViewDidChange(_ textView: UITextView) {
@@ -304,9 +347,9 @@ extension AddGoalViewController: UITextViewDelegate {
         if text.count > 100 {
             let endIndex = text.index(text.startIndex, offsetBy: 100)
             text = String(text[..<endIndex])
-            descriptionInputTextView.text = text
+            detailInputTextView.text = text
         } else {
-            let characterCount = descriptionInputTextView.text.count
+            let characterCount = detailInputTextView.text.count
             descriptionInputSectorTitleLabel.text = "Description (optional) 􀁜  \(characterCount) /100"
         }
     }
@@ -317,7 +360,7 @@ extension AddGoalViewController: UITextViewDelegate {
         if textView === goalTitleInputTextView {
             maximumTextLength = 50
         }
-        if textView === descriptionInputTextView {
+        if textView === detailInputTextView {
             maximumTextLength = 100
         }
         
@@ -335,7 +378,7 @@ extension AddGoalViewController: UITextViewDelegate {
             goalTitleTextViewEndShadowView.isHidden = false
         }
         
-        if textView === descriptionInputTextView {
+        if textView === detailInputTextView {
             descriptionTextViewEndShadowView.isHidden = false
         }
     }
@@ -345,13 +388,13 @@ extension AddGoalViewController: UITextViewDelegate {
             goalTitleTextViewEndShadowView.isHidden = true
         }
         
-        if textView === descriptionInputTextView {
+        if textView === detailInputTextView {
             descriptionTextViewEndShadowView.isHidden = true
         }
     }
 }
 
-//MARK: Initial UI Setting
+//MARK: UI Setting
 extension AddGoalViewController {
     private func uiSettings() {
         view.backgroundColor = .crayon
@@ -386,7 +429,7 @@ extension AddGoalViewController {
             
             descriptionInputSectorTitleLabel,
             descriptionSectionDivider,
-            descriptionInputTextView,
+            detailInputTextView,
             descriptionInputTextViewPlaceholder,
             descriptionTextViewEndShadowView,
             
@@ -453,16 +496,16 @@ extension AddGoalViewController {
             make.leading.equalTo(descriptionSectionDivider.snp.leading).offset(4)
         }
         
-        descriptionInputTextView.snp.makeConstraints { make in
+        detailInputTextView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(15)
             make.top.equalTo(descriptionSectionDivider).inset(2)
             make.height.equalTo(120)
         }
         
         descriptionInputTextViewPlaceholder.snp.makeConstraints { make in
-            make.trailing.equalTo(descriptionInputTextView)
-            make.leading.equalTo(descriptionInputTextView).inset(6)
-            make.top.equalTo(descriptionInputTextView).inset(10)
+            make.trailing.equalTo(detailInputTextView)
+            make.leading.equalTo(detailInputTextView).inset(6)
+            make.top.equalTo(detailInputTextView).inset(10)
         }
         
         descriptionTextViewEndShadowView.snp.makeConstraints { make in
@@ -484,7 +527,7 @@ extension AddGoalViewController {
         daysNumberSettingSectionDivider.snp.makeConstraints { make in
             make.height.equalTo(0.5)
             make.leading.trailing.equalToSuperview().inset(15)
-            make.top.equalTo(descriptionInputTextView.snp.bottom).offset(20)
+            make.top.equalTo(detailInputTextView.snp.bottom).offset(20)
         }
         
         aimedPeriodSectionLabel.snp.makeConstraints { make in

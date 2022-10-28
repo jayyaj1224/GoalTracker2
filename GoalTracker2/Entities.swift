@@ -8,7 +8,7 @@
 import RealmSwift
 
 enum GoalTrackType: Int {
-    case Continuous, Period
+    case Yearly, Period
 }
 
 enum GoalStatus: String, Codable {
@@ -34,6 +34,7 @@ struct Profile: Codable {
 class Goal: Object {
     @Persisted(primaryKey: true) var identifier: String = ""
     @Persisted var title: String = ""
+    @Persisted var detail: String = ""
     @Persisted var status: String = ""
     @Persisted var setType: Int = 0
 
@@ -59,11 +60,12 @@ class Goal: Object {
         }
     }
     
-    convenience init(title: String, totalDays: Int, failCap: Int, setType: GoalTrackType) {
+    convenience init(title: String, detail: String, totalDays: Int, failCap: Int, setType: GoalTrackType) {
         let today = Date()
         
         self.init()
         self.title = title
+        self.detail = detail
         self.identifier = Date().asString.identifier
         self.status = GoalStatus.none.rawValue
         self.setType = setType.rawValue

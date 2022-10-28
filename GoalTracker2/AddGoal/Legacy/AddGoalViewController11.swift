@@ -312,27 +312,27 @@ final class AddGoalViewController11: UIViewController {
     }
     
     @objc func saveGoalButtonTapped() {
-        goalTextView.endEditing(true)
+//        goalTextView.endEditing(true)
+//
+//        let trackTypePickerSelectedRow = trackTypeSelectPickerView.selectedRow(inComponent: 0)
+//        let trackType = GoalTrackType.init(rawValue: trackTypePickerSelectedRow)!
+//
+//        let totalDaysPickerSelectedRow = totalPickerView.selectedRow(inComponent: 0)
+//        let totalDays = totalPickerView.view(forRow: totalDaysPickerSelectedRow, forComponent: 0)?.tag ?? 0
+//
+//        let maxFail = maxFailPickerView.selectedRow(inComponent: 0)
         
-        let trackTypePickerSelectedRow = trackTypeSelectPickerView.selectedRow(inComponent: 0)
-        let trackType = GoalTrackType.init(rawValue: trackTypePickerSelectedRow)!
-        
-        let totalDaysPickerSelectedRow = totalPickerView.selectedRow(inComponent: 0)
-        let totalDays = totalPickerView.view(forRow: totalDaysPickerSelectedRow, forComponent: 0)?.tag ?? 0
-        
-        let maxFail = maxFailPickerView.selectedRow(inComponent: 0)
-        
-        let goal = Goal(
-            title: goalTextView.text!,
-            totalDays: totalDays,
-            failCap: maxFail,
-            setType: trackType
-        )
-        
-        GoalManager.shared.newGoal(goal)
-        
-        newGoalAddedSubject.onNext(goal)
-        
+//        let goal = Goal(
+//            title: goalTextView.text!,
+//            totalDays: totalDays,
+//            failCap: maxFail,
+//            setType: trackType
+//        )
+//
+//        GoalManager.shared.saveGoal(goal)
+//
+//        newGoalAddedSubject.onNext(goal)
+//
         self.dismiss(animated: true)
     }
     

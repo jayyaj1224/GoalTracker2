@@ -18,8 +18,12 @@ class HomeVieWModel {
     let goalViewModelsRelay = BehaviorRelay<[GoalViewModel]>.init(value: [])
     
     init() {
-        let goals = GoalManager.shared.goals
-        let goalViewModels = goals.compactMap(GoalViewModel.init)
+        acceptRefreshedGoals()
+    }
+    
+    func acceptRefreshedGoals() {
+        let goalViewModels = GoalManager.shared.goals
+            .compactMap(GoalViewModel.init)
         
         goalViewModelsRelay.accept(goalViewModels)
     }
