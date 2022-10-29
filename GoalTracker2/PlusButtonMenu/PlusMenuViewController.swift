@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import RxSwift
 import RxCocoa
 
 class PlusMenuViewController: UIViewController {
@@ -70,8 +71,9 @@ class PlusMenuViewController: UIViewController {
     var dismissCompletionHandler: (()->Void)?
     
     //MARK: - Logics
+    let newGoalSavedSubject = PublishSubject<Void>()
     
-    var newGoalSavedSignal: Signal<Void>!
+    let disposeBag = DisposeBag()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -117,6 +119,10 @@ class PlusMenuViewController: UIViewController {
         let addgoalViewController = AddGoalViewController()
         addgoalViewController.modalPresentationStyle = .custom
         addgoalViewController.transitioningDelegate = self
+        
+        addgoalViewController.saveButtonTappedSignal
+            .emit(to: newGoalSavedSubject)
+            .disposed(by: disposeBag)
         
         present(addgoalViewController, animated: true, completion: nil)
     }

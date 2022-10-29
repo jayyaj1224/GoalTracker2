@@ -114,9 +114,13 @@ extension HomeViewController {
         plusMenuViewController.dismissCompletionHandler = {
             self.plusRotatingButtonView.iconImageView.alpha = 1
         }
-        
-        plusMenuViewController.newGoalSavedSignal
-        
+
+        plusMenuViewController.newGoalSavedSubject
+            .subscribe(onNext: { [weak self] _ in
+                self?.homeViewModel.acceptRefreshedGoals()
+            })
+            .disposed(by: plusMenuViewController.disposeBag)
+
         present(plusMenuViewController, animated: false) {
             self.plusRotatingButtonView.iconImageView.alpha = 0
         }

@@ -135,6 +135,8 @@ class AddGoalViewController: UIViewController {
     //MARK: - Logics
     private let periodSettingViewModel = PeriodSettingViewModel()
     
+    lazy var saveButtonTappedSignal = saveButton.rx.tap.asSignal()
+    
     private let disposeBag = DisposeBag()
     
     override func viewDidLoad() {
@@ -168,17 +170,17 @@ class AddGoalViewController: UIViewController {
     }
     
     @objc private func saveButtonTapped(_ sender: UIButton) {
-//        let goalType: GoalTrackType = yearlyTrackSwitch.isOn ? .Yearly : .Period
-//
-//        let goal = Goal(
-//            title: goalTitleInputTextView.text ?? "",
-//            detail: detailInputTextView.text ?? "",
-//            totalDays: daysSettingPickerView.selectedRow(inComponent: 0),
-//            failCap: daysSettingPickerView.selectedRow(inComponent: 1)-1,
-//            setType: goalType
-//        )
-//
-//        GoalManager.shared.realmWriteGoal(goal)
+        let goalType: GoalTrackType = yearlyTrackSwitch.isOn ? .Yearly : .Period
+
+        let goal = Goal(
+            title: goalTitleInputTextView.text ?? "",
+            detail: detailInputTextView.text ?? "",
+            totalDays: daysSettingPickerView.selectedRow(inComponent: 0),
+            failCap: daysSettingPickerView.selectedRow(inComponent: 1)-1,
+            setType: goalType
+        )
+
+        GoalManager.shared.realmWriteGoal(goal)
         
         if let plusMenuViewController = self.presentingViewController {
             plusMenuViewController.view.alpha = 0
