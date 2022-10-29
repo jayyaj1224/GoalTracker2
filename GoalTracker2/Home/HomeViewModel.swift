@@ -14,7 +14,7 @@ import RxCocoa
  
  */
 
-class HomeVieWModel {
+class HomeVieWModel: ReactiveCompatible {
     let goalViewModelsRelay = BehaviorRelay<[GoalViewModel]>.init(value: [])
     
     init() {
@@ -28,6 +28,8 @@ class HomeVieWModel {
         goalViewModelsRelay.accept(goalViewModels)
     }
     
+    
+    
     var cellFactory: (UICollectionView, Int, GoalViewModel) -> UICollectionViewCell = { cv, row, viewModel in
         guard let cell = cv.dequeueReusableCell(withReuseIdentifier: "CircleGoalCell", for: IndexPath(row: row, section: 0)) as? HomeCircularGoalCell else {
             return UICollectionViewCell()
@@ -37,6 +39,18 @@ class HomeVieWModel {
         return cell
     }
 }
+extension Reactive where Base: HomeVieWModel {
+    var relayAcceptNewGoal: Binder<Goal> {
+        Binder(base) {base, goal in
+            var goalsArray = base.goalViewModelsRelay.value
+            goalsArray.append(GoalViewModel(goal: goal))
+            
+            base.goalViewModelsRelay.accept(goalsArray)
+        }
+    }
+}
+
+
 
 struct GoalViewModel {
     var goalCircleViewModel: GoalCircleViewModel!

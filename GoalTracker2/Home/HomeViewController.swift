@@ -111,16 +111,36 @@ extension HomeViewController {
         
         let plusMenuViewController = PlusMenuViewController()
         plusMenuViewController.modalPresentationStyle = .overFullScreen
-        plusMenuViewController.dismissCompletionHandler = {
-            self.plusRotatingButtonView.iconImageView.alpha = 1
-        }
-
-        plusMenuViewController.newGoalSavedSubject
-            .subscribe(onNext: { [weak self] _ in
-                self?.homeViewModel.acceptRefreshedGoals()
-            })
+        
+        let newGoalSaved = plusMenuViewController.newGoalSavedSubject
+        let plusMenuDismissed = plusMenuViewController.viewDismissSubject
+        
+        newGoalSaved
+            .bind(to: homeViewModel.rx.relayAcceptNewGoal)
             .disposed(by: plusMenuViewController.disposeBag)
-
+        
+        plusMenuDismissed
+            .subscribe(onNext: { [weak self] _ in
+                self?.plusRotatingButtonView.iconImageView.alpha = 1
+            })
+            .disposed(by: disposeBag)
+        
+        Observable
+            .zip(
+                newGoalSaved,
+                plusMenuDismissed
+            )
+            .subscribe(onNext: { [weak self] _ in
+                let y = self?.goalCircularCollectionView.contentSize.height ?? 0
+                let rect = CGRect(x: 0, y: y-K.singleRowHeight, width: 10, height: K.singleRowHeight)
+                
+                DispatchQueue.main.async {
+                    self?.goalCircularCollectionView.scrollRectToVisible(rect, animated: true)
+                }
+            })
+            .disposed(by: disposeBag)
+        
+       
         present(plusMenuViewController, animated: false) {
             self.plusRotatingButtonView.iconImageView.alpha = 0
         }

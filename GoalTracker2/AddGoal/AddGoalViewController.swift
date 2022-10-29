@@ -135,7 +135,7 @@ class AddGoalViewController: UIViewController {
     //MARK: - Logics
     private let periodSettingViewModel = PeriodSettingViewModel()
     
-    lazy var saveButtonTappedSignal = saveButton.rx.tap.asSignal()
+    var saveButtonTappedSubject = PublishSubject<Goal>()
     
     private let disposeBag = DisposeBag()
     
@@ -181,6 +181,8 @@ class AddGoalViewController: UIViewController {
         )
 
         GoalManager.shared.realmWriteGoal(goal)
+        
+        saveButtonTappedSubject.onNext(goal)
         
         if let plusMenuViewController = self.presentingViewController {
             plusMenuViewController.view.alpha = 0

@@ -9,7 +9,7 @@ import UIKit
 
 class ArcProcessBar: UIView {
     var startPoint: CGFloat = 0.3
-    var color: UIColor = .blueB
+    var color: UIColor = .blueA
     var trackColor: UIColor = .crayon
     var trackWidth: CGFloat = 6
     var fillPercentage: CGFloat = 100

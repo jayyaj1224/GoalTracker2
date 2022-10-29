@@ -184,6 +184,7 @@ class GoalCircle: UIView {
         }
         
         let scorePannel = UIStackView()
+        scorePannel.setDropShadow(color: .black, width: 1, height: 1, blur: 1, spread: 0.5, opacity: 0.4)
         scorePannel.axis = .horizontal
         scorePannel.spacing = 10
         scorePannel.distribution = .equalSpacing

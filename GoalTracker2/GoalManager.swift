@@ -12,8 +12,8 @@ class GoalManager {
     private var realm: Realm!
     
     var goals: [Goal] {
-        return realm.objects(Goal.self)
-            .sorted { $0.identifier > $1.identifier }
+        return realm.objects(Goal.self) // 최신순
+            .sorted { $0.identifier < $1.identifier } //identifier is date
     }
     
     private init() {
@@ -49,7 +49,28 @@ extension GoalManager {
             realm.add(goal)
         }
     }
-   
+    
+    
+    func deleteGoal(identifier: String) {
+        var profile = getProfile()
+        profile.totalTrialCount-=1
+        saveProfile(profile: profile)
+        
+        if let goal = realm.object(ofType: Goal.self, forPrimaryKey: identifier) {
+            try! realm.write {
+                realm.delete(goal)
+            }
+        }
+    }
+    
+    func deleteAll() {
+        try! realm.write {
+            realm.deleteAll()
+        }
+    }
+}
+
+extension GoalManager {
     func daySuccess(identifier: String, dayIndex: Int) {
         guard let goal = realm.object(ofType: Goal.self, forPrimaryKey: identifier) else {
             return
@@ -117,19 +138,7 @@ extension GoalManager {
         
         postGoalEndedNoti(status: .fail)
     }
-    
-    func deleteGoal(identifier: String) {
-        var profile = getProfile()
-        profile.totalTrialCount-=1
-        saveProfile(profile: profile)
-        
-        if let goal = realm.object(ofType: Goal.self, forPrimaryKey: identifier) {
-            try! realm.write {
-                realm.delete(goal)
-            }
-        }
-    }
-    
+
     private func postGoalEndedNoti(status: GoalStatus) {
         NotificationCenter.default.post(
             name: NSNotification.Name(KeyStrings.Noti_goal_ended),

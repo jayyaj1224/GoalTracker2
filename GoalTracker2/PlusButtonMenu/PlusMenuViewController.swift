@@ -68,10 +68,10 @@ class PlusMenuViewController: UIViewController {
     
     private let plusIconImageView = UIImageView(imageName: "plus.neumorphism")
     
-    var dismissCompletionHandler: (()->Void)?
-    
     //MARK: - Logics
-    let newGoalSavedSubject = PublishSubject<Void>()
+    let newGoalSavedSubject = PublishSubject<Goal>()
+
+    let viewDismissSubject = PublishSubject<Void>()
     
     let disposeBag = DisposeBag()
     
@@ -88,6 +88,12 @@ class PlusMenuViewController: UIViewController {
         
         cancelButtonViewDidAppearAnimation()
         menuButtonsViewDidAppearAnimation()
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        
+        self.viewDismissSubject.onNext(())
     }
     
     
@@ -113,6 +119,7 @@ class PlusMenuViewController: UIViewController {
     
     @objc private func deleteGoalButtonTapped(_ sender: UIButton) {
         print("deleteGoalButtonTapped")
+        GoalManager.shared.deleteAll()
     }
     
     @objc private func addGoalButtonTapped(_ sender: UIButton) {
@@ -120,15 +127,15 @@ class PlusMenuViewController: UIViewController {
         addgoalViewController.modalPresentationStyle = .custom
         addgoalViewController.transitioningDelegate = self
         
-        addgoalViewController.saveButtonTappedSignal
-            .emit(to: newGoalSavedSubject)
+        addgoalViewController.saveButtonTappedSubject
+            .bind(to: newGoalSavedSubject)
             .disposed(by: disposeBag)
         
         present(addgoalViewController, animated: true, completion: nil)
     }
     
     @objc private func backgroundDimViewTapped() {
-        dismiss(animated: false, completion: dismissCompletionHandler)
+        dismiss(animated: false)
     }
     
     //MARK: - animations
@@ -143,7 +150,7 @@ class PlusMenuViewController: UIViewController {
             self.buttonStackView.alpha = 0
             
         } completion: { _ in
-            self.dismiss(animated: false, completion: self.dismissCompletionHandler)
+            self.dismiss(animated: false)
         }
     }
 
