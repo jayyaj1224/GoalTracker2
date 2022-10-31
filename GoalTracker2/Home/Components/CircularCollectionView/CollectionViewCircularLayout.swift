@@ -8,7 +8,7 @@
 import UIKit
 
 class CircularLayout: UICollectionViewLayout {
-    var attributeList = [LayoutCircularAttributes]()
+    var attributeList = [UICollectionViewLayoutAttributes]()
     
     var angleAtExtreme: CGFloat {
         let itemsCount = collectionView!.numberOfItems(inSection: 0)
@@ -52,38 +52,30 @@ class CircularLayout: UICollectionViewLayout {
         super.prepare()
         guard let cv = collectionView else { return }
         
-        let circleIndex = cv.contentOffset.y/K.singleRowHeight
-        let visibleCirclesIndex = max(0, circleIndex-2.0)...circleIndex+1.0
+        let currentPage = Int(cv.contentOffset.y/K.singleRowHeight)
         
-        let centerY = cv.contentOffset.y + (cv.bounds.height / 2.0)
-        
-        let anchorPointX = ((size.width / 2.0) + radius) / size.width
-        let hiddenAnchPointX = ((size.width / 2.0) + 1000000) / size.width
-        
-        let itemsCount = collectionView!.numberOfItems(inSection: 0)
-        
-        attributeList = (0..<itemsCount)
-            .map { i -> LayoutCircularAttributes in
-                let attributes = LayoutCircularAttributes(forCellWith: IndexPath(row: i, section: 0))
-                attributes.size = self.size
-                attributes.center = CGPoint(x: cv.bounds.midX+4, y: centerY)
-                
-                var attAngle: CGFloat = 0
-                var attAnchorPoint: CGPoint = .zero
-                
-                if visibleCirclesIndex.contains(CGFloat(i)) {
-                    attAngle = self.angle + (self.anglePerItem * CGFloat(i))
-                    attAnchorPoint = CGPoint(x: anchorPointX, y: 0.5)
-                } else {
-                    attAngle = self.angle + ((-atan(size.height / 1000000)) * CGFloat(i))
-                    attAnchorPoint = CGPoint(x: hiddenAnchPointX, y: 0.5)
-                    attributes.isHidden = true
+        let rangeForPrepare = max(0, currentPage-2)...(currentPage + 3)
+
+        attributeList = (0..<cv.numberOfItems(inSection: 0))
+            .map { i -> UICollectionViewLayoutAttributes in
+                switch i {
+                case rangeForPrepare:
+                    let centerY = cv.contentOffset.y + (cv.bounds.height / 2.0)
+                    let anchorPointX = ((size.width / 2.0) + radius) / size.width
+                    
+                    let circularAttributes = LayoutCircularAttributes(forCellWith: IndexPath(row: i, section: 0))
+                    circularAttributes.size = self.size
+                    circularAttributes.center = CGPoint(x: cv.bounds.midX+4, y: centerY)
+                    circularAttributes.angle = self.angle + (self.anglePerItem * CGFloat(i))
+                    circularAttributes.anchorPoint = CGPoint(x: anchorPointX, y: 0.5)
+                    return circularAttributes
+                    
+                default:
+                    let attributes = UICollectionViewLayoutAttributes(forCellWith: IndexPath(row: i, section: 0))
+                    attributes.size = self.size
+                    attributes.center = CGPoint(x: cv.bounds.minX, y: CGFloat(i)*K.singleRowHeight)
+                    return attributes
                 }
-                
-                attributes.angle = attAngle
-                attributes.anchorPoint = attAnchorPoint
-                
-                return attributes
             }
     }
 

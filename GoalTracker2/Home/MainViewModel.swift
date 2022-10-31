@@ -51,7 +51,7 @@ class MainViewModel: ReactiveCompatible {
     }
     
     func cellFactory(_ cv: UICollectionView, _ row: Int, _ vm: GoalViewModel3) -> UICollectionViewCell {
-        guard let cell = cv.dequeueReusableCell(withReuseIdentifier: "CircleGoalCell", for: IndexPath(row: row, section: 0)) as? HomeCircularGoalCell else {
+        guard let cell = cv.dequeueReusableCell(withReuseIdentifier: "CircleGoalCell", for: IndexPath(row: row, section: 0)) as? GoalCircleCell else {
             return UICollectionViewCell()
         }
         
@@ -61,28 +61,28 @@ class MainViewModel: ReactiveCompatible {
         
         
         
-        mainViewDidScroll
-            .subscribe(cell.mainViewDidScrollSubject)
-            .disposed(by: cell.reuseBag)
+//        mainViewDidScroll
+//            .subscribe(cell.mainViewDidScrollSubject)
+//            .disposed(by: cell.reuseBag)
   
         // did end decelerate
 //        mainViewDidEndDecelerate
 //            .subscribe(cell.mainViewDidEndDecelerateSubject)
 //            .disposed(by: cell.reuseBag)
         
-        cell.currentGoalDidScrollHorizontally
-            .emit(to: currentGoalScrollObserver)
-            .disposed(by: cell.disposeBag)
-        
-        cell.tilesDisappearedSignal
-            .emit(to: tileViewIsHiddenSubject)
-            .disposed(by: cell.disposeBag)
-        
-        tileButtonTapSubject
-            .filter{ CGFloat(row) == $0.0 }
-            .map { $0.1 }
-            .subscribe(cell.shouldPresentTilesSubject)
-            .disposed(by: cell.disposeBag)
+//        cell.currentGoalDidScrollHorizontally
+//            .emit(to: currentGoalScrollObserver)
+//            .disposed(by: cell.disposeBag)
+//        
+//        cell.tilesDisappearedSignal
+//            .emit(to: tileViewIsHiddenSubject)
+//            .disposed(by: cell.disposeBag)
+//        
+//        tileButtonTapSubject
+//            .filter{ CGFloat(row) == $0.0 }
+//            .map { $0.1 }
+//            .subscribe(cell.shouldPresentTilesSubject)
+//            .disposed(by: cell.disposeBag)
         
         return cell
     }

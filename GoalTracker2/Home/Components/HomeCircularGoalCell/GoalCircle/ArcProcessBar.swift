@@ -16,19 +16,15 @@ class ArcProcessBar: UIView {
     
     var percentagePath: UIBezierPath!
     
-    var nowPoint: UIImageView!
+    var nowPoint = UIImageView(imageName: "arc_nowPoint")
     
-    override init(frame: CGRect) {
-        
-        super.init(frame: frame)
-        self.backgroundColor = UIColor.clear
-        
-        nowPoint = UIImageView(imageName: "arc_nowPoint")
+    init() {
+        super.init(frame: .zero)
+        backgroundColor = UIColor.clear
     }
     
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)!
-        self.backgroundColor = UIColor.clear
     }
     
     private func getGraphStartAndEndPointsInRadians() -> (graphStartingPoint: CGFloat, graphEndingPoint: CGFloat) {
@@ -51,7 +47,6 @@ class ArcProcessBar: UIView {
     }
     
     override func draw(_ rect: CGRect) {
-        
         let center: CGPoint = CGPoint(x: rect.midX, y: rect.midY)
         let radius: CGFloat = rect.width / 2
         
@@ -94,12 +89,11 @@ class ArcProcessBar: UIView {
             angle += 90.pi.cgFloat
         }
         
-        self.nowPoint?.transform = CGAffineTransform.init(rotationAngle: angle)
-        self.nowPoint?.snp.makeConstraints { make in
+        self.nowPoint.transform = CGAffineTransform.init(rotationAngle: angle)
+        self.nowPoint.snp.makeConstraints { make in
             make.height.equalTo(16)
             make.width.equalTo(8)
             make.center.equalTo(point)
         }
-        
     }   
 }

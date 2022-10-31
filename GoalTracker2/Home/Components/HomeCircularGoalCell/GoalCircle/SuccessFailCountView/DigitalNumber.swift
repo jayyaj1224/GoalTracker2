@@ -1,87 +1,49 @@
 //
-//  DigitView.swift
-//  GoalTracker
+//  SingleDigitalNumber.swift
+//  GoalTracker2
 //
-//  Created by Jay Lee on 2022/03/05.
+//  Created by Jay Lee on 30/10/2022.
 //
 
 import UIKit
 
-class DigitalCountPannel: UIStackView {
-    
-    var numbers: [SingleDigit] = []
-    
-    let size = CGSize(width: 42, height: 22.6)
-    
-    convenience init(digitCount: Int, failDigit: Bool=false) {
-        self.init(frame: .zero)
-        self.axis = .horizontal
-        self.distribution = .equalSpacing
-        self.spacing = 1.5
+/// * size: CGSize(width: 42, height: 22.6)
+///
+class DigitalNumber: UIView {
+    enum DigitBarLocation: String {
+        case bottom, bottomLeft, bottomRight, middle, top, topLeft, topRight
         
-        for _ in 1...digitCount {
-            let singleDigit = SingleDigit(failDigit: failDigit)
-            
-            numbers.append(singleDigit)
-            
-            self.addArrangedSubview(singleDigit.view)
-            singleDigit.view.snp.makeConstraints { make in
-                make.width.equalTo(singleDigit.size.width).priority(999)
-            }
-        }
+        static let allCases: [DigitBarLocation] = [
+            bottom, bottomLeft, bottomRight, middle, top, topLeft, topRight
+        ]
     }
-    
-    func setNumber(_ num: Int, failDigit: Bool=false) {
-        switch num {
-        case ...9:
-            numbers[0].view.alpha = 0.7
-            numbers[1].view.alpha = 0.7
-            numbers[2].view.alpha = 1
-        case 10...99:
-            numbers[0].view.alpha = 0.7
-            numbers[1].view.alpha = 0.7
-            numbers[2].view.alpha = 1
-        case 100...999:
-            numbers[0].view.alpha = 1
-            numbers[1].view.alpha = 1
-            numbers[2].view.alpha = 1
-        default:
-            break
-        }
-        
-        String(format: "%03d", num)
-            .enumerated()
-            .forEach { (i, numString) in
-                let n = Int(String(numString))!
-                self.numbers[i].set(n)
-            }
-    }
-}
-
-
-class SingleDigit {
-    let view = UIView()
     
     var bars: [DigitBarLocation: UIImageView] = [:]
     
-    let size = CGSize(width: 13, height: 22.6)
-    
-    init(failDigit: Bool=false) {
+    init(isFailCount: Bool=false) {
+        super.init(frame: .zero)
+        
         DigitBarLocation.allCases
             .forEach { barPosition in
-                let bar = UIImageView()
-                bar.image = UIImage(named: "digit_\(barPosition.string)_empty")
-                if failDigit {
-                    bar.highlightedImage = UIImage(named: "digit_\(barPosition.string)_fail")
-                } else {
-                    bar.highlightedImage = UIImage(named: "digit_\(barPosition.string)_fill")
-                }
-                bar.tag = barPosition.rawValue
-                bars[barPosition] = bar
+                let highlightedImageName = isFailCount ? "digit_\(barPosition.rawValue)_fail" : "digit_\(barPosition.rawValue)_fill"
                 
-                view.addSubview(bar)
+                let bar = UIImageView()
+                bar.image = UIImage(named: "digit_\(barPosition.rawValue)_empty")
+                bar.highlightedImage = UIImage(named: highlightedImageName)
+                
+                addSubview(bar)
+                
+                bars[barPosition] = bar
                 layoutDigit(at: barPosition)
             }
+        
+        self.snp.makeConstraints { make in
+            make.size.equalTo(CGSize(width: 14, height: 22.6)).priority(999)
+        }
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     func set(_ number: Int) {
@@ -179,31 +141,3 @@ class SingleDigit {
         }
     }
 }
-
-enum DigitBarLocation: Int {
-    case bottom, bottomLeft, bottomRight, middle, top, topLeft, topRight
-    
-    static let allCases: [DigitBarLocation] = [
-        bottom, bottomLeft, bottomRight, middle, top, topLeft, topRight
-    ]
-    
-    var string: String {
-        switch self {
-        case .bottom:
-            return "bottom"
-        case .bottomLeft:
-            return "bottomLeft"
-        case .bottomRight:
-            return "bottomRight"
-        case .middle:
-            return "middle"
-        case .top:
-            return "top"
-        case .topLeft:
-            return "topLeft"
-        case .topRight:
-            return "topRight"
-        }
-    }
-}
-

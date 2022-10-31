@@ -11,7 +11,7 @@ import RxCocoa
 
 class TileBoardCollectionView: UICollectionView, UICollectionViewDelegateFlowLayout {
 
-    var viewModel: TileViewModel2?
+    var viewModel: TileViewModel?
     
     var disposeBag = DisposeBag()
     
@@ -42,7 +42,7 @@ class TileBoardCollectionView: UICollectionView, UICollectionViewDelegateFlowLay
         widthConstraint.isActive = true
     }
 
-    func setup(with viewModel: TileViewModel2) {
+    func setup(with viewModel: TileViewModel) {
         disposeBag = DisposeBag()
         
         self.viewModel = viewModel
@@ -52,7 +52,7 @@ class TileBoardCollectionView: UICollectionView, UICollectionViewDelegateFlowLay
                 to: self.rx.items(cellIdentifier: "TileCell")
             ){ index, statusRaw, cell in
                 guard let tileCell = cell as? TileCell else { return }
-                tileCell.imageWidth = viewModel.tileWidth
+                tileCell.imageWidth = viewModel.tileSize
 
                 if viewModel.needDateLabelVisible(at: index) {
                     tileCell.configure(statusRaw: statusRaw, dateLabelVisible: true, index: index)

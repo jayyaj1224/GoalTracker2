@@ -61,9 +61,14 @@ class Goal: Object {
     }
     
     convenience init(title: String, detail: String, totalDays: Int, failCap: Int, setType: GoalTrackType) {
-        let today = Date()
-        
         self.init()
+        
+        if title == "1" {
+            self.dummyInit()
+            return 
+        }
+        
+        let today = Date()
         self.title = title
         self.detail = detail
         self.identifier = Date().asString.identifier
@@ -79,6 +84,40 @@ class Goal: Object {
             day.date = today.add(i-1).asString.standard
             day.index = i
             day.status = GoalStatus.none.rawValue
+            self.dayList.append(day)
+        }
+    }
+    
+    func dummyInit() {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        
+        self.title = "This is title. \nnext line"
+        self.detail = "aaaa"
+        self.identifier = Date().asString.identifier
+        self.status = GoalStatus.none.rawValue
+        self.setType = GoalTrackType.Period.rawValue
+        self.totalDays = 700
+        
+        let today = dateFormatter.date(from: "2022-04-13") ?? Date()
+        self.startDate = today.asString.standard
+        self.endDate = today.add(totalDays-1).asString.standard
+        self.failCap = 10
+        self.successCount = 119
+        self.failCount = 4
+        
+        for i in 1...totalDays {
+            let day = Day()
+            day.date = today.add(i-1).asString.standard
+            day.index = i
+            switch i {
+            case 100,102,103,105:
+                day.status = GoalStatus.fail.rawValue
+            case ...123:
+                day.status = GoalStatus.success.rawValue
+            default:
+                day.status = GoalStatus.none.rawValue
+            }
             self.dayList.append(day)
         }
     }

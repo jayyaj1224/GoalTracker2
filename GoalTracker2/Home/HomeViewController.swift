@@ -19,86 +19,36 @@ class HomeViewController: UIViewController {
 
     private let dotPageIndicator = VerticalPageIndicator()
     
-    private let topAlphaScreenView = UIView()
+    private let topGradationScreenView = UIView()
     
+    private let bottomGradationScreenView = UIView()
+
     //MARK: - Logics
     private let homeViewModel = HomeVieWModel()
     
     private let disposeBag = DisposeBag()
     
+    private var initialSettingDone = false
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        setupHome()
+        configure()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
         plusIconImageRotate180Degree()
-    }
-
-}
-
-//MARK: - UI Setups
-extension HomeViewController {
-    private func setupHome() {
-        view.backgroundColor = .crayon
-        edgesForExtendedLayout = [.top, .bottom]
-        modalTransitionStyle = .coverVertical
-        modalPresentationStyle = .automatic
         
-        layoutComponents()
-        collectionViewBind()
-        messageBarBind()
-        addButtonTargets()
-    }
-    
-    private func collectionViewBind() {
-        homeViewModel.goalViewModelsRelay
-            .bind(to: goalCircularCollectionView.rx.items)(homeViewModel.cellFactory)
-            .disposed(by: disposeBag)
-    }
-    
-    private func messageBarBind() {
-        messageBar.mock_setMessage()
-    }
-    
-    private func layoutComponents() {
-        [goalCircularCollectionView, dotPageIndicator, plusRotatingButtonView, topAlphaScreenView, messageBar]
-            .forEach { components in
-                self.view.addSubview(components)
-            }
-
-        goalCircularCollectionView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview()
-            make.centerY.equalToSuperview()
-            make.height.equalTo(K.singleRowHeight)
-        }
-
-        topAlphaScreenView.snp.makeConstraints { make in
-            make.top.leading.trailing.equalToSuperview()
-            make.bottom.equalTo(self.goalCircularCollectionView.snp.top).offset(100)
-        }
-        
-        plusRotatingButtonView.snp.makeConstraints { make in
-            make.size.equalTo(40)
-            make.trailing.equalToSuperview().inset(18)
-            make.bottom.equalToSuperview().inset((K.hasNotch ? 125 : 86)*K.ratioFactor)
-        }
-
-        messageBar.snp.makeConstraints { make in
-            make.height.equalTo(50*K.ratioFactor)
-            make.leading.trailing.equalToSuperview().inset(18)
-            make.bottom.equalToSuperview().inset((K.hasNotch ? 59 : 20)*K.ratioFactor)
-        }
-
-        dotPageIndicator.snp.makeConstraints { make in
-            make.centerY.equalTo(goalCircularCollectionView)
-            make.leading.equalTo(goalCircularCollectionView).inset(14)
+        if initialSettingDone == false {
+            addGradient()
+            
+            initialSettingDone = true
         }
     }
-    
+
+
 //MARK: -  Button Actions
     private func addButtonTargets() {
         plusRotatingButtonView.addTarget(self, action: #selector(plusButtonTapped), for: .touchUpInside)
@@ -154,5 +104,95 @@ extension HomeViewController {
         } completion: { _ in
             plusIconImage.transform = .identity
         }
+    }
+}
+
+//MARK: - Initial UI Setting
+extension HomeViewController {
+    private func configure() {
+        view.backgroundColor = .crayon
+        edgesForExtendedLayout = [.top, .bottom]
+        modalTransitionStyle = .coverVertical
+        modalPresentationStyle = .automatic
+        
+        layoutComponents()
+        collectionViewBind()
+        messageBarBind()
+        addButtonTargets()
+    }
+    
+    private func collectionViewBind() {
+        homeViewModel.goalViewModelsRelay
+            .bind(to: goalCircularCollectionView.rx.items)(homeViewModel.cellFactory)
+            .disposed(by: disposeBag)
+        
+        homeViewModel.collectionViewDidScrollSignal = goalCircularCollectionView.rx.didScroll
+            .share()
+            .asSignal(onErrorSignalWith: .empty())
+    }
+    
+    private func messageBarBind() {
+        messageBar.mock_setMessage()
+    }
+    
+    private func layoutComponents() {
+        [
+            goalCircularCollectionView, dotPageIndicator, topGradationScreenView, bottomGradationScreenView, plusRotatingButtonView, messageBar
+        ]
+            .forEach(view.addSubview(_:))
+
+        goalCircularCollectionView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview()
+            make.centerY.equalToSuperview()
+            make.height.equalTo(K.singleRowHeight)
+        }
+
+        topGradationScreenView.snp.makeConstraints { make in
+            make.top.leading.trailing.equalToSuperview()
+            make.bottom.equalTo(self.goalCircularCollectionView.snp.top).offset(100)
+        }
+        
+        bottomGradationScreenView.snp.makeConstraints { make in
+            make.leading.trailing.bottom.equalToSuperview()
+            make.top.equalTo(messageBar).offset(-80)
+        }
+        
+        plusRotatingButtonView.snp.makeConstraints { make in
+            make.size.equalTo(40)
+            make.trailing.equalToSuperview().inset(18)
+            make.bottom.equalToSuperview().inset((K.hasNotch ? 125 : 86)*K.ratioFactor)
+        }
+
+        messageBar.snp.makeConstraints { make in
+            make.height.equalTo(50*K.ratioFactor)
+            make.leading.trailing.equalToSuperview().inset(18)
+            make.bottom.equalToSuperview().inset((K.hasNotch ? 59 : 20)*K.ratioFactor)
+        }
+
+        dotPageIndicator.snp.makeConstraints { make in
+            make.centerY.equalTo(goalCircularCollectionView)
+            make.leading.equalTo(goalCircularCollectionView).inset(14)
+        }
+    }
+    
+    private func addGradient() {
+        let topLayer = CAGradientLayer()
+        topLayer.colors = [
+            UIColor.crayon.cgColor,
+            UIColor.crayon.withAlphaComponent(0).cgColor
+        ]
+        topLayer.locations = [0.0, 0.7]
+        topLayer.frame = topGradationScreenView.bounds
+        topGradationScreenView.layer.addSublayer(topLayer)
+        
+        
+        let bottomLayer = CAGradientLayer()
+        bottomLayer.colors = [
+            UIColor.crayon.withAlphaComponent(0).cgColor,
+            UIColor.crayon.cgColor
+        ]
+        bottomLayer.locations = [0.0, 1.0]
+        bottomLayer.frame = bottomGradationScreenView.bounds
+        bottomGradationScreenView.layer.addSublayer(bottomLayer)
     }
 }

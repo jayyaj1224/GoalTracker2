@@ -21,7 +21,7 @@ class CircularCollectionView: UICollectionView {
     init() {
         super.init(frame: .zero, collectionViewLayout: CircularLayout())
         
-        self.register(HomeCircularGoalCell.self, forCellWithReuseIdentifier: "CircleGoalCell")
+        self.register(GoalCircleCell.self, forCellWithReuseIdentifier: "GoalCircleCell")
         self.backgroundColor = .crayon
         self.isPagingEnabled = true
         self.clipsToBounds = false

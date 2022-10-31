@@ -120,6 +120,8 @@ class PlusMenuViewController: UIViewController {
     @objc private func deleteGoalButtonTapped(_ sender: UIButton) {
         print("deleteGoalButtonTapped")
         GoalManager.shared.deleteAll()
+        
+        dismiss(animated: false)
     }
     
     @objc private func addGoalButtonTapped(_ sender: UIButton) {
