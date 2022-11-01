@@ -11,7 +11,7 @@ import RxCocoa
 
 class HomeViewController: UIViewController {
     //MARK: - UI Components
-    private let goalCircularCollectionView = CircularCollectionView()
+    let goalCircularCollectionView = CircularCollectionView()
     
     private let plusRotatingButtonView = RotatingButtonView(imageName: "plus.neumorphism")
 
@@ -19,10 +19,24 @@ class HomeViewController: UIViewController {
 
     private let dotPageIndicator = VerticalPageIndicator()
     
-    private let topGradationScreenView = UIView()
+    private let topTransparentScreenView = UIView()
     
-    private let bottomGradationScreenView = UIView()
-
+    private let bottomTransparentScreenView = UIView()
+    
+    let topScreenView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .crayon
+        view.alpha = 0
+        return view
+    }()
+    
+    let bottomScreenView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .crayon
+        view.alpha = 0
+        return view
+    }()
+    
     //MARK: - Logics
     private let homeViewModel = HomeVieWModel()
     
@@ -77,17 +91,11 @@ class HomeViewController: UIViewController {
         
         Observable
             .zip(
-                newGoalSaved,
-                plusMenuDismissed
+                newGoalSaved.asObservable(),
+                plusMenuDismissed.asObservable()
             )
-            .subscribe(onNext: { [weak self] _ in
-                let y = self?.goalCircularCollectionView.contentSize.height ?? 0
-                let rect = CGRect(x: 0, y: y-K.singleRowHeight, width: 10, height: K.singleRowHeight)
-                
-                DispatchQueue.main.async {
-                    self?.goalCircularCollectionView.scrollRectToVisible(rect, animated: true)
-                }
-            })
+            .flatMap { _ in return Observable.just(()) }
+            .subscribe(self.rx.scrollToAddedGoal)
             .disposed(by: disposeBag)
         
        
@@ -107,6 +115,40 @@ class HomeViewController: UIViewController {
     }
 }
 
+//MARK: - Reative Extension
+
+extension Reactive where Base: HomeViewController {
+    var hideScreenViewsWithOffsetX: Binder<CGFloat> {
+        Binder(base) {base, x in
+            var alpha: CGFloat = 0
+            
+            switch x {
+            case ..<50:
+                alpha = 0
+            case 50...400:
+                alpha = (x+50)/400
+            default:
+                alpha = 1
+            }
+            
+            [base.topScreenView, base.bottomScreenView]
+                .forEach { $0.alpha = alpha}
+        }
+    }
+    
+    var scrollToAddedGoal: Binder<Void> {
+        Binder(base) {base, goal in
+            let y = base.goalCircularCollectionView.contentSize.height
+            let rect = CGRect(x: 0, y: y-K.singleRowHeight, width: 10, height: K.singleRowHeight)
+            
+            DispatchQueue.main.async {
+                base.goalCircularCollectionView.scrollRectToVisible(rect, animated: true)
+            }
+        }
+    }
+}
+
+
 //MARK: - Initial UI Setting
 extension HomeViewController {
     private func configure() {
@@ -123,12 +165,26 @@ extension HomeViewController {
     
     private func collectionViewBind() {
         homeViewModel.goalViewModelsRelay
-            .bind(to: goalCircularCollectionView.rx.items)(homeViewModel.cellFactory)
+            .bind(to: goalCircularCollectionView.rx.items) { [weak self] cv, row, viewModel in
+                let cell = cv.dequeueReusableCell(withReuseIdentifier: "GoalCircleCell", for: IndexPath(row: row, section: 0))
+                
+                guard let cell = cell as? GoalCircleCell, let self = self else {
+                    return UICollectionViewCell()
+                }
+                
+                cell.setupCell(viewModel)
+                
+                self.goalCircularCollectionView.rx.didScroll
+                    .bind(to: cell.rx.setContentOffsetZero)
+                    .disposed(by: cell.reuseBag)
+                
+                cell.goalDidScrollToXSignal
+                    .emit(to: self.rx.hideScreenViewsWithOffsetX)
+                    .disposed(by: cell.disposeBag)
+                
+                return cell
+            }
             .disposed(by: disposeBag)
-        
-        homeViewModel.collectionViewDidScrollSignal = goalCircularCollectionView.rx.didScroll
-            .share()
-            .asSignal(onErrorSignalWith: .empty())
     }
     
     private func messageBarBind() {
@@ -137,7 +193,11 @@ extension HomeViewController {
     
     private func layoutComponents() {
         [
-            goalCircularCollectionView, dotPageIndicator, topGradationScreenView, bottomGradationScreenView, plusRotatingButtonView, messageBar
+            goalCircularCollectionView,
+            dotPageIndicator,
+            topTransparentScreenView,       bottomTransparentScreenView,
+            topScreenView,                  bottomScreenView,
+            messageBar,                     plusRotatingButtonView
         ]
             .forEach(view.addSubview(_:))
 
@@ -147,14 +207,22 @@ extension HomeViewController {
             make.height.equalTo(K.singleRowHeight)
         }
 
-        topGradationScreenView.snp.makeConstraints { make in
+        topTransparentScreenView.snp.makeConstraints { make in
             make.top.leading.trailing.equalToSuperview()
             make.bottom.equalTo(self.goalCircularCollectionView.snp.top).offset(100)
         }
         
-        bottomGradationScreenView.snp.makeConstraints { make in
+        bottomTransparentScreenView.snp.makeConstraints { make in
             make.leading.trailing.bottom.equalToSuperview()
             make.top.equalTo(messageBar).offset(-80)
+        }
+        
+        topScreenView.snp.makeConstraints { make in
+            make.edges.equalTo(topTransparentScreenView)
+        }
+        
+        bottomScreenView.snp.makeConstraints { make in
+            make.edges.equalTo(bottomTransparentScreenView)
         }
         
         plusRotatingButtonView.snp.makeConstraints { make in
@@ -182,8 +250,8 @@ extension HomeViewController {
             UIColor.crayon.withAlphaComponent(0).cgColor
         ]
         topLayer.locations = [0.0, 0.7]
-        topLayer.frame = topGradationScreenView.bounds
-        topGradationScreenView.layer.addSublayer(topLayer)
+        topLayer.frame = topTransparentScreenView.bounds
+        topTransparentScreenView.layer.addSublayer(topLayer)
         
         
         let bottomLayer = CAGradientLayer()
@@ -192,7 +260,7 @@ extension HomeViewController {
             UIColor.crayon.cgColor
         ]
         bottomLayer.locations = [0.0, 1.0]
-        bottomLayer.frame = bottomGradationScreenView.bounds
-        bottomGradationScreenView.layer.addSublayer(bottomLayer)
+        bottomLayer.frame = bottomTransparentScreenView.bounds
+        bottomTransparentScreenView.layer.addSublayer(bottomLayer)
     }
 }

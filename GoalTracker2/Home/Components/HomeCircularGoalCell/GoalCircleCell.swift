@@ -35,7 +35,7 @@ class GoalCircleCell: UICollectionViewCell {
     private let doubleTapView = UIView()
     
     /// current goal's scroll 'x' offset
-    var goalDidScrollToX: Signal<CGFloat>!
+    var goalDidScrollToXSignal: Signal<CGFloat>!
     
     let disposeBag = DisposeBag()
     
@@ -95,13 +95,11 @@ extension GoalCircleCell {
     }
     
     private func bind() {
-        goalDidScrollToX = scrollView.rx.didScroll
+        goalDidScrollToXSignal = scrollView.rx.didScroll
             .withLatestFrom(scrollView.rx.contentOffset)
             .map { $0.x }
-//            .share()
+            .share()
             .asSignal(onErrorSignalWith: .empty())
-        
-        
     }
     
     private func addTargets() {
