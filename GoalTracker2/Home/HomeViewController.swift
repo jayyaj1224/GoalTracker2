@@ -40,6 +40,10 @@ class HomeViewController: UIViewController {
     //MARK: - Logics
     private let homeViewModel = HomeVieWModel()
     
+    private var collectionViewDidScrollSignal: Signal<Void>!
+
+    private var collectionViewIsScrollingSignal: Signal<Void>!
+    
     private let disposeBag = DisposeBag()
     
     private var initialSettingDone = false
@@ -164,6 +168,8 @@ extension HomeViewController {
     }
     
     private func collectionViewBind() {
+        collectionViewDidScrollSignal = goalCircularCollectionView.rx.didScroll.asSignal()
+        
         homeViewModel.goalViewModelsRelay
             .bind(to: goalCircularCollectionView.rx.items) { [weak self] cv, row, viewModel in
                 let cell = cv.dequeueReusableCell(withReuseIdentifier: "GoalCircleCell", for: IndexPath(row: row, section: 0))
@@ -174,15 +180,46 @@ extension HomeViewController {
                 
                 cell.setupCell(viewModel)
                 
-                self.goalCircularCollectionView.rx.didScroll
-                    .bind(to: cell.rx.setContentOffsetZero)
+                self.collectionViewDidScrollSignal
+                    .emit(to: cell.rx.setContentOffsetZero)
                     .disposed(by: cell.reuseBag)
                 
-                cell.goalDidScrollToXSignal
-                    .emit(to: self.rx.hideScreenViewsWithOffsetX)
-                    .disposed(by: cell.disposeBag)
+                
+//                let sdfa  = Observable
+//                    .merge(
+//                        cell.goalDidScrollToXSignal.asObservable(),
+//                        self.collectionViewDidScrollSignal.flatMap { _ in return .zero} as! Observable<CGFloat>
+//                    )
+                
+//                    .emit(to: self.rx.hideScreenViewsWithOffsetX)
+//                    .disposed(by: cell.disposeBag)
+                
                 
                 return cell
+            }
+            .disposed(by: disposeBag)
+        
+        goalCircularCollectionView.rx.didScroll
+            .bind {
+                print("--- didScroll \n")
+            }
+            .disposed(by: disposeBag)
+        
+        goalCircularCollectionView.rx.didEndDragging
+            .bind { bool in
+                print("--- didEndDragging: \(bool) \n")
+            }
+            .disposed(by: disposeBag)
+        
+        goalCircularCollectionView.rx.didEndDecelerating
+            .bind {
+                print("--- didEndDecelerating \n")
+            }
+            .disposed(by: disposeBag)
+        
+        goalCircularCollectionView.rx.didEndScrollingAnimation
+            .bind {
+                print("--- didEndScrollingAnimation \n")
             }
             .disposed(by: disposeBag)
     }
