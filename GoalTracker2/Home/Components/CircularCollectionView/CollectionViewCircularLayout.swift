@@ -50,22 +50,22 @@ class CircularLayout: UICollectionViewLayout {
     
     override func prepare() {
         super.prepare()
-        guard let cv = collectionView else { return }
+        guard let circularCv = collectionView as? CircularCollectionView else { return }
         
-        let currentPage = Int(cv.contentOffset.y/K.singleRowHeight)
+        let currentPage = circularCv.currentPage
         
         let rangeForPrepare = max(0, currentPage-2)...(currentPage + 3)
 
-        attributeList = (0..<cv.numberOfItems(inSection: 0))
+        attributeList = (0..<circularCv.numberOfItems(inSection: 0))
             .map { i -> UICollectionViewLayoutAttributes in
                 switch i {
                 case rangeForPrepare:
-                    let centerY = cv.contentOffset.y + (cv.bounds.height / 2.0)
+                    let centerY = circularCv.contentOffset.y + (circularCv.bounds.height / 2.0)
                     let anchorPointX = ((size.width / 2.0) + radius) / size.width
                     
                     let circularAttributes = LayoutCircularAttributes(forCellWith: IndexPath(row: i, section: 0))
                     circularAttributes.size = self.size
-                    circularAttributes.center = CGPoint(x: cv.bounds.midX+4, y: centerY)
+                    circularAttributes.center = CGPoint(x: circularCv.bounds.midX+4, y: centerY)
                     circularAttributes.angle = self.angle + (self.anglePerItem * CGFloat(i))
                     circularAttributes.anchorPoint = CGPoint(x: anchorPointX, y: 0.5)
                     return circularAttributes
@@ -73,7 +73,7 @@ class CircularLayout: UICollectionViewLayout {
                 default:
                     let attributes = UICollectionViewLayoutAttributes(forCellWith: IndexPath(row: i, section: 0))
                     attributes.size = self.size
-                    attributes.center = CGPoint(x: cv.bounds.minX, y: CGFloat(i)*K.singleRowHeight)
+                    attributes.center = CGPoint(x: circularCv.bounds.minX, y: CGFloat(i)*K.singleRowHeight)
                     return attributes
                 }
             }

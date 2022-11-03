@@ -27,7 +27,8 @@ class GoalCircle: UIView {
     
     private let processArc = ArcProcessBar()
     
-    private let goalTitleLabel: UILabel = {
+    //private
+    let goalTitleLabel: UILabel = {
         let label = UILabel()
         label.font = .sfPro(size: 16, family: .Light)
         label.adjustsFontSizeToFitWidth = true

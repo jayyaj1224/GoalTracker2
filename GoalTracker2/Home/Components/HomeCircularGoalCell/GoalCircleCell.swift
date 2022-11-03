@@ -9,6 +9,8 @@ import UIKit
 import RxSwift
 import RxCocoa
 
+var i = 0
+
 class GoalCircleCell: UICollectionViewCell {
     let scrollView: UIScrollView = {
         let scrollV = UIScrollView()
@@ -20,7 +22,8 @@ class GoalCircleCell: UICollectionViewCell {
     
     private let scrollContentView = UIView()
     
-    private let goalCircle = GoalCircle()
+    //private
+    let goalCircle = GoalCircle()
     
     private let tileBoard = TileBoardCollectionView()
     
@@ -41,9 +44,15 @@ class GoalCircleCell: UICollectionViewCell {
     
     var reuseBag = DisposeBag()
     
+    var identtt = 0
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
+        i+=1
+        identtt=i
+        
+        print("id: \(identtt)")
         configure()
     }
     
@@ -61,7 +70,8 @@ class GoalCircleCell: UICollectionViewCell {
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        
+        print("reusing:  \(identtt)")
+        print("cell count:  \(i)")
         reuseBag = DisposeBag()
     }
     
