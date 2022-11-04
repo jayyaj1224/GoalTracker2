@@ -52,7 +52,7 @@ class CircularLayout: UICollectionViewLayout {
         super.prepare()
         guard let circularCv = collectionView as? CircularCollectionView else { return }
         
-        let currentPage = circularCv.currentPage
+        let currentPage = circularCv.pageOffset
         
         let rangeForPrepare = max(0, currentPage-2)...(currentPage + 3)
 

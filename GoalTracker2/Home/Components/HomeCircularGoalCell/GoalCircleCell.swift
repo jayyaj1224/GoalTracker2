@@ -9,7 +9,7 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-var i = 0
+public var goalCircleCellCountNumber = 0
 
 class GoalCircleCell: UICollectionViewCell {
     let scrollView: UIScrollView = {
@@ -38,26 +38,35 @@ class GoalCircleCell: UICollectionViewCell {
     private let doubleTapView = UIView()
     
     /// current goal's scroll 'x' offset
-    var goalDidScrollToXSignal: Signal<CGFloat>!
+    var didScrollToXSignal: Signal<CGFloat>!
     
     let disposeBag = DisposeBag()
     
     var reuseBag = DisposeBag()
     
-    var identtt = 0
+    var cellIdentifier = 0
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        i+=1
-        identtt=i
+        goalCircleCellCountNumber+=1
+        self.cellIdentifier = goalCircleCellCountNumber
         
-        print("id: \(identtt)")
+        print("id: \(cellIdentifier)")
         configure()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+
+        reuseBag = DisposeBag()
+        
+        print("\n\nreusing:  \(cellIdentifier)")
+        print("cell count:  \(goalCircleCellCountNumber)\n\n")
     }
     
     override func apply(_ layoutAttributes: UICollectionViewLayoutAttributes) {
@@ -66,13 +75,6 @@ class GoalCircleCell: UICollectionViewCell {
             self.layer.anchorPoint = circleLayoutAtt.anchorPoint
             self.center.x += (circleLayoutAtt.anchorPoint.x - 0.5) * self.bounds.width
         }
-    }
-    
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        print("reusing:  \(identtt)")
-        print("cell count:  \(i)")
-        reuseBag = DisposeBag()
     }
     
     func setupCell(_ viewModel: GoalViewModel) {
@@ -105,7 +107,7 @@ extension GoalCircleCell {
     }
     
     private func bind() {
-        goalDidScrollToXSignal = scrollView.rx.didScroll
+        didScrollToXSignal = scrollView.rx.didScroll
             .withLatestFrom(scrollView.rx.contentOffset)
             .map { $0.x }
             .share()

@@ -40,79 +40,15 @@ class HomeViewController: UIViewController {
     //MARK: - Logics
     private let homeViewModel = HomeVieWModel()
     
-//    private var collectionViewDidScrollSignal: Signal<Void>!
+    private var collectionViewDidScrollSignal: Signal<Void>!
     
-    //1. goal scroll status 로 하나의 relay로 관리
-    /// * case:  still, isScrolling, didStartScrolling
-    enum ScrollingStatus { case still, isScrolling, didStartScrolling }
-    
-    private var goalCircularViewScrollingStatus: ScrollingStatus = .still
-    
-    
-    // 2. 각각의 signal로 각각 bind
-    private var goalCircleIsScrollingSignal: Signal<Void>!
-    private var collectionViewIsScrollingSignal: Signal<Void>!
-    
-    
-    var willBeginDragging = false
-    
-    private func scrollStatusBinding() {
-        
-        goalCircularCollectionView.rx.willBeginDragging
-            .bind {
-                print("--- willBeginDragging \n")
-                self.willBeginDragging = true
+    private var goalCircularViewIsScrolling = false {
+        didSet {
+            if goalCircularViewIsScrolling {
+                [topScreenView, bottomScreenView].forEach { $0.alpha = 0 }
             }
-            .disposed(by: disposeBag)
-        
-        goalCircularCollectionView.rx.itemHighlighted
-            .bind { dd in
-                print("--- itemHighlighted \(dd.row) \n")
-            }
-            .disposed(by: disposeBag)
-        
-        goalCircularCollectionView.rx.willDisplayCell
-            .bind { dd in
-                print("--- willDisplayCell \(dd.at.row)\n")
-            }
-            .disposed(by: disposeBag)
-        
-        goalCircularCollectionView.rx.didEndDisplayingCell
-            .bind { dd in
-                print("--- didEndDisplayingCell \(dd.at.row)\n")
-            }
-            .disposed(by: disposeBag)
-        
-        
-        goalCircularCollectionView.rx.didScroll
-            .take(while: { self.willBeginDragging })
-            .bind {
-                self.willBeginDragging = false
-                print("--- didScroll \n")
-            }
-            .disposed(by: disposeBag)
-        
-        goalCircularCollectionView.rx.didEndDragging
-            .bind { bool in
-                print("--- didEndDragging: \(bool) \n")
-            }
-            .disposed(by: disposeBag)
-        
-        goalCircularCollectionView.rx.didEndDecelerating
-            .bind {
-                print("--- didEndDecelerating \n")
-            }
-            .disposed(by: disposeBag)
-        
-        goalCircularCollectionView.rx.didEndScrollingAnimation
-            .bind {
-                print("--- didEndScrollingAnimation \n")
-            }
-            .disposed(by: disposeBag)
+        }
     }
-    
-    
-    
     
     private let disposeBag = DisposeBag()
     
@@ -127,10 +63,6 @@ class HomeViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        
-        scrollStatusBinding()
-        
-        
         plusIconImageRotate180Degree()
         
         if initialSettingDone == false {
@@ -139,7 +71,6 @@ class HomeViewController: UIViewController {
             initialSettingDone = true
         }
     }
-
 
 //MARK: -  Button Actions
     private func addButtonTargets() {
@@ -194,19 +125,20 @@ class HomeViewController: UIViewController {
 }
 
 //MARK: - Reative Extension
-
 extension Reactive where Base: HomeViewController {
-    var hideScreenViewsWithOffsetX: Binder<CGFloat> {
+    var showScreenViewsWithOffsetX: Binder<CGFloat> {
         Binder(base) {base, x in
             var alpha: CGFloat = 0
             
             switch x {
-            case ..<50:
+            case -30..<50:
                 alpha = 0
             case 50...400:
                 alpha = (x+50)/400
-            default:
+            case 400...500:
                 alpha = 1
+            default:
+                return
             }
             
             [base.topScreenView, base.bottomScreenView]
@@ -236,48 +168,58 @@ extension HomeViewController {
         modalPresentationStyle = .automatic
         
         layoutComponents()
+        
         collectionViewBind()
+        scrollStatusBind()
         messageBarBind()
+        
         addButtonTargets()
     }
     
     private func collectionViewBind() {
-//        collectionViewDidScrollSignal = goalCircularCollectionView.rx.didScroll.asSignal()
-        
-        let cv = goalCircularCollectionView
+        collectionViewDidScrollSignal = goalCircularCollectionView.rx.didScroll.asSignal()
         
         homeViewModel.goalViewModelsRelay
-            .bind(to: cv.rx.items) { [weak self] cv, row, viewModel in
+            .bind(to: goalCircularCollectionView.rx.items) { [weak self] cv, row, viewModel in
                 let cell = cv.dequeueReusableCell(withReuseIdentifier: "GoalCircleCell", for: IndexPath(row: row, section: 0))
                 
-                guard let cell = cell as? GoalCircleCell, let self = self else {
-                    return UICollectionViewCell()
-                }
+                guard let cell = cell as? GoalCircleCell, let self = self else { return cell }
                 
                 cell.setupCell(viewModel)
                 
                 cell.goalCircle.goalTitleLabel.text = "row: \(row)"
                 
+                cell.didScrollToXSignal
+                    .filter { _ in self.goalCircularViewIsScrolling == false }
+                    .emit(to: self.rx.showScreenViewsWithOffsetX)
+                    .disposed(by: cell.disposeBag)
+                
+                
+                self.collectionViewDidScrollSignal
+                    .emit(to: cell.rx.setContentOffsetZero)
+                    .disposed(by: cell.disposeBag)
+                
                 return cell
             }
             .disposed(by: disposeBag)
+    }
+    
+    
+    private func scrollStatusBind() {
+        goalCircularCollectionView.rx.willBeginDragging
+            .bind { [weak self] in
+                self?.goalCircularViewIsScrolling = true
+            }
+            .disposed(by: disposeBag)
         
-        cv.currentPageRelay
-            .bind { page in
-                let currentCell = cv.cellForItem(at: IndexPath(row: page, section: 0))
-                
-                guard let goalCircleCell = currentCell as? GoalCircleCell else {
-                    return
-                }
-                
-                cv.currentPageReuseBag = DisposeBag()
-                
-                goalCircleCell.goalDidScrollToXSignal
-                    .emit(to: self.rx.hideScreenViewsWithOffsetX)
-                    .disposed(by: cv.currentPageReuseBag)
+        goalCircularCollectionView.rx.didEndDecelerating
+            .bind { [weak self] in
+                self?.goalCircularViewIsScrolling = false
             }
             .disposed(by: disposeBag)
     }
+
+
     
     private func messageBarBind() {
         messageBar.mock_setMessage()
