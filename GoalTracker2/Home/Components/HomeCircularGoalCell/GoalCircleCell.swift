@@ -22,8 +22,7 @@ class GoalCircleCell: UICollectionViewCell {
     
     private let scrollContentView = UIView()
     
-    //private
-    let goalCircle = GoalCircle()
+    private let goalCircle = GoalCircle()
     
     private let tileBoard = TileBoardCollectionView()
     

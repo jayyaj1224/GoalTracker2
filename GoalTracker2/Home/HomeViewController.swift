@@ -13,15 +13,24 @@ class HomeViewController: UIViewController {
     //MARK: - UI Components
     let goalCircularCollectionView = CircularCollectionView()
     
-    private let plusRotatingButtonView = RotatingButtonView(imageName: "plus.neumorphism")
+    let plusRotatingButtonView = RotatingButtonView(imageName: "plus.neumorphism")
 
     private let messageBar = MessageBar()
-
-    private let dotPageIndicator = VerticalPageIndicator()
     
     private let topTransparentScreenView = UIView()
     
     private let bottomTransparentScreenView = UIView()
+    
+    let pageIndicator = VerticalPageIndicator()
+    
+    let scrollBackButton: UIButton = {
+        var configuration = UIButton.Configuration.plain()
+        configuration.image = UIImage(named: "back.neumorphism")
+        let button = UIButton()
+        button.configuration = configuration
+        button.alpha = 0
+        return button
+    }()
     
     let topScreenView: UIView = {
         let view = UIView()
@@ -40,7 +49,9 @@ class HomeViewController: UIViewController {
     //MARK: - Logics
     private let homeViewModel = HomeVieWModel()
     
-    private var collectionViewDidScrollSignal: Signal<Void>!
+    private lazy var circularScrollSignal = goalCircularCollectionView.rx.didScroll.asSignal()
+    
+    private let disposeBag = DisposeBag()
     
     private var goalCircularViewIsScrolling = false {
         didSet {
@@ -49,8 +60,6 @@ class HomeViewController: UIViewController {
             }
         }
     }
-    
-    private let disposeBag = DisposeBag()
     
     private var initialSettingDone = false
     
@@ -126,7 +135,7 @@ class HomeViewController: UIViewController {
 
 //MARK: - Reative Extension
 extension Reactive where Base: HomeViewController {
-    var showScreenViewsWithOffsetX: Binder<CGFloat> {
+    var uiChangeToScrollOffsetX: Binder<CGFloat> {
         Binder(base) {base, x in
             var alpha: CGFloat = 0
             
@@ -141,8 +150,13 @@ extension Reactive where Base: HomeViewController {
                 return
             }
             
-            [base.topScreenView, base.bottomScreenView]
-                .forEach { $0.alpha = alpha}
+            let showing = [base.topScreenView, base.bottomScreenView, base.scrollBackButton]
+            let hiding = [base.pageIndicator, base.plusRotatingButtonView]
+            let hidingFast = [base.pageIndicator]
+            
+            showing.forEach { $0.alpha = alpha}
+            hiding.forEach { $0.alpha = 1 - alpha }
+            hidingFast.forEach { $0.alpha = 1 - alpha*2.5 }
         }
     }
     
@@ -154,6 +168,12 @@ extension Reactive where Base: HomeViewController {
             DispatchQueue.main.async {
                 base.goalCircularCollectionView.scrollRectToVisible(rect, animated: true)
             }
+        }
+    }
+    
+    var setPageIndicator: Binder<Int> {
+        Binder(base) { base, goalCount in
+            base.pageIndicator.set(numberOfPages: goalCount)
         }
     }
 }
@@ -172,13 +192,12 @@ extension HomeViewController {
         collectionViewBind()
         scrollStatusBind()
         messageBarBind()
+        pageIndicatorBind()
         
         addButtonTargets()
     }
     
     private func collectionViewBind() {
-        collectionViewDidScrollSignal = goalCircularCollectionView.rx.didScroll.asSignal()
-        
         homeViewModel.goalViewModelsRelay
             .bind(to: goalCircularCollectionView.rx.items) { [weak self] cv, row, viewModel in
                 let cell = cv.dequeueReusableCell(withReuseIdentifier: "GoalCircleCell", for: IndexPath(row: row, section: 0))
@@ -187,15 +206,16 @@ extension HomeViewController {
                 
                 cell.setupCell(viewModel)
                 
-                cell.goalCircle.goalTitleLabel.text = "row: \(row)"
-                
                 cell.didScrollToXSignal
                     .filter { _ in self.goalCircularViewIsScrolling == false }
-                    .emit(to: self.rx.showScreenViewsWithOffsetX)
+                    .emit(to: self.rx.uiChangeToScrollOffsetX)
                     .disposed(by: cell.disposeBag)
                 
-                
-                self.collectionViewDidScrollSignal
+                Signal
+                    .merge(
+                        self.scrollBackButton.rx.tap.asSignal(),
+                        self.circularScrollSignal
+                    )
                     .emit(to: cell.rx.setContentOffsetZero)
                     .disposed(by: cell.disposeBag)
                 
@@ -212,13 +232,36 @@ extension HomeViewController {
             }
             .disposed(by: disposeBag)
         
-        goalCircularCollectionView.rx.didEndDecelerating
+        let didEndDecelerating = goalCircularCollectionView
+            .rx.didEndDecelerating
+            .share()
+        
+        didEndDecelerating
             .bind { [weak self] in
                 self?.goalCircularViewIsScrolling = false
             }
             .disposed(by: disposeBag)
+        
+        didEndDecelerating
+            .withLatestFrom(goalCircularCollectionView.rx.contentOffset)
+            .subscribe(pageIndicator.rx.shouldSetPage)
+            .disposed(by: disposeBag)
+        
+        circularScrollSignal
+            .emit { _ in
+                self.scrollBackButton.alpha = 0
+                self.plusRotatingButtonView.alpha = 1
+            }
+            .disposed(by: disposeBag)
     }
 
+    private func pageIndicatorBind() {
+        homeViewModel
+            .goalViewModelsRelay
+            .flatMap { Observable.just($0.count) }
+            .bind(to: self.rx.setPageIndicator)
+            .disposed(by: disposeBag)
+    }
 
     
     private func messageBarBind() {
@@ -228,10 +271,11 @@ extension HomeViewController {
     private func layoutComponents() {
         [
             goalCircularCollectionView,
-            dotPageIndicator,
+            pageIndicator,
             topTransparentScreenView,       bottomTransparentScreenView,
             topScreenView,                  bottomScreenView,
-            messageBar,                     plusRotatingButtonView
+            messageBar,
+            plusRotatingButtonView,         scrollBackButton
         ]
             .forEach(view.addSubview(_:))
 
@@ -270,8 +314,14 @@ extension HomeViewController {
             make.leading.trailing.equalToSuperview().inset(18)
             make.bottom.equalToSuperview().inset((K.hasNotch ? 59 : 20)*K.ratioFactor)
         }
+        
+        scrollBackButton.snp.makeConstraints { make in
+            make.size.equalTo(40)
+            make.trailing.equalTo(plusRotatingButtonView)
+            make.bottom.equalTo(plusRotatingButtonView.snp.top).offset(-10)
+        }
 
-        dotPageIndicator.snp.makeConstraints { make in
+        pageIndicator.snp.makeConstraints { make in
             make.centerY.equalTo(goalCircularCollectionView)
             make.leading.equalTo(goalCircularCollectionView).inset(14)
         }

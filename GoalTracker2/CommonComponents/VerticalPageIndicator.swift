@@ -69,8 +69,8 @@ class VerticalPageIndicator: UIView {
     
     private func indicator() -> UIImageView {
         let indicator = UIImageView()
-        indicator.image = UIImage(named: "indicator_other")
-        indicator.highlightedImage = UIImage(named: "indicator_selected")
+        indicator.image = UIImage(named: "indicator.unselected")
+        indicator.highlightedImage = UIImage(named: "indicator.selected")
         indicator.snp.makeConstraints { make in
             make.size.equalTo(indicatorSize)
         }

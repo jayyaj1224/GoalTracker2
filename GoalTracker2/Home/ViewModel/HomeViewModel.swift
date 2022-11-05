@@ -20,10 +20,7 @@ class HomeVieWModel: ReactiveCompatible {
         let goalViewModels = GoalManager.shared.goals
             .compactMap(GoalViewModel.init)
         
-        let first = goalViewModels.first!
-        let arrr = Array(repeating: first, count: 30)
-        
-        goalViewModelsRelay.accept(arrr)
+        goalViewModelsRelay.accept(goalViewModels)
     }
 }
 
