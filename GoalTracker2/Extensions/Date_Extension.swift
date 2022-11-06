@@ -144,4 +144,8 @@ public struct DateToString {
     var standard: String {
         return self.format("yyyyMMdd")
     }
+    
+    var ddMMMEEEE: String {
+        return self.format("dd MMM, EEEE")
+    }
 }

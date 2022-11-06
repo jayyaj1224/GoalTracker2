@@ -13,13 +13,50 @@ class HomeViewController: UIViewController {
     //MARK: - UI Components
     let goalCircularCollectionView = CircularCollectionView()
     
-    let plusRotatingButtonView = RotatingButtonView(imageName: "plus.neumorphism")
+    let plusRotatingButton: NeumorphicButton = {
+        let button = NeumorphicButton(color: .crayon, shadowSize: .medium)
+        button.layer.cornerRadius = 20
+        return button
+    }()
+    
+    lazy var plusRotatingButtonInsideImageView: UIImageView = {
+        let imageView = UIImageView(imageName: "plus.neumorphism")
+        plusRotatingButton.addSubview(imageView)
+        imageView.snp.makeConstraints { make in
+            make.center.equalToSuperview()
+            make.size.equalTo(22)
+        }
+        return imageView
+    }()
 
     private let messageBar = MessageBar()
     
     private let topTransparentScreenView = UIView()
     
     private let bottomTransparentScreenView = UIView()
+    
+    private let topCalendarButton: NeumorphicButton = {
+        let button = NeumorphicButton(color: .crayon, shadowSize: .medium)
+        button.layer.cornerRadius = 18
+        var configuration = UIButton.Configuration.plain()
+        configuration.image = UIImage(named: "calendar.neumorphism")
+        button.configuration = configuration
+        return button
+    }()
+    
+    private let bottomDateCalendarButton: UIButton = {
+        var configuration = UIButton.Configuration.plain()
+        configuration.image = UIImage(named: "calendar.neumorphism")
+        configuration.imagePlacement = .leading
+        configuration.titleAlignment = .trailing
+        configuration.imagePadding = 6
+        configuration.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10)
+        let button = UIButton()
+        button.configuration = configuration
+        button.backgroundColor = .crayon.withAlphaComponent(0.6)
+        button.layer.cornerRadius = 10
+        return button
+    }()
     
     let pageIndicator = VerticalPageIndicator()
     
@@ -83,7 +120,9 @@ class HomeViewController: UIViewController {
 
 //MARK: -  Button Actions
     private func addButtonTargets() {
-        plusRotatingButtonView.addTarget(self, action: #selector(plusButtonTapped), for: .touchUpInside)
+        plusRotatingButton.addTarget(self, action: #selector(plusButtonTapped), for: .touchUpInside)
+        topCalendarButton.addTarget(self, action: #selector(calenderButtonsTapped), for: .touchUpInside)
+        bottomDateCalendarButton.addTarget(self, action: #selector(calenderButtonsTapped), for: .touchUpInside)
     }
     
     // selector functions
@@ -103,7 +142,7 @@ class HomeViewController: UIViewController {
         
         plusMenuDismissed
             .subscribe(onNext: { [weak self] _ in
-                self?.plusRotatingButtonView.iconImageView.alpha = 1
+                self?.plusRotatingButtonInsideImageView.alpha = 1
             })
             .disposed(by: disposeBag)
         
@@ -118,18 +157,22 @@ class HomeViewController: UIViewController {
         
        
         present(plusMenuViewController, animated: false) {
-            self.plusRotatingButtonView.iconImageView.alpha = 0
+            self.plusRotatingButtonInsideImageView.alpha = 0
         }
     }
     
     private func plusIconImageRotate180Degree() {
-        let plusIconImage = self.plusRotatingButtonView.iconImageView
-        
         UIView.animate(withDuration: 0.3, delay: 0, options: .curveLinear) {
-            plusIconImage.transform = CGAffineTransform(rotationAngle: 180.pi.cgFloat)
+            self.plusRotatingButtonInsideImageView.transform = CGAffineTransform(rotationAngle: 180.pi.cgFloat)
         } completion: { _ in
-            plusIconImage.transform = .identity
+            self.plusRotatingButtonInsideImageView.transform = .identity
         }
+    }
+    
+    @objc private func calenderButtonsTapped(_ sender: UIButton) {
+        let calendarViewController = CalendarViewController()
+        
+        navigationController?.pushViewController(calendarViewController, animated: true)
     }
 }
 
@@ -142,16 +185,16 @@ extension Reactive where Base: HomeViewController {
             switch x {
             case -30..<50:
                 alpha = 0
-            case 50...400:
-                alpha = (x+50)/400
-            case 400...500:
+            case 50...300:
+                alpha = (x+50)/300
+            case 300...500:
                 alpha = 1
             default:
                 return
             }
             
             let showing = [base.topScreenView, base.bottomScreenView, base.scrollBackButton]
-            let hiding = [base.pageIndicator, base.plusRotatingButtonView]
+            let hiding = [base.pageIndicator, base.plusRotatingButton]
             let hidingFast = [base.pageIndicator]
             
             showing.forEach { $0.alpha = alpha}
@@ -195,6 +238,18 @@ extension HomeViewController {
         pageIndicatorBind()
         
         addButtonTargets()
+        setDateCalendarButtonTitle()
+    }
+    
+    private func setDateCalendarButtonTitle() {
+        let attributtedTitle = AttributedString(
+            Date().asString.ddMMMEEEE,
+            attributes: AttributeContainer([
+                .font: UIFont.sfPro(size: 10, family: .Medium),
+                .foregroundColor: UIColor.grayC
+            ])
+        )
+        bottomDateCalendarButton.configuration?.attributedTitle = attributtedTitle
     }
     
     private func collectionViewBind() {
@@ -250,7 +305,7 @@ extension HomeViewController {
         circularScrollSignal
             .emit { _ in
                 self.scrollBackButton.alpha = 0
-                self.plusRotatingButtonView.alpha = 1
+                self.plusRotatingButton.alpha = 1
             }
             .disposed(by: disposeBag)
     }
@@ -270,12 +325,12 @@ extension HomeViewController {
     
     private func layoutComponents() {
         [
-            goalCircularCollectionView,
-            pageIndicator,
+            goalCircularCollectionView,     pageIndicator,
             topTransparentScreenView,       bottomTransparentScreenView,
             topScreenView,                  bottomScreenView,
-            messageBar,
-            plusRotatingButtonView,         scrollBackButton
+            messageBar,                     plusRotatingButton,
+            scrollBackButton,               topCalendarButton,
+            bottomDateCalendarButton
         ]
             .forEach(view.addSubview(_:))
 
@@ -303,7 +358,7 @@ extension HomeViewController {
             make.edges.equalTo(bottomTransparentScreenView)
         }
         
-        plusRotatingButtonView.snp.makeConstraints { make in
+        plusRotatingButton.snp.makeConstraints { make in
             make.size.equalTo(40)
             make.trailing.equalToSuperview().inset(18)
             make.bottom.equalToSuperview().inset((K.hasNotch ? 125 : 86)*K.ratioFactor)
@@ -317,13 +372,26 @@ extension HomeViewController {
         
         scrollBackButton.snp.makeConstraints { make in
             make.size.equalTo(40)
-            make.trailing.equalTo(plusRotatingButtonView)
-            make.bottom.equalTo(plusRotatingButtonView.snp.top).offset(-10)
+            make.trailing.equalTo(plusRotatingButton)
+            make.bottom.equalTo(plusRotatingButton.snp.top).offset(-10)
         }
 
         pageIndicator.snp.makeConstraints { make in
             make.centerY.equalTo(goalCircularCollectionView)
             make.leading.equalTo(goalCircularCollectionView).inset(14)
+        }
+        
+        topCalendarButton.snp.makeConstraints { make in
+            make.size.equalTo(36)
+            make.trailing.equalTo(plusRotatingButton)
+            make.top.equalToSuperview().inset(70)
+        }
+        
+        bottomDateCalendarButton.snp.makeConstraints { make in
+            make.leading.equalTo(messageBar)
+            make.bottom.equalTo(messageBar.snp.top)
+            make.height.equalTo(28)
+            // automatic width
         }
     }
     
@@ -341,9 +409,9 @@ extension HomeViewController {
         let bottomLayer = CAGradientLayer()
         bottomLayer.colors = [
             UIColor.crayon.withAlphaComponent(0).cgColor,
-            UIColor.crayon.cgColor
+            UIColor.crayon.withAlphaComponent(0.85).cgColor
         ]
-        bottomLayer.locations = [0.0, 1.0]
+        bottomLayer.locations = [0.0, 0.7]
         bottomLayer.frame = bottomTransparentScreenView.bounds
         bottomTransparentScreenView.layer.addSublayer(bottomLayer)
     }

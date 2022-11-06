@@ -59,11 +59,20 @@ class PlusMenuViewController: UIViewController {
         return view
     }()
     
-    private let cancelRotatingButton: RotatingButtonView = {
-        let button = RotatingButtonView(imageName: "x.neumorphism")
-        button.iconImageView.alpha = 0
-        button.setShadowOpacity(0.15)
+    private let cancelRotatingButton: NeumorphicButton = {
+        let button = NeumorphicButton(color: .crayon, shadowSize: .medium)
+        button.layer.cornerRadius = 20
         return button
+    }()
+    
+    private lazy var cancelRotatingButtonContainingImageView: UIImageView = {
+        let imageView = UIImageView(imageName: "x.neumorphism")
+        cancelRotatingButton.addSubview(imageView)
+        imageView.snp.makeConstraints { make in
+            make.center.equalToSuperview()
+            make.size.equalTo(22)
+        }
+        return imageView
     }()
     
     private let plusIconImageView = UIImageView(imageName: "plus.neumorphism")
@@ -146,7 +155,7 @@ class PlusMenuViewController: UIViewController {
         //feedBackGenerator.impactOccurred()
 
         UIView.animate(withDuration: 0.3, delay: 0, options: .curveLinear) {
-            self.cancelRotatingButton.iconImageView.transform = CGAffineTransform(rotationAngle: -135.pi.cgFloat)
+            self.cancelRotatingButtonContainingImageView.transform = CGAffineTransform(rotationAngle: -135.pi.cgFloat)
             self.buttonStackView.transform = CGAffineTransform(translationX: 0, y: 50)
             self.backgroundDimView.alpha = 0
             self.buttonStackView.alpha = 0
@@ -162,7 +171,7 @@ class PlusMenuViewController: UIViewController {
             self.backgroundDimView.alpha = 1
             
         } completion: { _ in
-            self.cancelRotatingButton.iconImageView.alpha = 1
+            self.cancelRotatingButtonContainingImageView.alpha = 1
             self.plusIconImageView.alpha = 0
         }
     }
