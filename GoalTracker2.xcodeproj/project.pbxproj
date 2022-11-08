@@ -34,6 +34,7 @@
 		621AEB0628CF058B00D53F2C /* UIView_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 621AEB0528CF058B00D53F2C /* UIView_Extension.swift */; };
 		621AEB0828CF05A000D53F2C /* UIButton_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 621AEB0728CF05A000D53F2C /* UIButton_Extension.swift */; };
 		621AEB0A28CF089400D53F2C /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 621AEB0928CF089400D53F2C /* HomeViewModel.swift */; };
+		621FEA97291A687A00AC6DDC /* FlapScoreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 621FEA96291A687A00AC6DDC /* FlapScoreView.swift */; };
 		6226909328D5896B00E4AA01 /* NotoSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6226907728D5896A00E4AA01 /* NotoSans-Regular.ttf */; };
 		6226909428D5896B00E4AA01 /* NotoSans-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6226907828D5896A00E4AA01 /* NotoSans-Medium.ttf */; };
 		6226909528D5896B00E4AA01 /* NotoSans-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6226907928D5896A00E4AA01 /* NotoSans-Black.ttf */; };
@@ -146,6 +147,7 @@
 		621AEB0528CF058B00D53F2C /* UIView_Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIView_Extension.swift; sourceTree = "<group>"; };
 		621AEB0728CF05A000D53F2C /* UIButton_Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIButton_Extension.swift; sourceTree = "<group>"; };
 		621AEB0928CF089400D53F2C /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
+		621FEA96291A687A00AC6DDC /* FlapScoreView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlapScoreView.swift; sourceTree = "<group>"; };
 		6226907728D5896A00E4AA01 /* NotoSans-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NotoSans-Regular.ttf"; sourceTree = "<group>"; };
 		6226907828D5896A00E4AA01 /* NotoSans-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NotoSans-Medium.ttf"; sourceTree = "<group>"; };
 		6226907928D5896A00E4AA01 /* NotoSans-Black.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NotoSans-Black.ttf"; sourceTree = "<group>"; };
@@ -314,6 +316,14 @@
 			path = CommonComponents;
 			sourceTree = "<group>";
 		};
+		621FEA95291A686600AC6DDC /* FlapScoreView */ = {
+			isa = PBXGroup;
+			children = (
+				621FEA96291A687A00AC6DDC /* FlapScoreView.swift */,
+			);
+			path = FlapScoreView;
+			sourceTree = "<group>";
+		};
 		6226907528D5895900E4AA01 /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
@@ -396,6 +406,7 @@
 			children = (
 				621AEAE328CEF74300D53F2C /* GoalCircle.swift */,
 				621AEAE228CEF74300D53F2C /* ArcProcessBar.swift */,
+				621FEA95291A686600AC6DDC /* FlapScoreView */,
 				622697EF290E9FA1007754CA /* SuccessFailCountView */,
 			);
 			path = GoalCircle;
@@ -894,6 +905,7 @@
 				624E91E728FD6EC400E15735 /* PeriodSettingModel.swift in Sources */,
 				624453E828FD3D0F003A9117 /* PeriodSettingViewModel.swift in Sources */,
 				622697F6290EC7F1007754CA /* TileViewModel.swift in Sources */,
+				621FEA97291A687A00AC6DDC /* FlapScoreView.swift in Sources */,
 				621AEAEE28CEF74300D53F2C /* TileCell.swift in Sources */,
 				AA9990CF28D1A1C800FE4A26 /* NeumorphicView.swift in Sources */,
 				621AEAF128CEF74300D53F2C /* TrebleFigurePannel.swift in Sources */,
