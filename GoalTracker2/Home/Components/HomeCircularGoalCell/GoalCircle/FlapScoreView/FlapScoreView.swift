@@ -14,6 +14,20 @@ class FlapScoreView: UIView {
         return imageView
     }()
     
+    private let successScoreLabel: UILabel = {
+        let label = UILabel()
+        label.text = "000"
+        label.withKern(value: 1.07)
+        return label
+    }()
+    
+    private let failScoreLabel: UILabel = {
+        let label = UILabel()
+        label.text = "000"
+        label.withKern(value: 1.07)
+        return label
+    }()
+    
     init() {
         super.init(frame: .zero)
         
