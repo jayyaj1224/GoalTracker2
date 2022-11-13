@@ -76,6 +76,37 @@ class FlapScoreView: UIView {
     }()
     
     
+    private let leftDateCalendarButton: UIButton = {
+        var configuration = UIButton.Configuration.plain()
+        configuration.image = UIImage(named: "calendar.neumorphism")
+        configuration.imagePlacement = .leading
+        configuration.titleAlignment = .trailing
+        configuration.imagePadding = 6
+        configuration.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10)
+        let button = UIButton()
+        button.configuration = configuration
+        button.backgroundColor = .crayon.withAlphaComponent(0.6)
+        button.layer.cornerRadius = 10
+        return button
+    }()
+    
+    
+    private let rightDateCalendarButton: UIButton = {
+        var configuration = UIButton.Configuration.plain()
+        configuration.image = UIImage(named: "calendar.neumorphism")
+        configuration.imagePlacement = .leading
+        configuration.titleAlignment = .trailing
+        configuration.imagePadding = 6
+        configuration.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10)
+        let button = UIButton()
+        button.configuration = configuration
+        button.backgroundColor = .crayon.withAlphaComponent(0.6)
+        button.layer.cornerRadius = 10
+        return button
+    }()
+    
+    
+    
     init() {
         super.init(frame: .zero)
         
@@ -84,5 +115,7 @@ class FlapScoreView: UIView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    
     
 }
