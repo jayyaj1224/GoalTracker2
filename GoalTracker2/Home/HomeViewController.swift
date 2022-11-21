@@ -127,8 +127,7 @@ class HomeViewController: UIViewController {
     
     // selector functions
     @objc private func plusButtonTapped() {
-        let feedBackGenerator = UIImpactFeedbackGenerator(style: .medium)
-        feedBackGenerator.impactOccurred()
+        UIImpactFeedbackGenerator(style: .medium).impactOccurred()
         
         let plusMenuViewController = PlusMenuViewController()
         plusMenuViewController.modalPresentationStyle = .overFullScreen
@@ -300,6 +299,12 @@ extension HomeViewController {
         didEndDecelerating
             .withLatestFrom(goalCircularCollectionView.rx.contentOffset)
             .subscribe(pageIndicator.rx.shouldSetPage)
+            .disposed(by: disposeBag)
+        
+        goalCircularCollectionView.rx.didEndDragging
+            .subscribe(onNext: { _ in
+                UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+            })
             .disposed(by: disposeBag)
         
         circularScrollSignal
