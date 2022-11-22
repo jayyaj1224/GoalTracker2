@@ -100,6 +100,8 @@ class HomeViewController: UIViewController {
     
     private var initialSettingDone = false
     
+    var horizontalDidStartScrollBuzzed = false
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -202,6 +204,21 @@ extension Reactive where Base: HomeViewController {
         }
     }
     
+    var buzzToScrollOffsetX: Binder<CGFloat> {
+        Binder(base) { base, x in
+
+            switch x {
+            case 10...20:
+                if base.horizontalDidStartScrollBuzzed == false {
+                    UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+                    base.horizontalDidStartScrollBuzzed = true
+                }
+            default:
+                base.horizontalDidStartScrollBuzzed = false
+            }
+        }
+    }
+    
     var scrollToAddedGoal: Binder<Void> {
         Binder(base) {base, goal in
             let y = base.goalCircularCollectionView.contentSize.height
@@ -260,9 +277,16 @@ extension HomeViewController {
                 
                 cell.setupCell(viewModel)
                 
-                cell.didScrollToXSignal
+                let didScrollToXSignal = cell.didScrollToXSignal
                     .filter { _ in self.goalCircularViewIsScrolling == false }
+                
+                
+                didScrollToXSignal
                     .emit(to: self.rx.uiChangeToScrollOffsetX)
+                    .disposed(by: cell.disposeBag)
+                
+                didScrollToXSignal
+                    .emit(to: self.rx.buzzToScrollOffsetX)
                     .disposed(by: cell.disposeBag)
                 
                 Signal
