@@ -487,7 +487,6 @@ extension AddGoalViewController {
             make.height.equalTo(2)
         }
         
-        
         // descriptionSection
         descriptionSectionDivider.snp.makeConstraints { make in
             make.height.equalTo(0.5)

@@ -95,8 +95,13 @@
 		62B5726928CEE84000015354 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62B5726828CEE84000015354 /* HomeViewController.swift */; };
 		62B5726C28CEE88500015354 /* UIColor_Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62B5726B28CEE88500015354 /* UIColor_Extensions.swift */; };
 		62B882BA28FACF1000FF4FBC /* AddGoalDatePickerRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62B882B928FACF1000FF4FBC /* AddGoalDatePickerRowView.swift */; };
-		62CA185D292FCE9F006F046D /* MonthsMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62CA185C292FCE9F006F046D /* MonthsMenuView.swift */; };
+		62CA185D292FCE9F006F046D /* MonthsMenuCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62CA185C292FCE9F006F046D /* MonthsMenuCollectionView.swift */; };
 		62CA185F292FCEB3006F046D /* TileProgressCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62CA185E292FCEB3006F046D /* TileProgressCell.swift */; };
+		62CA18612930A864006F046D /* MonthsMenuCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62CA18602930A864006F046D /* MonthsMenuCell.swift */; };
+		62CA186329311623006F046D /* GoalMonthlyCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62CA186229311623006F046D /* GoalMonthlyCell.swift */; };
+		62CA1865293215A1006F046D /* CalendarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62CA1864293215A1006F046D /* CalendarViewModel.swift */; };
+		62CA1867293270AD006F046D /* YearSelectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62CA1866293270AD006F046D /* YearSelectViewController.swift */; };
+		62CA1869293283CA006F046D /* GoalMonthlyTileCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62CA1868293283CA006F046D /* GoalMonthlyTileCell.swift */; };
 		62CE1ED728D6F62C00F08EF0 /* AddGoalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62CE1ED628D6F62C00F08EF0 /* AddGoalViewController.swift */; };
 		62D5D2AE28FDF81E003E222F /* UIPicker + Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62D5D2AD28FDF81E003E222F /* UIPicker + Rx.swift */; };
 		AA9990CF28D1A1C800FE4A26 /* NeumorphicView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA9990CE28D1A1C800FE4A26 /* NeumorphicView.swift */; };
@@ -215,8 +220,13 @@
 		62B5726828CEE84000015354 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		62B5726B28CEE88500015354 /* UIColor_Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor_Extensions.swift; sourceTree = "<group>"; };
 		62B882B928FACF1000FF4FBC /* AddGoalDatePickerRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddGoalDatePickerRowView.swift; sourceTree = "<group>"; };
-		62CA185C292FCE9F006F046D /* MonthsMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonthsMenuView.swift; sourceTree = "<group>"; };
+		62CA185C292FCE9F006F046D /* MonthsMenuCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonthsMenuCollectionView.swift; sourceTree = "<group>"; };
 		62CA185E292FCEB3006F046D /* TileProgressCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TileProgressCell.swift; sourceTree = "<group>"; };
+		62CA18602930A864006F046D /* MonthsMenuCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonthsMenuCell.swift; sourceTree = "<group>"; };
+		62CA186229311623006F046D /* GoalMonthlyCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalMonthlyCell.swift; sourceTree = "<group>"; };
+		62CA1864293215A1006F046D /* CalendarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewModel.swift; sourceTree = "<group>"; };
+		62CA1866293270AD006F046D /* YearSelectViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YearSelectViewController.swift; sourceTree = "<group>"; };
+		62CA1868293283CA006F046D /* GoalMonthlyTileCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalMonthlyTileCell.swift; sourceTree = "<group>"; };
 		62CE1ED628D6F62C00F08EF0 /* AddGoalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddGoalViewController.swift; sourceTree = "<group>"; };
 		62D5D2AD28FDF81E003E222F /* UIPicker + Rx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIPicker + Rx.swift"; sourceTree = "<group>"; };
 		6E3403375D2E08953A642A97 /* Pods-GoalTracker2Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GoalTracker2Tests.release.xcconfig"; path = "Target Support Files/Pods-GoalTracker2Tests/Pods-GoalTracker2Tests.release.xcconfig"; sourceTree = "<group>"; };
@@ -545,8 +555,10 @@
 		62CA185B292FCE7A006F046D /* Cells */ = {
 			isa = PBXGroup;
 			children = (
-				62CA185C292FCE9F006F046D /* MonthsMenuView.swift */,
 				62CA185E292FCEB3006F046D /* TileProgressCell.swift */,
+				62CA18602930A864006F046D /* MonthsMenuCell.swift */,
+				62CA186229311623006F046D /* GoalMonthlyCell.swift */,
+				62CA1868293283CA006F046D /* GoalMonthlyTileCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -571,8 +583,11 @@
 		AAB6BB8828D0035B00AC44E9 /* Calendar */ = {
 			isa = PBXGroup;
 			children = (
-				62CA185B292FCE7A006F046D /* Cells */,
 				622F135128DCAD2A0072E5BF /* CalendarViewController.swift */,
+				62CA1866293270AD006F046D /* YearSelectViewController.swift */,
+				62CA1864293215A1006F046D /* CalendarViewModel.swift */,
+				62CA185C292FCE9F006F046D /* MonthsMenuCollectionView.swift */,
+				62CA185B292FCE7A006F046D /* Cells */,
 			);
 			path = Calendar;
 			sourceTree = "<group>";
@@ -901,22 +916,25 @@
 				621AEAFE28CEF74D00D53F2C /* PresentationController.swift in Sources */,
 				621AEAF228CEF74300D53F2C /* ArcProcessBar.swift in Sources */,
 				622697F8290EC804007754CA /* GoalCircleViewModel.swift in Sources */,
+				62CA1867293270AD006F046D /* YearSelectViewController.swift in Sources */,
 				621AEB0A28CF089400D53F2C /* HomeViewModel.swift in Sources */,
 				621AEAD428CEF71700D53F2C /* GoalManager.swift in Sources */,
 				621AEAC928CEF5A300D53F2C /* Numeric_Extension.swift in Sources */,
 				621AEAD628CEF71D00D53F2C /* MainViewModel.swift in Sources */,
 				622697F1290E9FC2007754CA /* SuccessFailCountView.swift in Sources */,
+				62CA1865293215A1006F046D /* CalendarViewModel.swift in Sources */,
 				622697FA290EC894007754CA /* GoalAnalysisViewModel.swift in Sources */,
 				621AEAF328CEF74300D53F2C /* GoalCircle.swift in Sources */,
 				621AEB0828CF05A000D53F2C /* UIButton_Extension.swift in Sources */,
 				622F135228DCAD2A0072E5BF /* CalendarViewController.swift in Sources */,
 				621AEAEF28CEF74300D53F2C /* TileBoardCollectionView.swift in Sources */,
+				62CA18612930A864006F046D /* MonthsMenuCell.swift in Sources */,
 				62CA185F292FCEB3006F046D /* TileProgressCell.swift in Sources */,
 				621AEAF428CEF74300D53F2C /* GTAlertViewController.swift in Sources */,
 				621AEB0428CF056400D53F2C /* AddGoalViewController11.swift in Sources */,
 				621AEAF928CEF74300D53F2C /* MessageBar.swift in Sources */,
 				621AEAF028CEF74300D53F2C /* GoalCircleCell.swift in Sources */,
-				62CA185D292FCE9F006F046D /* MonthsMenuView.swift in Sources */,
+				62CA185D292FCE9F006F046D /* MonthsMenuCollectionView.swift in Sources */,
 				6248936028FC154A004580CB /* SwitchController.swift in Sources */,
 				621AEAFA28CEF74300D53F2C /* CircularCollectionView.swift in Sources */,
 				621AEAF828CEF74300D53F2C /* MainDimView.swift in Sources */,
@@ -927,6 +945,8 @@
 				621FEA97291A687A00AC6DDC /* FlapScoreView.swift in Sources */,
 				621AEAEE28CEF74300D53F2C /* TileCell.swift in Sources */,
 				AA9990CF28D1A1C800FE4A26 /* NeumorphicView.swift in Sources */,
+				62CA1869293283CA006F046D /* GoalMonthlyTileCell.swift in Sources */,
+				62CA186329311623006F046D /* GoalMonthlyCell.swift in Sources */,
 				621AEAF128CEF74300D53F2C /* TrebleFigurePannel.swift in Sources */,
 				622697EE290E9E05007754CA /* UIImageView_Extension.swift in Sources */,
 				621AEB0028CEF81C00D53F2C /* Constants.swift in Sources */,

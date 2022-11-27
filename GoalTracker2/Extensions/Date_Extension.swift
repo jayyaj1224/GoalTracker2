@@ -7,82 +7,8 @@
 
 import Foundation
 
-extension String {
-    var asDate: StringToDate {
-        return StringToDate.init(dateString: self)
-    }
-    
-    var gtStandardDateStringTo: DateToString {
-        let date = self.asDate.gtStandard
-        return DateToString.init(date)
-    }
-    
-    var th: Int {
-        let count = self.asDate.daysCountToNow
-        return count
-    }
-    
-    var thText: String {
-        switch "\(self)".last {
-        case "1":
-            return "st"
-        case "2":
-            return "nd"
-        case "3":
-            return "rd"
-        default:
-            return "th"
-        }
-    }
-}
-
-public struct StringToDate {
-    var dateString: String
-    
-    init(dateString: String) {
-        self.dateString = dateString
-    }
-    
-    func stringToDate(string: String, format: String) -> Date? {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = format
-        return dateFormatter.date(from: string)
-    }
-    
-    var yyMMddHHmmss_toDate: Date? {
-        return self.stringToDate(string: self.dateString, format: "yyMMddHHmmss")
-    }
-    
-    var asIdentifier_toDate: Date? {
-        return self.stringToDate(string: self.dateString, format: "yyMMddHHmmss")
-    }
-    
-    var yyMMdd_toDate: Date? {
-        return self.stringToDate(string: self.dateString, format: "yyMMdd")
-    }
-    
-    var gtStandard: Date {
-        return self.stringToDate(string: self.dateString, format: "yyyyMMdd") ?? Date()
-    }
-    
-    var daysCountToNow: Int {
-        return Calendar.current.dateComponents([.day], from: self.gtStandard, to: Date()).day ?? 0
-    }
-}
-
-
+//MARK: - Date Calculate
 extension Date {
-    var asString: DateToString {
-        return DateToString.init(self)
-    }
-    
-    func stringToDate(string: String, format: String) -> Date? {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = format
-        return dateFormatter.date(from: string)
-    }
-    
-    
     var pastCount: Int {
         return Calendar.current.dateComponents([.day], from: self, to: Date()).day ?? 0
     }
@@ -94,58 +20,74 @@ extension Date {
     func add(_ adding: Int) -> Date {
         return Calendar.current.date(byAdding: .day, value: adding, to: self)!
     }
+    
+    var daysCountToNow: Int {
+        return Calendar.current.dateComponents([.day], from: self, to: Date()).day ?? 0
+    }
 }
 
-public struct DateToString {
-    var date: Date
-    
-    init(_ date: Date) {
-        self.date = date
-    }
-    func format(_ format: String) -> String {
+
+//MARK: - Date To String
+extension Date {
+    func stringFormat(of dateFormat: Date.Format) -> String {
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = format
+        dateFormatter.dateFormat = dateFormat.rawValue
         dateFormatter.locale = Locale(identifier: "en_US")
-        return dateFormatter.string(from: date)
-    }
-    var yyyyMMdd_slash: String {
-        return self.format("yyyy/ MM/ dd")
-    }
-    var ddMMMM: String {
-        return "\(self.format("dd"))th of \(self.format("MMMM"))"
-    }
-    var e요일: String {
-        let dayNumber = self.format("e")
-        switch dayNumber {
-        case "1": return "월요일"
-        case "2": return "화요일"
-        case "3": return "수요일"
-        case "4": return "목요일"
-        case "5": return "금요일"
-        case "6": return "토요일"
-        default: return "일요일"
+        
+        if dateFormat == Date.Format.goalIdentifier  {
+            return "DG_GOAL_IDENTIFIER_" + dateFormatter.string(from: self)
         }
+        
+        return dateFormatter.string(from: self)
     }
-    var yyyyMMdd: String {
-        return self.format("yyyyMMdd")
-    }
-    var yyyy_MM_dd: String {
-        return self.format("yyyy_MM_dd")
-    }
-    var yyMMddHHmmss: String {
-        return self.format("yyMMddHHmmss")
-    }
-    var identifier: String {
-        return "DG_GOAL_IDENTIFIER_" + self.format("yyMMddHHmmss")
-    }
-    var yyMMdd_Dot: String {
-        return self.format("yy.MM.dd")
-    }
-    var standard: String {
-        return self.format("yyyyMMdd")
+}
+
+
+//MARK: - String to Date
+extension Date {
+    static func inAnyFormat(dateString: String) -> Date {
+        for format in Date.Format.allCases {
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = format.rawValue
+            
+            if let date = dateFormatter.date(from: dateString) {
+                return date
+            }
+        }
+        
+        return Date()
     }
     
-    var ddMMMEEEE: String {
-        return self.format("dd MMM, EEEE")
+    static func inFormat(of dateFormat: Date.Format, dateString: String) -> Date {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = dateFormat.rawValue
+        
+        return dateFormatter.date(from: dateString) ?? Date()
+    }
+}
+
+//MARK: - Date Format
+extension Date {
+    enum Format: String {
+        case yyyy,          MMMM,           MM,         M,
+             dd,            d,              EEEE,
+             yyyyMMdd,      yyyy_MM_dd,     yyMMddHHmmss,
+             ddMMMM,        yyyyMM
+             
+        
+        case yyyyMMdd_Slash = "yyyy/ MM/ dd"
+
+        case goalIdentifier = "yyyyMMddHHmmss"
+
+        case yyMMdd_Dot = "yy.MM.dd"
+
+        case ddMMMEEEE_Comma_Space = "dd MMM, EEEE"
+
+        static let allCases: [Format] = [
+            yyyyMMdd_Slash,         ddMMMM,         EEEE,           goalIdentifier,
+            yyyyMMdd,               yyyy_MM_dd,     yyMMddHHmmss,   yyMMdd_Dot,
+            ddMMMEEEE_Comma_Space,  yyyy,           MM,             M,
+            dd,                     d,              MMMM,           yyyyMM
+        ]
     }
 }

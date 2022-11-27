@@ -80,7 +80,7 @@ extension GoalManager {
             goal.successCount+=1
         }
         
-        if goal.endDate <= Date().asString.standard {
+        if goal.endDate <= Date().stringFormat(of: .yyyyMMdd) {
             goal.dayArray.forEach {
                 if $0.status == GoalStatus.none.rawValue {
                     // Check unchecked day alert

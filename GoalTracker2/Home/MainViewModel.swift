@@ -125,7 +125,10 @@ class CircleViewModel {
     }
     
     var processPercentage: CGFloat {
-        let daysCountToNow = goal.startDate.asDate.daysCountToNow
+        let daysCountToNow = Date
+            .inAnyFormat(dateString: goal.startDate)
+            .daysCountToNow
+        
         var ratio = CGFloat(daysCountToNow)/CGFloat(goal.totalDays)
         ratio = min(1, ratio)
         return ratio*100

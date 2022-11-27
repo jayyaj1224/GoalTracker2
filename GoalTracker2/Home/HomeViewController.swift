@@ -259,7 +259,7 @@ extension HomeViewController {
     
     private func setDateCalendarButtonTitle() {
         let attributtedTitle = AttributedString(
-            Date().asString.ddMMMEEEE,
+            Date().stringFormat(of: .ddMMMEEEE_Comma_Space),
             attributes: AttributeContainer([
                 .font: UIFont.sfPro(size: 10, family: .Medium),
                 .foregroundColor: UIColor.grayC
