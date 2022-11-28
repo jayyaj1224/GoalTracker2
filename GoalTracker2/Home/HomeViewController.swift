@@ -84,11 +84,16 @@ class HomeViewController: UIViewController {
     }()
     
     //MARK: - Logics
-    private let homeViewModel = HomeVieWModel()
+    let homeViewModel = HomeVieWModel()
     
     private lazy var circularScrollSignal = goalCircularCollectionView.rx.didScroll.asSignal()
     
     private let disposeBag = DisposeBag()
+    
+    // Calendar preperation
+    private let calendarViewController = CalendarViewController()
+    
+    private var calendarViewModelDataPreperation: [String : [GoalMonthlyViewModel]] = [:]
     
     private var goalCircularViewIsScrolling = false {
         didSet {
@@ -106,6 +111,9 @@ class HomeViewController: UIViewController {
         super.viewDidLoad()
         
         configure()
+        
+        // Calendar data preperation
+        calendarViewController.prepareViewModelData()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -143,22 +151,33 @@ class HomeViewController: UIViewController {
         
         plusMenuDismissed
             .subscribe(onNext: { [weak self] _ in
-                self?.plusRotatingButtonInsideImageView.alpha = 1
+                DispatchQueue.main.async {
+                    self?.plusRotatingButtonInsideImageView.alpha = 1
+                }
             })
             .disposed(by: disposeBag)
         
-        Observable
-            .zip(
-                newGoalSaved.asObservable(),
-                plusMenuDismissed.asObservable()
-            )
+        
+        let newGoalAdded = Observable
+            .zip(newGoalSaved.asObservable(), plusMenuDismissed.asObservable())
+            .share()
+        
+        newGoalAdded
             .flatMap { _ in return Observable.just(()) }
             .subscribe(self.rx.scrollToAddedGoal)
             .disposed(by: disposeBag)
         
+        newGoalAdded
+            .subscribe(onNext: { [weak self] _ in
+                self?.calendarViewController.prepareViewModelData()
+            })
+            .disposed(by: disposeBag)
+        
        
         present(plusMenuViewController, animated: false) {
-            self.plusRotatingButtonInsideImageView.alpha = 0
+            DispatchQueue.main.async {
+                self.plusRotatingButtonInsideImageView.alpha = 0
+            }
         }
     }
     
@@ -171,15 +190,15 @@ class HomeViewController: UIViewController {
     }
     
     @objc private func calenderButtonsTapped(_ sender: UIButton) {
-        let calendarViewController = CalendarViewController()
-        
         navigationController?.pushViewController(calendarViewController, animated: true)
+        
+        scrollBackButton.sendActions(for: .touchUpInside)
     }
 }
 
 //MARK: - Reative Extension
 extension Reactive where Base: HomeViewController {
-    var uiChangeToScrollOffsetX: Binder<CGFloat> {
+    var scrolledToXUIChange: Binder<CGFloat> {
         Binder(base) {base, x in
             var alpha: CGFloat = 0
             
@@ -198,19 +217,20 @@ extension Reactive where Base: HomeViewController {
             let hiding = [base.pageIndicator, base.plusRotatingButton]
             let hidingFast = [base.pageIndicator]
             
-            showing.forEach { $0.alpha = alpha}
-            hiding.forEach { $0.alpha = 1 - alpha }
-            hidingFast.forEach { $0.alpha = 1 - alpha*2.5 }
+            DispatchQueue.main.async {
+                showing.forEach { $0.alpha = alpha}
+                hiding.forEach { $0.alpha = 1 - alpha }
+                hidingFast.forEach { $0.alpha = 1 - alpha*2.5 }
+            }
         }
     }
     
     var buzzToScrollOffsetX: Binder<CGFloat> {
         Binder(base) { base, x in
-
             switch x {
-            case 10...20:
+            case 0...50:
                 if base.horizontalDidStartScrollBuzzed == false {
-                    UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+                    UIImpactFeedbackGenerator(style: .light).impactOccurred()
                     base.horizontalDidStartScrollBuzzed = true
                 }
             default:
@@ -227,6 +247,7 @@ extension Reactive where Base: HomeViewController {
             DispatchQueue.main.async {
                 base.goalCircularCollectionView.scrollRectToVisible(rect, animated: true)
             }
+            base.pageIndicator.currentIndex = base.homeViewModel.goalViewModelsRelay.value.count-1
         }
     }
     
@@ -255,13 +276,15 @@ extension HomeViewController {
         
         addButtonTargets()
         setDateCalendarButtonTitle()
+        
+        pageIndicator.currentIndex = 0
     }
     
     private func setDateCalendarButtonTitle() {
         let attributtedTitle = AttributedString(
             Date().stringFormat(of: .ddMMMEEEE_Comma_Space),
             attributes: AttributeContainer([
-                .font: UIFont.sfPro(size: 10, family: .Medium),
+                .font: UIFont.sfPro(size: 12, family: .Medium),
                 .foregroundColor: UIColor.grayC
             ])
         )
@@ -282,7 +305,7 @@ extension HomeViewController {
                 
                 
                 didScrollToXSignal
-                    .emit(to: self.rx.uiChangeToScrollOffsetX)
+                    .emit(to: self.rx.scrolledToXUIChange)
                     .disposed(by: cell.disposeBag)
                 
                 didScrollToXSignal
@@ -327,14 +350,16 @@ extension HomeViewController {
         
         goalCircularCollectionView.rx.didEndDragging
             .subscribe(onNext: { _ in
-                UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+                UIImpactFeedbackGenerator(style: .light).impactOccurred()
             })
             .disposed(by: disposeBag)
         
         circularScrollSignal
             .emit { _ in
-                self.scrollBackButton.alpha = 0
-                self.plusRotatingButton.alpha = 1
+                DispatchQueue.main.async {
+                    self.scrollBackButton.alpha = 0
+                    self.plusRotatingButton.alpha = 1
+                }
             }
             .disposed(by: disposeBag)
     }

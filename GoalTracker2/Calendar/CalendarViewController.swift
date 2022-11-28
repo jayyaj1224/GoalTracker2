@@ -38,7 +38,7 @@ class CalendarViewController: UIViewController {
         configuration.titleAlignment = .trailing
         configuration.imagePadding = 6
         configuration.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10)
-
+        
         let attributtedTitle = AttributedString(
             "Today",
             attributes: AttributeContainer([
@@ -69,10 +69,12 @@ class CalendarViewController: UIViewController {
         return tableView
     }()
     
+    private let scrollShadowImageView = UIImageView(imageName: "bar.scrollshadow")
+    
     // Logic
     var isInitialSettingDone = false
     
-    private let calendarViewModel = CalendarViewModel()
+    let calendarViewModel = CalendarViewModel()
     
     private let disposeBag = DisposeBag()
     
@@ -87,6 +89,12 @@ class CalendarViewController: UIViewController {
         initialUiSetting()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        calendarViewModel.displaySelected()
+    }
+    
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
@@ -98,9 +106,8 @@ class CalendarViewController: UIViewController {
         }
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-
+    func prepareViewModelData() {
+        self.calendarViewModel.setViewModelsData()
     }
     
     @objc private func todayButtonTapped(_ sender: UIButton) {
@@ -118,10 +125,19 @@ class CalendarViewController: UIViewController {
         
         present(yearSelectViewController, animated: false)
     }
-    
-    //MARK: - ui setting
+}
+
+extension CalendarViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 90
+    }
+}
+
+//MARK: - ui setting
+extension CalendarViewController{
     private func initialUiSetting() {
         view.backgroundColor = .crayon
+        goalTableView.contentInset = UIEdgeInsets(top: 15, left: 0, bottom: 0, right: 0)
         
         layout()
         addButtonTargets()
@@ -158,9 +174,10 @@ class CalendarViewController: UIViewController {
         
         monthsMenuCollectionView.itemSelectedSignal
             .emit { [weak self] indexPath in
-                let selectedMonthString = String(format: "%02d", indexPath.row+1)
-                self?.calendarViewModel.selectedMonth = selectedMonthString
-                self?.calendarViewModel.setGoalCalendar()
+                self?.calendarViewModel.selectedMonth = String(format: "%02d", indexPath.row+1)
+                self?.calendarViewModel.displaySelected()
+                
+                
             }
             .disposed(by: disposeBag)
     }
@@ -194,7 +211,7 @@ class CalendarViewController: UIViewController {
     private func layout() {
         setCustomNavigationBar()
         
-        [monthsMenuCollectionView, goalTableView, topNavigationView]
+        [monthsMenuCollectionView, goalTableView, topNavigationView, scrollShadowImageView]
             .forEach(view.addSubview)
         
         topNavigationView.snp.makeConstraints { make in
@@ -214,11 +231,10 @@ class CalendarViewController: UIViewController {
             make.bottom.equalToSuperview()
             make.top.equalTo(monthsMenuCollectionView.snp.bottom).offset(10)
         }
-    }
-}
-
-extension CalendarViewController: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 80
+        
+        scrollShadowImageView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview()
+            make.top.equalTo(goalTableView)
+        }
     }
 }

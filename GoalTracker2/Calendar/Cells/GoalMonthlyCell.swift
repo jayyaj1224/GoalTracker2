@@ -14,7 +14,7 @@ class GoalMonthlyCell: UITableViewCell {
     private let goalTitleLabel: UILabel = {
         let label = UILabel()
         label.textColor = .black
-        label.font = .sfPro(size: 12, family: .Medium)
+        label.font = .sfPro(size: 14, family: .Medium)
         label.numberOfLines = 3
         label.minimumScaleFactor = 0.5
         return label
@@ -22,9 +22,10 @@ class GoalMonthlyCell: UITableViewCell {
 
     private let goalTitleSubLabel: UILabel = {
         let label = UILabel()
-        label.textColor = .grayB
-        label.font = .sfPro(size: 10, family: .Light)
+        label.textColor = .grayC
+        label.font = .sfPro(size: 12, family: .Medium)
         label.alpha = 0
+        label.textAlignment = .center
         return label
     }()
     
@@ -62,9 +63,12 @@ class GoalMonthlyCell: UITableViewCell {
     
     override func prepareForReuse() {
         super.prepareForReuse()
+        DispatchQueue.main.async {
+            self.daysCollectionView.setContentOffset(CGPoint(x: -172, y: 0), animated: false)
+        }
         
         DispatchQueue.main.async {
-            self.daysCollectionView.setContentOffset(CGPoint(x: -185, y: 0), animated: false)
+            self.daysCollectionView.setContentOffset(CGPoint(x: -185, y: 0), animated: true)
         }
     }
     
@@ -112,19 +116,19 @@ class GoalMonthlyCell: UITableViewCell {
             .forEach(contentView.addSubview)
         
         goalTitleLabel.snp.makeConstraints { make in
-            make.leading.equalToSuperview().inset(25)
+            make.leading.equalToSuperview().inset(20)
             make.centerY.equalTo(daysCollectionView)
-            make.width.equalTo(170)
+            make.width.equalTo(156)
         }
         
         goalTitleSubLabel.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
+            make.width.equalTo(240)
             make.bottom.equalToSuperview()
-            make.height.equalTo(10)
         }
         
         daysCollectionView.snp.makeConstraints { make in
-            make.height.equalTo(50)
+            make.height.equalTo(40)
             make.leading.trailing.equalToSuperview()
             make.bottom.equalTo(goalTitleSubLabel.snp.top)
         }

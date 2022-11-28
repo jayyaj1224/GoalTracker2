@@ -54,7 +54,7 @@ class CircularLayout: UICollectionViewLayout {
         
         let currentPage = circularCv.pageOffset
         
-        let rangeForPrepare = max(0, currentPage-2)...(currentPage + 3)
+        let rangeForPrepare = max(0, currentPage-4)...(currentPage + 4)
 
         attributeList = (0..<circularCv.numberOfItems(inSection: 0))
             .map { i -> UICollectionViewLayoutAttributes in

@@ -50,7 +50,7 @@ class AddGoalViewController: UIViewController {
     
     private let goalInputSectorTitleLabel: UILabel = {
         let label = UILabel()
-        label.text = "Goal Title 0 /50"
+        label.text = "Goal Title 0 /60"
         label.textColor = .grayB
         label.font = .sfPro(size: 13, family: .Medium)
         return label
@@ -331,13 +331,13 @@ extension AddGoalViewController: UITextViewDelegate {
         
         goalInputTextViewPlaceholder.isHidden = text.isEmpty ? false : true
         
-        if text.count > 50 {
-            let endIndex = text.index(text.startIndex, offsetBy: 50)
+        if text.count > 60 {
+            let endIndex = text.index(text.startIndex, offsetBy: 60)
             text = String(text[..<endIndex])
             goalTitleInputTextView.text = text
         } else {
             let characterCount = goalTitleInputTextView.text.count
-            goalInputSectorTitleLabel.text = "Goal Title (\(characterCount) /50)"
+            goalInputSectorTitleLabel.text = "Goal Title (\(characterCount) /60)"
         }
         
         checkAbleToSave()
@@ -362,7 +362,7 @@ extension AddGoalViewController: UITextViewDelegate {
         var maximumTextLength = 0
         
         if textView === goalTitleInputTextView {
-            maximumTextLength = 50
+            maximumTextLength = 60
         }
         if textView === detailInputTextView {
             maximumTextLength = 100

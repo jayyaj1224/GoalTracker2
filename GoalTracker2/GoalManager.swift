@@ -12,8 +12,8 @@ class GoalManager {
     private var realm: Realm!
     
     var goals: [Goal] {
-        return realm.objects(Goal.self) // 최신순
-            .sorted { $0.identifier < $1.identifier } //identifier is date
+        return realm.objects(Goal.self)
+            .sorted { $0.identifier < $1.identifier }
     }
     
     private init() {

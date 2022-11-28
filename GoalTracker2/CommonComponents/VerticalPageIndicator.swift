@@ -45,9 +45,8 @@ class VerticalPageIndicator: UIView {
     
     func set(numberOfPages: Int) {
         if self.numberOfPages != 0 {
-            indicatorStackView.subviews.forEach {
-                $0.removeFromSuperview()
-            }
+            indicatorStackView.subviews.forEach { $0.removeFromSuperview() }
+            indicators.removeAll()
         }
         
         self.numberOfPages = numberOfPages
@@ -64,7 +63,6 @@ class VerticalPageIndicator: UIView {
                 }
             }
         }
-        currentIndex = 0
     }
     
     private func indicator() -> UIImageView {

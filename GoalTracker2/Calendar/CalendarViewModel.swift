@@ -14,30 +14,28 @@ import RxCocoa
   ⎿ yyyyMM : [GoalMonthlyViewModel]
   
  */
-var i: Double = 0.0
 
 class CalendarViewModel {
     let goalsMonthlyRelay = BehaviorRelay<[GoalMonthlyViewModel]>(value: [])
     
     var goalMonthlyViewModels: [String : [GoalMonthlyViewModel]] = [:]
     
-    var selectedMonth: String = ""
+    var selectedMonth: String = Date().stringFormat(of: .MM)
     
-    var selectedYear: String = ""
+    var selectedYear: String = Date().stringFormat(of: .yyyy)
     
-    init() {
-        setViewModels()
+    func displaySelected() {
+        let key = (selectedYear+selectedMonth)
+        let selectedMonthGoals = goalMonthlyViewModels[key] ?? []
         
-        selectedYear = Date().stringFormat(of: .yyyy)
-        selectedMonth = Date().stringFormat(of: .MM)
-        
-        setGoalCalendar()
+        goalsMonthlyRelay.accept(selectedMonthGoals)
     }
     
-    private func setViewModels() {
+    func setViewModelsData() {
+        goalMonthlyViewModels.removeAll(keepingCapacity: true)
+        
         GoalManager.shared.goals
             .forEach { goal in
-                
                 var daysTemp: [String: [Day]] = [:]
                 
                 goal.dayArray
@@ -51,18 +49,12 @@ class CalendarViewModel {
                     }
                 
                 for key in daysTemp.keys {
-                    var vmsTemp = goalMonthlyViewModels[key] ?? []
+                    var vmsTemp = self.goalMonthlyViewModels[key] ?? []
                     vmsTemp.append(GoalMonthlyViewModel.init(title: goal.title, days: daysTemp[key]!, identifier: goal.identifier))
-                    goalMonthlyViewModels[key] = vmsTemp
+                    
+                    self.goalMonthlyViewModels[key] = vmsTemp
                 }
             }
-    }
-    
-    func setGoalCalendar() {
-        let key = (selectedYear+selectedMonth)
-        let selectedMonthGoals = goalMonthlyViewModels[key] ?? []
-        
-        goalsMonthlyRelay.accept(selectedMonthGoals)
     }
 }
 
