@@ -12,18 +12,17 @@ import RxCocoa
 class HomeVieWModel: ReactiveCompatible {
     let goalViewModelsRelay = BehaviorRelay<[GoalViewModel]>.init(value: [])
 
+    private let disposeBag = DisposeBag()
+    
     init() {
-        //setGoals() -> SceneDelegate
+        setGoalsRelay()
     }
     
-    func setGoals() {
-        GoalManager.shared.getGoalObjects { [weak self] goals in
-            
-            DispatchQueue.main.async {
-                let goalViewModels = goals.compactMap(GoalViewModel.init)
-                self?.goalViewModelsRelay.accept(goalViewModels)
-            }
-        }
+    private func setGoalsRelay() {
+        let goalVmArray = GoalRealmManager.shared.goals
+            .compactMap(GoalViewModel.init)
+        
+        goalViewModelsRelay.accept(goalVmArray)
     }
 }
 

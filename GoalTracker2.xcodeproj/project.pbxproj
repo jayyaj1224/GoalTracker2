@@ -14,7 +14,7 @@
 		621AEAC928CEF5A300D53F2C /* Numeric_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 621AEAC728CEF5A300D53F2C /* Numeric_Extension.swift */; };
 		621AEACC28CEF64C00D53F2C /* Entities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 621AEACB28CEF64C00D53F2C /* Entities.swift */; };
 		621AEACE28CEF66A00D53F2C /* Date_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 621AEACD28CEF66A00D53F2C /* Date_Extension.swift */; };
-		621AEAD428CEF71700D53F2C /* GoalManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 621AEAD328CEF71700D53F2C /* GoalManager.swift */; };
+		621AEAD428CEF71700D53F2C /* GoalRealmManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 621AEAD328CEF71700D53F2C /* GoalRealmManager.swift */; };
 		621AEAEE28CEF74300D53F2C /* TileCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 621AEADC28CEF74300D53F2C /* TileCell.swift */; };
 		621AEAEF28CEF74300D53F2C /* TileBoardCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 621AEADD28CEF74300D53F2C /* TileBoardCollectionView.swift */; };
 		621AEAF028CEF74300D53F2C /* GoalCircleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 621AEADF28CEF74300D53F2C /* GoalCircleCell.swift */; };
@@ -134,7 +134,7 @@
 		621AEAC728CEF5A300D53F2C /* Numeric_Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Numeric_Extension.swift; sourceTree = "<group>"; };
 		621AEACB28CEF64C00D53F2C /* Entities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Entities.swift; sourceTree = "<group>"; };
 		621AEACD28CEF66A00D53F2C /* Date_Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Date_Extension.swift; sourceTree = "<group>"; };
-		621AEAD328CEF71700D53F2C /* GoalManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoalManager.swift; sourceTree = "<group>"; };
+		621AEAD328CEF71700D53F2C /* GoalRealmManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoalRealmManager.swift; sourceTree = "<group>"; };
 		621AEADC28CEF74300D53F2C /* TileCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TileCell.swift; sourceTree = "<group>"; };
 		621AEADD28CEF74300D53F2C /* TileBoardCollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TileBoardCollectionView.swift; sourceTree = "<group>"; };
 		621AEADF28CEF74300D53F2C /* GoalCircleCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoalCircleCell.swift; sourceTree = "<group>"; };
@@ -504,7 +504,7 @@
 				AAB6BB8828D0035B00AC44E9 /* Calendar */,
 				AAB6BB8928D0035E00AC44E9 /* Settings */,
 				621AEACB28CEF64C00D53F2C /* Entities.swift */,
-				621AEAD328CEF71700D53F2C /* GoalManager.swift */,
+				621AEAD328CEF71700D53F2C /* GoalRealmManager.swift */,
 				621AEAFF28CEF81C00D53F2C /* Constants.swift */,
 				621AEAFC28CEF74D00D53F2C /* CommonComponents */,
 				62B5726A28CEE87A00015354 /* Extensions */,
@@ -915,7 +915,7 @@
 				622697F8290EC804007754CA /* GoalCircleViewModel.swift in Sources */,
 				62CA1867293270AD006F046D /* YearSelectViewController.swift in Sources */,
 				621AEB0A28CF089400D53F2C /* HomeViewModel.swift in Sources */,
-				621AEAD428CEF71700D53F2C /* GoalManager.swift in Sources */,
+				621AEAD428CEF71700D53F2C /* GoalRealmManager.swift in Sources */,
 				621AEAC928CEF5A300D53F2C /* Numeric_Extension.swift in Sources */,
 				622697F1290E9FC2007754CA /* SuccessFailCountView.swift in Sources */,
 				62CA1865293215A1006F046D /* CalendarViewModel.swift in Sources */,

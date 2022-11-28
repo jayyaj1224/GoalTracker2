@@ -5,85 +5,67 @@
 //  Created by 이종윤 on 2022/02/14.
 //
 import RealmSwift
+import RxCocoa
+import RxSwift
 
-class GoalManager {
-    public static let shared = GoalManager()
+class GoalRealmManager {
+    public static let shared = GoalRealmManager()
     
     private var realm: Realm!
     
-    private let realmBackgroundQueue: DispatchQueue
-    
     private init() {
-        realmBackgroundQueue = DispatchQueue(label: "realmBackgroundQueue", qos: .background)
-        
         configureRealm()
     }
     
-    func getGoalObjects(completion: (([Goal])->Void)?=nil) {
-        realmBackgroundQueue.async {
-            autoreleasepool {
-                let goals: [Goal] = self.realm.objects(GoalEncodedObject.self)
-                    .sorted { $0.identifier < $1.identifier }
-                    .map(\.goalEncoded)
-                    .map { data in
-                        let goal = try? PropertyListDecoder().decode(Goal.self, from: data)
-                        return goal ?? Goal()
-                    }
-                
-                completion?(goals)
+    var goals: [Goal] {
+        var goalsTemp = [Goal]()
+        self.realm.objects(GoalEncodedObject.self)
+            .sorted { $0.identifier < $1.identifier }
+            .map(\.goalEncoded)
+            .forEach { data in
+                if let goal = try? PropertyListDecoder().decode(Goal.self, from: data) {
+                    goalsTemp.append(goal)
+                }
             }
-        }
+        return goalsTemp
     }
     
     private func configureRealm() {
-        realmBackgroundQueue.async {
-            autoreleasepool {
-                do {
-                    let customMigration = Realm.Configuration(
-                        schemaVersion: 1,
-                        migrationBlock: { migration, oldVersion in
-                            migration.enumerateObjects(ofType: "Goal") { old, new in
-                                
-                            }
-                        }
-                    )
-                    self.realm = try Realm(
-                        configuration: customMigration,
-                        queue: self.realmBackgroundQueue
-                    )
+        do {
+            let customMigration = Realm.Configuration(
+                schemaVersion: 1,
+                migrationBlock: { migration, oldVersion in
+                    migration.enumerateObjects(ofType: "Goal") { old, new in
+                        
+                    }
                 }
-                catch {
-                    self.realm = try! Realm(
-                        configuration: Realm.Configuration(deleteRealmIfMigrationNeeded: true),
-                        queue: self.realmBackgroundQueue
-                    )
-                }
-            }
+            )
+            self.realm = try Realm(configuration: customMigration)
+        }
+        catch {
+            let resetConfiguration = Realm.Configuration(deleteRealmIfMigrationNeeded: true)
+            self.realm = try! Realm(configuration: resetConfiguration)
         }
         
     }
 }
 
-extension GoalManager {
+extension GoalRealmManager {
     func realmWriteGoal(_ goal: Goal) {
         var info = getProfile()
         info.totalTrialCount+=1
         saveProfile(profile: info)
         
         if let goalEncoded = try? PropertyListEncoder().encode(goal) {
-            realmBackgroundQueue.async {
-                autoreleasepool {
-                    let goalEncodedObject = GoalEncodedObject(goalEncoded: goalEncoded, identifier: goal.identifier)
-                    
-                    try! self.realm.write {
-                        self.realm.add(goalEncodedObject)
-                    }
-                }
+            let goalEncodedObject = GoalEncodedObject(goalEncoded: goalEncoded, identifier: goal.identifier)
+            
+            try! self.realm.write {
+                self.realm.add(goalEncodedObject)
             }
         }
     }
     
-//
+    
 //    func deleteGoal(identifier: String) {
 //        var profile = getProfile()
 //        profile.totalTrialCount-=1
@@ -103,7 +85,34 @@ extension GoalManager {
     }
 }
 
-extension GoalManager {
+extension GoalRealmManager {
+    private func postGoalEndedNoti(status: GoalStatus) {
+        NotificationCenter.default.post(
+            name: NSNotification.Name(KeyStrings.Noti_goal_ended),
+            object: status.rawValue
+        )
+    }
+    
+    
+    // Profile
+    private func saveProfile(profile: Profile) {
+        UserDefaults.standard.set(try? PropertyListEncoder().encode(profile), forKey: KeyStrings.Profile)
+    }
+    
+    private func getProfile() -> Profile {
+        if let data = UserDefaults.standard.data(forKey: KeyStrings.Profile),
+           let userInfo = try? PropertyListDecoder().decode(Profile.self, from: data) {
+            return userInfo
+        }
+        return Profile()
+    }
+}
+
+
+
+
+
+
 //    func daySuccess(identifier: String, dayIndex: Int) {
 //        guard let goal = realm.object(ofType: Goal.self, forPrimaryKey: identifier) else {
 //            return
@@ -171,25 +180,3 @@ extension GoalManager {
 //
 //        postGoalEndedNoti(status: .fail)
 //    }
-
-    private func postGoalEndedNoti(status: GoalStatus) {
-        NotificationCenter.default.post(
-            name: NSNotification.Name(KeyStrings.Noti_goal_ended),
-            object: status.rawValue
-        )
-    }
-    
-    
-    // Profile
-    private func saveProfile(profile: Profile) {
-        UserDefaults.standard.set(try? PropertyListEncoder().encode(profile), forKey: KeyStrings.Profile)
-    }
-    
-    private func getProfile() -> Profile {
-        if let data = UserDefaults.standard.data(forKey: KeyStrings.Profile),
-           let userInfo = try? PropertyListDecoder().decode(Profile.self, from: data) {
-            return userInfo
-        }
-        return Profile()
-    }
-}

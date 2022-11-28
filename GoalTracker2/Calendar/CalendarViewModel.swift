@@ -32,33 +32,10 @@ class CalendarViewModel {
     }
     
     func setViewModelsData() {
-//        goalMonthlyViewModels.removeAll(keepingCapacity: true)
-//        
-//        GoalManager.shared.getGoals { [weak self] goals in
-//            guard let self = self else { return }
-//            
-//            goals.forEach { goal in
-//                var daysTemp: [String: [Day]] = [:]
-//                
-//                goal.daysArray
-//                    .forEach { day in
-//                        let date = Date.inAnyFormat(dateString: day.date)
-//                        let yyyyMM = date.stringFormat(of: .yyyyMM)
-//                        
-//                        var days = daysTemp[yyyyMM] ?? []
-//                        days.append(day)
-//                        daysTemp[yyyyMM] = days
-//                    }
-//                
-//                for key in daysTemp.keys {
-//                    var vmsTemp = self.goalMonthlyViewModels[key] ?? []
-//                    vmsTemp.append(GoalMonthlyViewModel.init(title: goal.title, days: daysTemp[key]!, identifier: goal.identifier))
-//                    
-//                    self.goalMonthlyViewModels[key] = vmsTemp
-//                }
-//            }
-//            
-//        }
+        goalMonthlyViewModels.removeAll(keepingCapacity: true)
+        
+        
+        
     }
 }
 

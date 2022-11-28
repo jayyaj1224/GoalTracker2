@@ -180,7 +180,7 @@ class AddGoalViewController: UIViewController {
             setType: goalType
         )
 
-        GoalManager.shared.realmWriteGoal(goal)
+        GoalRealmManager.shared.realmWriteGoal(goal)
         
         saveButtonTappedSubject.onNext(goal)
         

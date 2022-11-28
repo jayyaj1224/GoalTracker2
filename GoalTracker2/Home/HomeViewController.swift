@@ -90,10 +90,7 @@ class HomeViewController: UIViewController {
     
     private let disposeBag = DisposeBag()
     
-    // Calendar preperation
-    private let calendarViewController = CalendarViewController()
-    
-    private var calendarViewModelDataPreperation: [String : [GoalMonthlyViewModel]] = [:]
+    private var calendarDataPreperation: [String : [GoalMonthlyViewModel]] = [:]
     
     private var goalCircularViewIsScrolling = false {
         didSet {
@@ -113,7 +110,7 @@ class HomeViewController: UIViewController {
         configure()
         
         // Calendar data preperation
-        calendarViewController.prepareViewModelData()
+        prepareCalendarViewModelData()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -143,11 +140,20 @@ class HomeViewController: UIViewController {
         plusMenuViewController.modalPresentationStyle = .overFullScreen
         
         let newGoalSaved = plusMenuViewController.newGoalSavedSubject
-        let plusMenuDismissed = plusMenuViewController.viewDismissSubject
         
         newGoalSaved
             .bind(to: homeViewModel.rx.relayAcceptNewGoal)
             .disposed(by: plusMenuViewController.disposeBag)
+        
+        newGoalSaved
+            .subscribe(onNext: { [weak self] goal in
+                DispatchQueue.global(qos: .userInteractive).async {
+                    self?.sortGoalByMonth(goal: goal)
+                }
+            })
+            .disposed(by: disposeBag)
+        
+        let plusMenuDismissed = plusMenuViewController.viewDismissSubject
         
         plusMenuDismissed
             .subscribe(onNext: { [weak self] _ in
@@ -157,22 +163,11 @@ class HomeViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
-        
-        let newGoalAdded = Observable
+        Observable
             .zip(newGoalSaved.asObservable(), plusMenuDismissed.asObservable())
-            .share()
-        
-        newGoalAdded
             .flatMap { _ in return Observable.just(()) }
             .subscribe(self.rx.scrollToAddedGoal)
             .disposed(by: disposeBag)
-        
-        newGoalAdded
-            .subscribe(onNext: { [weak self] _ in
-                self?.calendarViewController.prepareViewModelData()
-            })
-            .disposed(by: disposeBag)
-        
        
         present(plusMenuViewController, animated: false) {
             DispatchQueue.main.async {
@@ -190,9 +185,39 @@ class HomeViewController: UIViewController {
     }
     
     @objc private func calenderButtonsTapped(_ sender: UIButton) {
+        let calendarViewController = CalendarViewController()
+        calendarViewController.calendarViewModel.goalMonthlyViewModels = calendarDataPreperation
+        
         navigationController?.pushViewController(calendarViewController, animated: true)
         
         scrollBackButton.sendActions(for: .touchUpInside)
+    }
+}
+
+extension HomeViewController {
+    private func prepareCalendarViewModelData() {
+        GoalRealmManager.shared.goals.forEach(sortGoalByMonth)
+    }
+    
+    private func sortGoalByMonth(goal: Goal) {
+        var daysTemp: [String: [Day]] = [:]
+        
+        goal.daysArray
+            .forEach { day in
+                let date = Date.inAnyFormat(dateString: day.date)
+                let yyyyMM = date.stringFormat(of: .yyyyMM)
+                
+                var days = daysTemp[yyyyMM] ?? []
+                days.append(day)
+                daysTemp[yyyyMM] = days
+            }
+        
+        for key in daysTemp.keys {
+            var vmsTemp = self.calendarDataPreperation[key] ?? []
+            vmsTemp.append(GoalMonthlyViewModel.init(title: goal.title, days: daysTemp[key]!, identifier: goal.identifier))
+            
+            self.calendarDataPreperation[key] = vmsTemp
+        }
     }
 }
 
