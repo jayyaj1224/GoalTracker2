@@ -13,14 +13,17 @@ class HomeVieWModel: ReactiveCompatible {
     let goalViewModelsRelay = BehaviorRelay<[GoalViewModel]>.init(value: [])
 
     init() {
-        getGoals()
+        //setGoals() -> SceneDelegate
     }
     
-    func getGoals() {
-        let goalViewModels = GoalManager.shared.goals
-            .compactMap(GoalViewModel.init)
-        
-        goalViewModelsRelay.accept(goalViewModels)
+    func setGoals() {
+        GoalManager.shared.getGoalObjects { [weak self] goals in
+            
+            DispatchQueue.main.async {
+                let goalViewModels = goals.compactMap(GoalViewModel.init)
+                self?.goalViewModelsRelay.accept(goalViewModels)
+            }
+        }
     }
 }
 

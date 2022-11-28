@@ -11,31 +11,56 @@ class GoalManager {
     
     private var realm: Realm!
     
-    var goals: [Goal] {
-        return realm.objects(Goal.self)
-            .sorted { $0.identifier < $1.identifier }
-    }
+    private let realmBackgroundQueue: DispatchQueue
     
     private init() {
+        realmBackgroundQueue = DispatchQueue(label: "realmBackgroundQueue", qos: .background)
+        
         configureRealm()
     }
     
+    func getGoalObjects(completion: (([Goal])->Void)?=nil) {
+        realmBackgroundQueue.async {
+            autoreleasepool {
+                let goals: [Goal] = self.realm.objects(GoalEncodedObject.self)
+                    .sorted { $0.identifier < $1.identifier }
+                    .map(\.goalEncoded)
+                    .map { data in
+                        let goal = try? PropertyListDecoder().decode(Goal.self, from: data)
+                        return goal ?? Goal()
+                    }
+                
+                completion?(goals)
+            }
+        }
+    }
+    
     private func configureRealm() {
-        let customMigration = Realm.Configuration(
-            schemaVersion: 1,
-            migrationBlock: { migration, oldVersion in
-                migration.enumerateObjects(ofType: "Goal") { old, new in
-                    
+        realmBackgroundQueue.async {
+            autoreleasepool {
+                do {
+                    let customMigration = Realm.Configuration(
+                        schemaVersion: 1,
+                        migrationBlock: { migration, oldVersion in
+                            migration.enumerateObjects(ofType: "Goal") { old, new in
+                                
+                            }
+                        }
+                    )
+                    self.realm = try Realm(
+                        configuration: customMigration,
+                        queue: self.realmBackgroundQueue
+                    )
+                }
+                catch {
+                    self.realm = try! Realm(
+                        configuration: Realm.Configuration(deleteRealmIfMigrationNeeded: true),
+                        queue: self.realmBackgroundQueue
+                    )
                 }
             }
-        )
-        do {
-            realm = try Realm(configuration: customMigration)
         }
-        catch {
-            let resetConfiguration = Realm.Configuration(deleteRealmIfMigrationNeeded: true)
-            realm = try! Realm(configuration: resetConfiguration)
-        }
+        
     }
 }
 
@@ -45,23 +70,31 @@ extension GoalManager {
         info.totalTrialCount+=1
         saveProfile(profile: info)
         
-        try! realm.write {
-            realm.add(goal)
-        }
-    }
-    
-    
-    func deleteGoal(identifier: String) {
-        var profile = getProfile()
-        profile.totalTrialCount-=1
-        saveProfile(profile: profile)
-        
-        if let goal = realm.object(ofType: Goal.self, forPrimaryKey: identifier) {
-            try! realm.write {
-                realm.delete(goal)
+        if let goalEncoded = try? PropertyListEncoder().encode(goal) {
+            realmBackgroundQueue.async {
+                autoreleasepool {
+                    let goalEncodedObject = GoalEncodedObject(goalEncoded: goalEncoded, identifier: goal.identifier)
+                    
+                    try! self.realm.write {
+                        self.realm.add(goalEncodedObject)
+                    }
+                }
             }
         }
     }
+    
+//
+//    func deleteGoal(identifier: String) {
+//        var profile = getProfile()
+//        profile.totalTrialCount-=1
+//        saveProfile(profile: profile)
+//
+//        if let goal = realm.object(ofType: Goal.self, forPrimaryKey: identifier) {
+//            try! realm.write {
+//                realm.delete(goal)
+//            }
+//        }
+//    }
     
     func deleteAll() {
         try! realm.write {
@@ -71,73 +104,73 @@ extension GoalManager {
 }
 
 extension GoalManager {
-    func daySuccess(identifier: String, dayIndex: Int) {
-        guard let goal = realm.object(ofType: Goal.self, forPrimaryKey: identifier) else {
-            return
-        }
-        try! realm.write {
-            goal.dayArray[dayIndex].status = GoalStatus.success.rawValue
-            goal.successCount+=1
-        }
-        
-        if goal.endDate <= Date().stringFormat(of: .yyyyMMdd) {
-            goal.dayArray.forEach {
-                if $0.status == GoalStatus.none.rawValue {
-                    // Check unchecked day alert
-                    return
-                }
-            }
-            
-            goalSuccess(identifier: goal.identifier)
-        }
-    }
-    
-    func dayFail(identifier: String, dayIndex: Int) {
-        guard let goal = realm.object(ofType: Goal.self, forPrimaryKey: identifier) else {
-            return
-        }
-        
-        try! realm.write {
-            goal.dayArray[dayIndex].status = GoalStatus.fail.rawValue
-            goal.failCount+=1
-        }
-        
-        if goal.failCount > goal.failCap {
-            goalFail(identifier: goal.identifier)
-        }
-    }
-    
-    func goalSuccess(identifier: String) {
-        // 프로필 Success + 1
-        var profile = getProfile()
-        profile.totalSuccessCount+=1
-        saveProfile(profile: profile)
-        
-        // Goal Success
-        if let goal = realm.object(ofType: Goal.self, forPrimaryKey: identifier) {
-            try! realm.write {
-                goal.status = GoalStatus.success.rawValue
-            }
-        }
-        
-        postGoalEndedNoti(status: .success)
-    }
-    
-    func goalFail(identifier: String) {
-        // 프로필 Fail +1
-        var profile = getProfile()
-        profile.totalFailCount+=1
-        saveProfile(profile: profile)
-        
-        // Goal Fail
-        if let goal = realm.object(ofType: Goal.self, forPrimaryKey: identifier) {
-            try! realm.write {
-                goal.status = GoalStatus.fail.rawValue
-            }
-        }
-        
-        postGoalEndedNoti(status: .fail)
-    }
+//    func daySuccess(identifier: String, dayIndex: Int) {
+//        guard let goal = realm.object(ofType: Goal.self, forPrimaryKey: identifier) else {
+//            return
+//        }
+//        try! realm.write {
+//            goal.dayArray[dayIndex].status = GoalStatus.success.rawValue
+//            goal.successCount+=1
+//        }
+//
+//        if goal.endDate <= Date().stringFormat(of: .yyyyMMdd) {
+//            goal.dayArray.forEach {
+//                if $0.status == GoalStatus.none.rawValue {
+//                    // Check unchecked day alert
+//                    return
+//                }
+//            }
+//
+//            goalSuccess(identifier: goal.identifier)
+//        }
+//    }
+//
+//    func dayFail(identifier: String, dayIndex: Int) {
+//        guard let goal = realm.object(ofType: Goal.self, forPrimaryKey: identifier) else {
+//            return
+//        }
+//
+//        try! realm.write {
+//            goal.dayArray[dayIndex].status = GoalStatus.fail.rawValue
+//            goal.failCount+=1
+//        }
+//
+//        if goal.failCount > goal.failCap {
+//            goalFail(identifier: goal.identifier)
+//        }
+//    }
+//
+//    func goalSuccess(identifier: String) {
+//        // 프로필 Success + 1
+//        var profile = getProfile()
+//        profile.totalSuccessCount+=1
+//        saveProfile(profile: profile)
+//
+//        // Goal Success
+//        if let goal = realm.object(ofType: Goal.self, forPrimaryKey: identifier) {
+//            try! realm.write {
+//                goal.status = GoalStatus.success.rawValue
+//            }
+//        }
+//
+//        postGoalEndedNoti(status: .success)
+//    }
+//
+//    func goalFail(identifier: String) {
+//        // 프로필 Fail +1
+//        var profile = getProfile()
+//        profile.totalFailCount+=1
+//        saveProfile(profile: profile)
+//
+//        // Goal Fail
+//        if let goal = realm.object(ofType: Goal.self, forPrimaryKey: identifier) {
+//            try! realm.write {
+//                goal.status = GoalStatus.fail.rawValue
+//            }
+//        }
+//
+//        postGoalEndedNoti(status: .fail)
+//    }
 
     private func postGoalEndedNoti(status: GoalStatus) {
         NotificationCenter.default.post(

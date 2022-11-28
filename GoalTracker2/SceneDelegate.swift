@@ -16,7 +16,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         self.window = UIWindow(windowScene: windowScene)
         self.window?.makeKeyAndVisible()
         self.window?.overrideUserInterfaceStyle = .light
-        let navC = UINavigationController(rootViewController: HomeViewController())
+        
+        let homeViewController = HomeViewController()
+        homeViewController.homeViewModel.setGoals()
+        
+        let navC = UINavigationController(rootViewController: homeViewController)
         navC.isNavigationBarHidden = true
         self.window?.rootViewController = navC
     }

@@ -20,7 +20,7 @@ class TileViewModel {
     var spacing: CGFloat = 8
     
     var tileStatusObservable: Observable<[String]> {
-        let goalStatusRaw = goal.dayArray.map { $0.status }
+        let goalStatusRaw = goal.daysArray.map { $0.status }
         return Observable<[String]>.just(goalStatusRaw)
     }
     

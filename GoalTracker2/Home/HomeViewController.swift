@@ -276,8 +276,6 @@ extension HomeViewController {
         
         addButtonTargets()
         setDateCalendarButtonTitle()
-        
-        pageIndicator.currentIndex = 0
     }
     
     private func setDateCalendarButtonTitle() {

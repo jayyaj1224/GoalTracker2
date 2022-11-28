@@ -7,7 +7,7 @@
 
 import RealmSwift
 
-enum GoalTrackType: Int {
+enum GoalTrackType: Int, Codable {
     case Yearly, Period
 }
 
@@ -31,180 +31,354 @@ struct Profile: Codable {
     }
 }
 
-class Goal: Object {
+struct Day: Codable {
+    var date: String
+    var index: Int
+    var status: String
+}
+
+class GoalEncodedObject: Object {
     @Persisted(primaryKey: true) var identifier: String = ""
-    @Persisted var title: String = ""
-    @Persisted var detail: String = ""
-    @Persisted var status: String = ""
-    @Persisted var setType: Int = 0
-
-    @Persisted var totalDays: Int = 0
-    @Persisted var startDate: String = ""
-    @Persisted var endDate: String = ""
-
-    @Persisted var successCount: Int = 0
-    @Persisted var failCount: Int = 0
-    @Persisted var failCap: Int = 0
+    @Persisted var goalEncoded: Data = Data()
     
-    @Persisted var dayList: List<Day> = List<Day>()
-    
-    @Persisted var isPlaceHolder: Bool = false
-    
-    var dayArray: [Day] {
-        get {
-            return dayList.map{$0}
-        }
-        set {
-            dayList.removeAll()
-            dayList.append(objectsIn: newValue)
-        }
-    }
-    
-    convenience init(title: String, detail: String, totalDays: Int, failCap: Int, setType: GoalTrackType) {
+    convenience init(goalEncoded: Data, identifier: String) {
         self.init()
         
-        if title == "1" {
-            self.dummyInit()
-            return 
-        }
-        
-        if title == "2" {
-            self.dummyInit2()
-            return
-        }
-        
-        if title == "3" {
-            self.dummyInit3()
-            return
-        }
-        
+        self.identifier = identifier
+        self.goalEncoded = goalEncoded
+    }
+}
+
+struct Goal: Codable {
+    let identifier: String
+    let title: String
+    let detail: String
+    let setType: GoalTrackType
+    
+    let totalDays: Int
+    let startDate: String
+    let endDate: String
+    
+    var status: GoalStatus
+    
+    var successCount: Int = 0
+    var failCount: Int = 0
+    var failCap: Int = 0
+    
+    var daysArray: [Day] = []
+    
+    var isPlaceHolder: Bool = false
+    
+    init(title: String, detail: String, totalDays: Int, failCap: Int, setType: GoalTrackType) {
         let today = Date()
         
         self.title = title
         self.detail = detail
         self.identifier = today.stringFormat(of: .goalIdentifier)
-        self.status = GoalStatus.none.rawValue
-        self.setType = setType.rawValue
+        self.status = GoalStatus.none
+        self.setType = setType
         self.totalDays = totalDays
         self.startDate = today.stringFormat(of: .yyyyMMdd)
         self.endDate = today.add(totalDays-1).stringFormat(of: .yyyyMMdd)
         self.failCap = failCap
         
         Array(0...totalDays-1).forEach { i in
-            let day = Day()
-            day.date = today.add(i-1).stringFormat(of: .yyyyMMdd)
-            day.index = i
-            day.status = GoalStatus.none.rawValue
-            self.dayList.append(day)
+            let day = Day(
+                date: today.add(i-1).stringFormat(of: .yyyyMMdd),
+                index: i,
+                status: GoalStatus.none.rawValue
+            )
+            self.daysArray.append(day)
         }
     }
     
-    func dummyInit() {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyyMMdd"
-        
-        self.title = "2 hours workout every day. \n(no carbs & sugar) 49"
-        self.detail = "aaaa"
-        self.identifier = Date().stringFormat(of: .goalIdentifier)
-        self.status = GoalStatus.none.rawValue
-        self.setType = GoalTrackType.Period.rawValue
-        self.totalDays = 700
-        
-        let today = dateFormatter.date(from: "20220413") ?? Date()
-        self.startDate = today.stringFormat(of: .yyyyMMdd)
-        self.endDate = today.add(totalDays-1).stringFormat(of: .yyyyMMdd)
-        self.failCap = 10
-        self.successCount = 119
-        self.failCount = 4
-        
-        for i in 1...totalDays {
-            let day = Day()
-            day.date = today.add(i-1).stringFormat(of: .yyyyMMdd)
-            day.index = i
-            switch i {
-            case 100,102,103,105:
-                day.status = GoalStatus.fail.rawValue
-            case ...123:
-                day.status = GoalStatus.success.rawValue
-            default:
-                day.status = GoalStatus.none.rawValue
-            }
-            self.dayList.append(day)
-        }
-    }
-    
-    func dummyInit2() {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyyMMdd"
-        
-        self.title = "1 hour reading every day. Self Reliance by R.W. Emerson. 60."
-        self.detail = "aaaa"
-        self.identifier = Date().stringFormat(of: .goalIdentifier)
-        self.status = GoalStatus.none.rawValue
-        self.setType = GoalTrackType.Period.rawValue
-        self.totalDays = 900
-        
-        let today = dateFormatter.date(from: "20220413") ?? Date()
-        self.startDate = today.stringFormat(of: .yyyyMMdd)
-        self.endDate = today.add(totalDays-1).stringFormat(of: .yyyyMMdd)
-        self.failCap = 10
-        self.successCount = 119
-        self.failCount = 4
-        
-        for i in 1...totalDays {
-            let day = Day()
-            day.date = today.add(i-1).stringFormat(of: .yyyyMMdd)
-            day.index = i
-            switch i {
-            case 100,102,103,105:
-                day.status = GoalStatus.fail.rawValue
-            case ...123:
-                day.status = GoalStatus.success.rawValue
-            default:
-                day.status = GoalStatus.none.rawValue
-            }
-            self.dayList.append(day)
-        }
-    }
-    
-    func dummyInit3() {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyyMMdd"
-        
-        self.title = "30 minutes of meditation and self affirmation."
-        self.detail = "aaaa"
-        self.identifier = Date().stringFormat(of: .goalIdentifier)
-        self.status = GoalStatus.none.rawValue
-        self.setType = GoalTrackType.Period.rawValue
-        self.totalDays = 300
-        
-        let today = dateFormatter.date(from: "20220820") ?? Date()
-        self.startDate = today.stringFormat(of: .yyyyMMdd)
-        self.endDate = today.add(totalDays-1).stringFormat(of: .yyyyMMdd)
-        self.failCap = 10
-        self.successCount = 119
-        self.failCount = 4
-        
-        for i in 1...totalDays {
-            let day = Day()
-            day.date = today.add(i-1).stringFormat(of: .yyyyMMdd)
-            day.index = i
-            switch i {
-            case 100,102,103,105,106,107,108:
-                day.status = GoalStatus.fail.rawValue
-            case ...123:
-                day.status = GoalStatus.success.rawValue
-            default:
-                day.status = GoalStatus.none.rawValue
-            }
-            self.dayList.append(day)
-        }
+    init() {
+        self.title = ""
+        self.detail = ""
+        self.identifier = ""
+        self.status = GoalStatus.none
+        self.setType = .Period
+        self.totalDays = 0
+        self.startDate = ""
+        self.endDate = ""
+        self.failCap = 0
     }
 }
 
+//
+//    init(dummy1: Bool) {
+//        let dateFormatter = DateFormatter()
+//        dateFormatter.dateFormat = "yyyyMMdd"
+//
+//        self.title = "2 hours workout every day. \n(no carbs & sugar) 49"
+//        self.detail = "aaaa"
+//        self.identifier = Date().stringFormat(of: .goalIdentifier)
+//        self.status = GoalStatus.none.rawValue
+//        self.setType = GoalTrackType.Period.rawValue
+//        self.totalDays = 700
+//
+//        let today = dateFormatter.date(from: "20220413") ?? Date()
+//        self.startDate = today.stringFormat(of: .yyyyMMdd)
+//        self.endDate = today.add(totalDays-1).stringFormat(of: .yyyyMMdd)
+//        self.failCap = 10
+//        self.successCount = 119
+//        self.failCount = 4
+//
+//        for i in 1...totalDays {
+//            let day = Day()
+//            day.date = today.add(i-1).stringFormat(of: .yyyyMMdd)
+//            day.index = i
+//            switch i {
+//            case 100,102,103,105:
+//                day.status = GoalStatus.fail.rawValue
+//            case ...123:
+//                day.status = GoalStatus.success.rawValue
+//            default:
+//                day.status = GoalStatus.none.rawValue
+//            }
+//            self.dayList.append(day)
+//        }
+//    }
+//
+//    func dummyInit2() {
+//        let dateFormatter = DateFormatter()
+//        dateFormatter.dateFormat = "yyyyMMdd"
+//
+//        self.title = "1 hour reading every day. Self Reliance by R.W. Emerson. 60."
+//        self.detail = "aaaa"
+//        self.identifier = Date().stringFormat(of: .goalIdentifier)
+//        self.status = GoalStatus.none.rawValue
+//        self.setType = GoalTrackType.Period.rawValue
+//        self.totalDays = 900
+//
+//        let today = dateFormatter.date(from: "20220413") ?? Date()
+//        self.startDate = today.stringFormat(of: .yyyyMMdd)
+//        self.endDate = today.add(totalDays-1).stringFormat(of: .yyyyMMdd)
+//        self.failCap = 10
+//        self.successCount = 119
+//        self.failCount = 4
+//
+//        for i in 1...totalDays {
+//            let day = Day()
+//            day.date = today.add(i-1).stringFormat(of: .yyyyMMdd)
+//            day.index = i
+//            switch i {
+//            case 100,102,103,105:
+//                day.status = GoalStatus.fail.rawValue
+//            case ...123:
+//                day.status = GoalStatus.success.rawValue
+//            default:
+//                day.status = GoalStatus.none.rawValue
+//            }
+//            self.dayList.append(day)
+//        }
+//    }
+//
+//    func dummyInit3() {
+//        let dateFormatter = DateFormatter()
+//        dateFormatter.dateFormat = "yyyyMMdd"
+//
+//        self.title = "30 minutes of meditation and self affirmation."
+//        self.detail = "aaaa"
+//        self.identifier = Date().stringFormat(of: .goalIdentifier)
+//        self.status = GoalStatus.none.rawValue
+//        self.setType = GoalTrackType.Period.rawValue
+//        self.totalDays = 300
+//
+//        let today = dateFormatter.date(from: "20220820") ?? Date()
+//        self.startDate = today.stringFormat(of: .yyyyMMdd)
+//        self.endDate = today.add(totalDays-1).stringFormat(of: .yyyyMMdd)
+//        self.failCap = 10
+//        self.successCount = 119
+//        self.failCount = 4
+//
+//        for i in 1...totalDays {
+//            let day = Day()
+//            day.date = today.add(i-1).stringFormat(of: .yyyyMMdd)
+//            day.index = i
+//            switch i {
+//            case 100,102,103,105,106,107,108:
+//                day.status = GoalStatus.fail.rawValue
+//            case ...123:
+//                day.status = GoalStatus.success.rawValue
+//            default:
+//                day.status = GoalStatus.none.rawValue
+//            }
+//            self.dayList.append(day)
+//        }
+//    }
+//}
 
-class Day: Object {
-    @Persisted var date: String = ""
-    @Persisted var index: Int = 0
-    @Persisted var status: String = ""
-}
+
+
+//
+//class Goal: Object {
+//    @Persisted(primaryKey: true) var identifier: String = ""
+//    @Persisted var title: String = ""
+//    @Persisted var detail: String = ""
+//    @Persisted var status: String = ""
+//    @Persisted var setType: Int = 0
+//
+//    @Persisted var totalDays: Int = 0
+//    @Persisted var startDate: String = ""
+//    @Persisted var endDate: String = ""
+//
+//    @Persisted var successCount: Int = 0
+//    @Persisted var failCount: Int = 0
+//    @Persisted var failCap: Int = 0
+//
+//    @Persisted var dayList: List<Day> = List<Day>()
+//
+//    @Persisted var isPlaceHolder: Bool = false
+//
+//    var dayArray: [Day] {
+//        get {
+//            return dayList.map{$0}
+//        }
+//        set {
+//            dayList.removeAll()
+//            dayList.append(objectsIn: newValue)
+//        }
+//    }
+//
+//    convenience init(title: String, detail: String, totalDays: Int, failCap: Int, setType: GoalTrackType) {
+//        self.init()
+//
+//        if title == "1" {
+//            self.dummyInit()
+//            return
+//        }
+//
+//        if title == "2" {
+//            self.dummyInit2()
+//            return
+//        }
+//
+//        if title == "3" {
+//            self.dummyInit3()
+//            return
+//        }
+//
+//        let today = Date()
+//
+//        self.title = title
+//        self.detail = detail
+//        self.identifier = today.stringFormat(of: .goalIdentifier)
+//        self.status = GoalStatus.none.rawValue
+//        self.setType = setType.rawValue
+//        self.totalDays = totalDays
+//        self.startDate = today.stringFormat(of: .yyyyMMdd)
+//        self.endDate = today.add(totalDays-1).stringFormat(of: .yyyyMMdd)
+//        self.failCap = failCap
+//
+//        Array(0...totalDays-1).forEach { i in
+//            let day = Day()
+//            day.date = today.add(i-1).stringFormat(of: .yyyyMMdd)
+//            day.index = i
+//            day.status = GoalStatus.none.rawValue
+//            self.dayList.append(day)
+//        }
+//    }
+//
+//    func dummyInit() {
+//        let dateFormatter = DateFormatter()
+//        dateFormatter.dateFormat = "yyyyMMdd"
+//
+//        self.title = "2 hours workout every day. \n(no carbs & sugar) 49"
+//        self.detail = "aaaa"
+//        self.identifier = Date().stringFormat(of: .goalIdentifier)
+//        self.status = GoalStatus.none.rawValue
+//        self.setType = GoalTrackType.Period.rawValue
+//        self.totalDays = 700
+//
+//        let today = dateFormatter.date(from: "20220413") ?? Date()
+//        self.startDate = today.stringFormat(of: .yyyyMMdd)
+//        self.endDate = today.add(totalDays-1).stringFormat(of: .yyyyMMdd)
+//        self.failCap = 10
+//        self.successCount = 119
+//        self.failCount = 4
+//
+//        for i in 1...totalDays {
+//            let day = Day()
+//            day.date = today.add(i-1).stringFormat(of: .yyyyMMdd)
+//            day.index = i
+//            switch i {
+//            case 100,102,103,105:
+//                day.status = GoalStatus.fail.rawValue
+//            case ...123:
+//                day.status = GoalStatus.success.rawValue
+//            default:
+//                day.status = GoalStatus.none.rawValue
+//            }
+//            self.dayList.append(day)
+//        }
+//    }
+//
+//    func dummyInit2() {
+//        let dateFormatter = DateFormatter()
+//        dateFormatter.dateFormat = "yyyyMMdd"
+//
+//        self.title = "1 hour reading every day. Self Reliance by R.W. Emerson. 60."
+//        self.detail = "aaaa"
+//        self.identifier = Date().stringFormat(of: .goalIdentifier)
+//        self.status = GoalStatus.none.rawValue
+//        self.setType = GoalTrackType.Period.rawValue
+//        self.totalDays = 900
+//
+//        let today = dateFormatter.date(from: "20220413") ?? Date()
+//        self.startDate = today.stringFormat(of: .yyyyMMdd)
+//        self.endDate = today.add(totalDays-1).stringFormat(of: .yyyyMMdd)
+//        self.failCap = 10
+//        self.successCount = 119
+//        self.failCount = 4
+//
+//        for i in 1...totalDays {
+//            let day = Day()
+//            day.date = today.add(i-1).stringFormat(of: .yyyyMMdd)
+//            day.index = i
+//            switch i {
+//            case 100,102,103,105:
+//                day.status = GoalStatus.fail.rawValue
+//            case ...123:
+//                day.status = GoalStatus.success.rawValue
+//            default:
+//                day.status = GoalStatus.none.rawValue
+//            }
+//            self.dayList.append(day)
+//        }
+//    }
+//
+//    func dummyInit3() {
+//        let dateFormatter = DateFormatter()
+//        dateFormatter.dateFormat = "yyyyMMdd"
+//
+//        self.title = "30 minutes of meditation and self affirmation."
+//        self.detail = "aaaa"
+//        self.identifier = Date().stringFormat(of: .goalIdentifier)
+//        self.status = GoalStatus.none.rawValue
+//        self.setType = GoalTrackType.Period.rawValue
+//        self.totalDays = 300
+//
+//        let today = dateFormatter.date(from: "20220820") ?? Date()
+//        self.startDate = today.stringFormat(of: .yyyyMMdd)
+//        self.endDate = today.add(totalDays-1).stringFormat(of: .yyyyMMdd)
+//        self.failCap = 10
+//        self.successCount = 119
+//        self.failCount = 4
+//
+//        for i in 1...totalDays {
+//            let day = Day()
+//            day.date = today.add(i-1).stringFormat(of: .yyyyMMdd)
+//            day.index = i
+//            switch i {
+//            case 100,102,103,105,106,107,108:
+//                day.status = GoalStatus.fail.rawValue
+//            case ...123:
+//                day.status = GoalStatus.success.rawValue
+//            default:
+//                day.status = GoalStatus.none.rawValue
+//            }
+//            self.dayList.append(day)
+//        }
+//    }
+//}
