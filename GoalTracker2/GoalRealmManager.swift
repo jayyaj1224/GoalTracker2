@@ -13,6 +13,10 @@ class GoalRealmManager {
     
     private var realm: Realm!
     
+    var numberOfGoals: Int {
+        return realm.objects(GoalEncodedObject.self).count
+    }
+    
     private init() {
         configureRealm()
     }
@@ -27,6 +31,7 @@ class GoalRealmManager {
                     goalsTemp.append(goal)
                 }
             }
+        
         return goalsTemp
     }
     

@@ -9,6 +9,32 @@ import UIKit
 import RxSwift
 import RxCocoa
 
+/*
+ Home
+ - progress board analysis
+ - message bar more function
+ - today quick check
+ - yearly track/period track
+ - calendar score plate
+ 
+ PlusMenu
+ - deleteGoal
+ 
+ Setting
+ - scorePlate
+ - reset
+ 
+ Calendar
+ - year select
+ - delete
+ - edit
+ - day-Fix
+ - todayButtonTap
+ - collectionview layout fix (cell center)
+ 
+ 
+ */
+
 class HomeViewController: UIViewController {
     //MARK: - UI Components
     let goalCircularCollectionView = CircularCollectionView()
@@ -155,7 +181,11 @@ class HomeViewController: UIViewController {
         
         let plusMenuDismissed = plusMenuViewController.viewDismissSubject
         
-        plusMenuDismissed
+        Observable
+            .merge(
+                newGoalSaved.map { _ in }.asObservable(),
+                plusMenuDismissed.asObservable()
+            )
             .subscribe(onNext: { [weak self] _ in
                 DispatchQueue.main.async {
                     self?.plusRotatingButtonInsideImageView.alpha = 1

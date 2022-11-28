@@ -11,6 +11,8 @@ import RxSwift
 import RxCocoa
 
 class GoalMonthlyCell: UITableViewCell {
+    private let goalTitleLabelView = UIView()
+    
     private let goalTitleLabel: UILabel = {
         let label = UILabel()
         label.textColor = .black
@@ -38,7 +40,7 @@ class GoalMonthlyCell: UITableViewCell {
         
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
         cv.register(GoalMonthlyTileCell.self, forCellWithReuseIdentifier: "GoalMonthlyTileCell")
-        cv.contentInset = UIEdgeInsets(top: 0, left: 180, bottom: 0, right: 30)
+        cv.contentInset = UIEdgeInsets(top: 30, left: 180, bottom: 20, right: 30)
         cv.backgroundColor = .clear
         cv.showsHorizontalScrollIndicator = false
         
@@ -98,13 +100,13 @@ class GoalMonthlyCell: UITableViewCell {
                 
                 switch x {
                 case ...(-150):
-                    self?.goalTitleLabel.alpha = 1
+                    self?.goalTitleLabelView.alpha = 1
                     self?.goalTitleSubLabel.alpha = 0
                 case (-151)...(-30):
-                    self?.goalTitleLabel.alpha = 1 - (x+151)/100
+                    self?.goalTitleLabelView.alpha = 1 - (x+151)/100
                     self?.goalTitleSubLabel.alpha = (x+151)/100
                 default:
-                    self?.goalTitleLabel.alpha = 0
+                    self?.goalTitleLabelView.alpha = 0
                     self?.goalTitleSubLabel.alpha = 1
                 }
             })
@@ -112,14 +114,10 @@ class GoalMonthlyCell: UITableViewCell {
     }
     
     private func layout() {
-        [goalTitleLabel, goalTitleSubLabel, daysCollectionView]
-            .forEach(contentView.addSubview)
         
-        goalTitleLabel.snp.makeConstraints { make in
-            make.leading.equalToSuperview().inset(20)
-            make.centerY.equalTo(daysCollectionView)
-            make.width.equalTo(156)
-        }
+        
+        [daysCollectionView, goalTitleSubLabel, goalTitleLabelView]
+            .forEach(contentView.addSubview)
         
         goalTitleSubLabel.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
@@ -128,9 +126,19 @@ class GoalMonthlyCell: UITableViewCell {
         }
         
         daysCollectionView.snp.makeConstraints { make in
-            make.height.equalTo(40)
-            make.leading.trailing.equalToSuperview()
-            make.bottom.equalTo(goalTitleSubLabel.snp.top)
+            make.edges.equalToSuperview()
+        }
+        
+        goalTitleLabelView.snp.makeConstraints { make in
+            make.leading.top.bottom.equalToSuperview()
+            make.width.equalTo(140)
+        }
+        
+        goalTitleLabelView.addSubview(goalTitleLabel)
+        goalTitleLabel.snp.makeConstraints { make in
+            make.leading.equalToSuperview().inset(20)
+            make.centerY.equalToSuperview()
+            make.width.equalTo(156)
         }
     }
 }

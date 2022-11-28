@@ -9,7 +9,6 @@
 import UIKit
 
 class GTAlertViewController: UIViewController {
-    
     var containerView:UIView!
     var alertBackgroundView:UIView!
     var dismissButton:UIButton!
@@ -32,7 +31,7 @@ class GTAlertViewController: UIViewController {
     
     var defaultColor: UIColor = .crayon//UIColorFromHex(0xffffff, alpha: 1)
     
-    var backGroundColor: UIColor = .black.withAlphaComponent(0.1)
+    var backGroundColor: UIColor = .black.withAlphaComponent(0.4)
     
     public enum TextColorTheme {
         case dark, light
@@ -253,12 +252,18 @@ class GTAlertViewController: UIViewController {
     }
     
     open func make(
-        title: String?=nil, titleFont: UIFont = .sfPro(size: 18, family: .Bold),
-        subTitle: String?=nil, text: String?=nil,
+        title: String?=nil,     titleFont: UIFont = .sfPro(size: 14, family: .Regular),
+        subTitle: String?=nil,  subTitleFont: UIFont = .sfPro(size: 10, family: .Medium),
+        text: String?=nil,      textFont: UIFont = .sfPro(size: 9, family: .Light),
+        
         attributedString: NSAttributedString?=nil,
-        noButtons: Bool?=false, buttonText: String?=nil, buttonFont: UIFont,
-        cancelButtonText: String?=nil, color: UIColor?=nil,
-        buttonTextColor: UIColor = .black, cancelButtonTextColor: UIColor = .black,
+        noButtons: Bool?=false,
+        buttonText: String?=nil,
+        buttonFont: UIFont = .sfPro(size: 15, family: .Bold),
+        cancelButtonText: String?=nil,
+        color: UIColor?=nil,
+        buttonTextColor: UIColor = .black,
+        cancelButtonTextColor: UIColor = .black,
         backgroundDismiss: Bool = false) -> GlowAlertViewResponder {
             
             self.view.backgroundColor = backGroundColor
@@ -295,7 +300,7 @@ class GTAlertViewController: UIViewController {
                 titleLabel.textColor = .black
                 titleLabel.numberOfLines = 0
                 titleLabel.textAlignment = .center
-                titleLabel.font = .sfPro(size: 18, family: .Medium)
+                titleLabel.font = titleFont
                 titleLabel.text = title
                 self.containerView.addSubview(titleLabel)
             }
@@ -305,7 +310,7 @@ class GTAlertViewController: UIViewController {
                 subTitleLabel.textColor = .black
                 subTitleLabel.numberOfLines = 3
                 subTitleLabel.textAlignment = .center
-                subTitleLabel.font = .sfPro(size: 18, family: .Light)
+                subTitleLabel.font = subTitleFont
                 subTitleLabel.text = subTitle
                 self.containerView.addSubview(subTitleLabel)
             }
@@ -316,7 +321,7 @@ class GTAlertViewController: UIViewController {
                 textLabel.textColor = .darkGray
                 textLabel.numberOfLines = 0
                 textLabel.textAlignment = .center
-                textLabel.font = .sfPro(size: 14, family: .Light)
+                textLabel.font = textFont
                 if let attributedString = attributedString {
                     textLabel.attributedText = attributedString
                     self.isAttributedString = true

@@ -8,6 +8,21 @@
 import UIKit
 import RxSwift
 import RxCocoa
+//
+//extension Reactive where Base: UITableView {
+//    var itemInserted: ControlEvent<IndexPath> {
+//
+//        let source = self.dataSource.methodInvoked(#selector(UITableViewDataSource.tableView(_:commit:forRowAt:)))
+//            .filter { a in
+//                return UITableViewCell.EditingStyle(rawValue: (try castOrThrow(NSNumber.self, a[1])).intValue) == .insert
+//            }
+//            .map { a in
+//                return (try castOrThrow(IndexPath.self, a[2]))
+//        }
+//
+//        return ControlEvent(events: source)
+//    }
+//}
 
 
 /*
@@ -131,6 +146,27 @@ extension CalendarViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 90
     }
+    
+    func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let deleteAction = UIContextualAction(style: .destructive, title: "", handler: { (ac:UIContextualAction, view:UIView, success:(Bool) -> Void) in
+            //deleteAction
+            
+            success(true)
+        })
+        deleteAction.image =  UIImage(systemName: "trash")?.withTintColor(.darkGray, renderingMode: .alwaysOriginal)
+        deleteAction.backgroundColor = .crayon
+        
+        let editAction = UIContextualAction(style: .destructive, title: "", handler: { (ac:UIContextualAction, view:UIView, success:(Bool) -> Void) in
+            //editAction
+            
+            success(true)
+        })
+        editAction.image = UIImage(systemName: "hammer")?.withTintColor(.darkGray, renderingMode: .alwaysOriginal)
+        editAction.backgroundColor = .crayon
+        
+        return UISwipeActionsConfiguration(actions: [deleteAction, editAction])
+        
+    }
 }
 
 //MARK: - ui setting
@@ -171,6 +207,7 @@ extension CalendarViewController{
         
         goalTableView.rx.setDelegate(self)
             .disposed(by: disposeBag)
+        
         
         monthsMenuCollectionView.itemSelectedSignal
             .emit { [weak self] indexPath in

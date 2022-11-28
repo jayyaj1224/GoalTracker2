@@ -134,6 +134,22 @@ class PlusMenuViewController: UIViewController {
     }
     
     @objc private func addGoalButtonTapped(_ sender: UIButton) {
+        guard GoalRealmManager.shared.numberOfGoals < 5 else {
+            GTAlertViewController()
+                .make(
+                    subTitle: "Maximum number of goal is five.",
+                    subTitleFont: .sfPro(size: 14, family: .Medium),
+                    buttonText: "Confirm"
+                )
+                .addCancelAction {
+                }
+                .onCompletion {
+                }
+                .show()
+            
+            return
+        }
+        
         let addgoalViewController = AddGoalViewController()
         addgoalViewController.modalPresentationStyle = .custom
         addgoalViewController.transitioningDelegate = self
