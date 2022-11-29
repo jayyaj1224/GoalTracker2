@@ -16,9 +16,6 @@ import RxCocoa
  - today quick check
  - calendar score plate
  
- Setting
- - scorePlate
- - reset
  
  Calendar
  - delete
@@ -56,11 +53,11 @@ class HomeViewController: UIViewController {
     
     private let bottomTransparentScreenView = UIView()
     
-    private let topCalendarButton: NeumorphicButton = {
+    private let settingsButton: NeumorphicButton = {
         let button = NeumorphicButton(color: .crayon, shadowSize: .medium)
         button.layer.cornerRadius = 18
         var configuration = UIButton.Configuration.plain()
-        configuration.image = UIImage(named: "calendar.neumorphism")
+        configuration.image = UIImage(named: "gear.neumorphism")
         button.configuration = configuration
         return button
     }()
@@ -151,7 +148,7 @@ class HomeViewController: UIViewController {
 //MARK: -  Button Actions
     private func addButtonTargets() {
         plusRotatingButton.addTarget(self, action: #selector(plusButtonTapped), for: .touchUpInside)
-        topCalendarButton.addTarget(self, action: #selector(calenderButtonsTapped), for: .touchUpInside)
+        settingsButton.addTarget(self, action: #selector(settingsButtonsTapped), for: .touchUpInside)
         bottomDateCalendarButton.addTarget(self, action: #selector(calenderButtonsTapped), for: .touchUpInside)
     }
     
@@ -161,6 +158,9 @@ class HomeViewController: UIViewController {
         
         let plusMenuViewController = PlusMenuViewController()
         plusMenuViewController.modalPresentationStyle = .overFullScreen
+        plusMenuViewController.presentCalendarViewCompletion = { [weak self] in
+            self?.calenderButtonsTapped()
+        }
         
         let row = Int(goalCircularCollectionView.contentOffset.y/K.singleRowHeight)
         let goals = self.homeViewModel.goalViewModelsRelay.value.map { $0.goal }
@@ -224,11 +224,18 @@ class HomeViewController: UIViewController {
         }
     }
     
-    @objc private func calenderButtonsTapped(_ sender: UIButton) {
+    @objc private func calenderButtonsTapped() {
         let calendarViewController = CalendarViewController()
         calendarViewController.calendarViewModel.goalMonthlyViewModels = calendarDataPreperation
         
         navigationController?.pushViewController(calendarViewController, animated: true)
+        
+        scrollBackButton.sendActions(for: .touchUpInside)
+    }
+    
+    @objc private func settingsButtonsTapped(_ sender: UIButton) {
+        let settingsViewController = SettingsViewController()
+        navigationController?.pushViewController(settingsViewController, animated: true)
         
         scrollBackButton.sendActions(for: .touchUpInside)
     }
@@ -460,7 +467,7 @@ extension HomeViewController {
             topTransparentScreenView,       bottomTransparentScreenView,
             topScreenView,                  bottomScreenView,
             messageBar,                     plusRotatingButton,
-            scrollBackButton,               topCalendarButton,
+            scrollBackButton,               settingsButton,
             bottomDateCalendarButton
         ]
             .forEach(view.addSubview(_:))
@@ -512,7 +519,7 @@ extension HomeViewController {
             make.leading.equalTo(goalCircularCollectionView).inset(14)
         }
         
-        topCalendarButton.snp.makeConstraints { make in
+        settingsButton.snp.makeConstraints { make in
             make.size.equalTo(36)
             make.trailing.equalTo(plusRotatingButton)
             make.top.equalToSuperview().inset(70)

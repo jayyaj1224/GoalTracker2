@@ -84,6 +84,7 @@
 		624453E828FD3D0F003A9117 /* PeriodSettingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 624453E728FD3D0F003A9117 /* PeriodSettingViewModel.swift */; };
 		6248936028FC154A004580CB /* SwitchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6248935F28FC154A004580CB /* SwitchController.swift */; };
 		624E91E728FD6EC400E15735 /* PeriodSettingModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 624E91E628FD6EC400E15735 /* PeriodSettingModel.swift */; };
+		62767E3E2936A69B00622A4B /* ScorePannel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62767E3D2936A69B00622A4B /* ScorePannel.swift */; };
 		62B5723928CEE6A000015354 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62B5723828CEE6A000015354 /* AppDelegate.swift */; };
 		62B5723B28CEE6A000015354 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62B5723A28CEE6A000015354 /* SceneDelegate.swift */; };
 		62B5724228CEE6A100015354 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 62B5724128CEE6A100015354 /* Assets.xcassets */; };
@@ -205,6 +206,7 @@
 		624453E728FD3D0F003A9117 /* PeriodSettingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeriodSettingViewModel.swift; sourceTree = "<group>"; };
 		6248935F28FC154A004580CB /* SwitchController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwitchController.swift; sourceTree = "<group>"; };
 		624E91E628FD6EC400E15735 /* PeriodSettingModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeriodSettingModel.swift; sourceTree = "<group>"; };
+		62767E3D2936A69B00622A4B /* ScorePannel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScorePannel.swift; sourceTree = "<group>"; };
 		62B5723528CEE6A000015354 /* GoalTracker2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GoalTracker2.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		62B5723828CEE6A000015354 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		62B5723A28CEE6A000015354 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -438,6 +440,7 @@
 		622697EF290E9FA1007754CA /* ScorePannelView */ = {
 			isa = PBXGroup;
 			children = (
+				62767E3D2936A69B00622A4B /* ScorePannel.swift */,
 				62F249952936A4370017530F /* Flap */,
 				62F249942936A4320017530F /* Digital */,
 			);
@@ -926,6 +929,7 @@
 				62F249932936A3820017530F /* Settings.swift in Sources */,
 				622697F8290EC804007754CA /* GoalCircleViewModel.swift in Sources */,
 				62CA1867293270AD006F046D /* YearSelectViewController.swift in Sources */,
+				62767E3E2936A69B00622A4B /* ScorePannel.swift in Sources */,
 				621AEB0A28CF089400D53F2C /* HomeViewModel.swift in Sources */,
 				621AEAD428CEF71700D53F2C /* GoalRealmManager.swift in Sources */,
 				621AEAC928CEF5A300D53F2C /* Numeric_Extension.swift in Sources */,

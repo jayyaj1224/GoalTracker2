@@ -45,7 +45,7 @@ class GoalCircle: UIView {
         return label
     }()
     
-    let successFailCountView = DigitalScoreView()
+    var scoreView: ScorePannel!
     
     let circleSize = 222 / 380 * K.circleRadius
     
@@ -53,6 +53,8 @@ class GoalCircle: UIView {
     
     init() {
         super.init(frame: .zero)
+        
+        configure()
         
         initLayout()
     }
@@ -68,11 +70,20 @@ class GoalCircle: UIView {
         
         goalTitleLabel.text = goal.title
         
-        successFailCountView.set(successCount: goal.successCount, failCount: goal.failCount)
-        
         processArc.fillPercentage = viewModel.processPercentage
         
         percentageLabel.text = "\(Int(viewModel.processPercentage))"
+        
+        scoreView.set(success: goal.successCount, fail: goal.failCount)
+    }
+    
+    private func configure() {
+        switch Settings.shared.scorePannelType {
+        case .Flap:
+            scoreView = FlapScoreView()
+        case .Digital:
+            scoreView = DigitalScoreView()
+        }
     }
     
     private func initLayout() {
@@ -120,7 +131,9 @@ class GoalCircle: UIView {
     }
     
     private func innerCircleContentLayout() {
-        [goalTitleLabel, successFailCountView]
+        guard let scoreView = scoreView as? UIView else { return }
+        
+        [goalTitleLabel, scoreView]
             .forEach(innerCircleContentView.addSubview)
 
         goalTitleLabel.snp.makeConstraints { make in
@@ -129,9 +142,18 @@ class GoalCircle: UIView {
             make.width.equalToSuperview().offset(-20)
         }
         
-        successFailCountView.snp.makeConstraints { make in
-            make.centerX.equalToSuperview()
-            make.bottom.equalToSuperview().inset(30)
+        switch Settings.shared.scorePannelType {
+        case .Flap:
+            scoreView.snp.makeConstraints { make in
+                make.centerX.equalToSuperview()
+                make.bottom.equalToSuperview().inset(28)
+            }
+        case .Digital:
+            scoreView.snp.makeConstraints { make in
+                make.centerX.equalToSuperview()
+                make.bottom.equalToSuperview().inset(33)
+            }
         }
+
     }
 }

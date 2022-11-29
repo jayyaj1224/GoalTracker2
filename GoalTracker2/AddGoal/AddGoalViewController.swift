@@ -116,14 +116,6 @@ class AddGoalViewController: UIViewController {
         let label = UILabel()
         label.text = "Aimed Period"
         label.textColor = .grayB
-        label.font = .sfPro(size: 15, family: .Medium)
-        return label
-    }()
-    
-    private let yearlyTrackSwitchLabel: UILabel = {
-        let label = UILabel()
-        label.text = "yearly track"
-        label.textColor = .grayB
         label.font = .sfPro(size: 13, family: .Medium)
         return label
     }()
@@ -437,7 +429,7 @@ extension AddGoalViewController {
             descriptionInputTextViewPlaceholder,
             descriptionTextViewEndShadowView,
             
-            yearlyTrackSwitchLabel,
+//            yearlyTrackSwitchLabel,
 //            yearlyTrackSwitch,
             
             aimedPeriodSectionLabel,

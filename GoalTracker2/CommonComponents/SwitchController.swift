@@ -44,11 +44,15 @@ class NeumorphicSwitch: UIView {
     
     private var switchSize: CGSize = .zero
     
+    var onAction: (()->Void)?
+    
+    var offAction: (()->Void)?
+    
     override private init(frame: CGRect) {
         super.init(frame: .zero)
     }
     
-    init(toggleAnimationType animationType: SwitchToggleAnimationType, size: CGSize = CGSize(width: 60, height: 24)) {
+    init(toggleAnimationType animationType: SwitchToggleAnimationType, size: CGSize = CGSize(width: 60, height: 24), onAction: (()->Void)?=nil, offAction: (()->Void)?=nil) {
         super.init(frame: .zero)
         
         switchSize = size
@@ -58,6 +62,10 @@ class NeumorphicSwitch: UIView {
         layout()
         
         onOffActionInputButton.addTarget(self, action: #selector(switchToggled(_:)), for: .touchUpInside)
+        
+        self.onAction = onAction
+        
+        self.offAction = offAction
     }
     
     required init?(coder: NSCoder) {
@@ -65,15 +73,25 @@ class NeumorphicSwitch: UIView {
     }
     
     @objc private func switchToggled(_ sender: UIButton) {
-        isOn.toggle()
-        
-        isOnSubject.onNext(isOn)
-        
         if isOn {
-            switchOnAnimation()
+            off()
         } else {
-            switchOffAnimation()
+            on()
         }
+    }
+    
+    public func on() {
+        isOn = true
+        isOnSubject.onNext(true)
+        switchOnAnimation()
+        onAction?()
+    }
+    
+    public func off() {
+        isOn = false
+        isOnSubject.onNext(false)
+        switchOffAnimation()
+        offAction?()
     }
     
     private func switchOnAnimation() {

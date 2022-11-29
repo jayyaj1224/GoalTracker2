@@ -46,7 +46,7 @@ class PlusMenuViewController: UIViewController {
         return stackView
     }()
     
-    private let settingButton = MenuButton(title: "Setting", imageName: "gear.neumorphism")
+    private let calendarButton = MenuButton(title: "Calendar", imageName: "calendar.neumorphism")
     
     private let deleteGoalButton = MenuButton(title: "Delete Goal", imageName: "bin.neumorphism")
     
@@ -89,6 +89,8 @@ class PlusMenuViewController: UIViewController {
     var selectedGoalIdentifier: String?
     var selectedGoalTitle: String?
     
+    var presentCalendarViewCompletion: (()->Void)?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -118,17 +120,15 @@ class PlusMenuViewController: UIViewController {
         
         cancelRotatingButton.addTarget(self, action: #selector(cancelButtonActionWithAnimation), for: .touchUpInside)
         
-        settingButton.addTarget(self, action: #selector(settingButtonTapped(_:)), for: .touchUpInside)
+        calendarButton.addTarget(self, action: #selector(calendarButtonTapped(_:)), for: .touchUpInside)
         deleteGoalButton.addTarget(self, action: #selector(deleteGoalButtonTapped(_:)), for: .touchUpInside)
         addGoalButton.addTarget(self, action: #selector(addGoalButtonTapped(_:)), for: .touchUpInside)
     }
     
-    @objc private func settingButtonTapped(_ sender: UIButton) {
-        let settingsViewController = SettingsViewController()
-//        settingsViewController.modalPresentationStyle = .custom
-//        settingsViewController.transitioningDelegate = self
+    @objc private func calendarButtonTapped(_ sender: UIButton) {
+        cancelButtonActionWithAnimation()
         
-        present(settingsViewController, animated: true, completion: nil)
+        presentCalendarViewCompletion?()
     }
     
     @objc private func deleteGoalButtonTapped(_ sender: UIButton) {
@@ -239,7 +239,7 @@ class PlusMenuViewController: UIViewController {
                 view.addSubview($0)
             }
         
-        [settingButton, deleteGoalButton, addGoalButton]
+        [calendarButton, deleteGoalButton, addGoalButton]
             .forEach {
                 buttonStackView.addArrangedSubview($0)
             }
@@ -254,7 +254,7 @@ class PlusMenuViewController: UIViewController {
         buttonStackView.alpha = 0
         buttonStackView.transform = CGAffineTransform(translationX: 0, y: 50)
         
-        settingButton.snp.makeConstraints { make in
+        calendarButton.snp.makeConstraints { make in
             make.height.equalTo(40)
         }
         

@@ -79,31 +79,31 @@ extension GoalRealmManager {
         }
     }
 }
-
-extension GoalRealmManager {
-    private func postGoalEndedNoti(status: GoalStatus) {
-        NotificationCenter.default.post(
-            name: NSNotification.Name(KeyStrings.Noti_goal_ended),
-            object: status.rawValue
-        )
-    }
-    
-    
-    // Profile
-    private func saveProfile(profile: Profile) {
-        UserDefaults.standard.set(try? PropertyListEncoder().encode(profile), forKey: KeyStrings.Profile)
-    }
-    
-    private func getProfile() -> Profile {
-        if let data = UserDefaults.standard.data(forKey: KeyStrings.Profile),
-           let userInfo = try? PropertyListDecoder().decode(Profile.self, from: data) {
-            return userInfo
-        }
-        return Profile()
-    }
-}
-
-
+//
+//extension GoalRealmManager {
+//    private func postGoalEndedNoti(status: GoalStatus) {
+//        NotificationCenter.default.post(
+//            name: NSNotification.Name(KeyStrings.Noti_goal_ended),
+//            object: status.rawValue
+//        )
+//    }
+//    
+//    
+//    // Profile
+//    private func saveProfile(profile: Profile) {
+//        UserDefaults.standard.set(try? PropertyListEncoder().encode(profile), forKey: KeyStrings.Profile)
+//    }
+//    
+//    private func getProfile() -> Profile {
+//        if let data = UserDefaults.standard.data(forKey: KeyStrings.Profile),
+//           let userInfo = try? PropertyListDecoder().decode(Profile.self, from: data) {
+//            return userInfo
+//        }
+//        return Profile()
+//    }
+//}
+//
+//
 
 
 

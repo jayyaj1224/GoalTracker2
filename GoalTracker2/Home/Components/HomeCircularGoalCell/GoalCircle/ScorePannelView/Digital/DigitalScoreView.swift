@@ -8,7 +8,7 @@
 import UIKit
 
 /// * size is fixed, layout location
-class DigitalScoreView: UIView {
+class DigitalScoreView: UIView, ScorePannel {
     let successCountView = DigitalTrebleFigurePannel(title: "Success")
     
     let failCountView = DigitalTrebleFigurePannel(title: "Fail", isFailCount: true)
@@ -33,10 +33,10 @@ class DigitalScoreView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    public func set(successCount: Int, failCount: Int) {
-        successCountView.setNumber(successCount)
+    func set(success: Int, fail: Int) {
+        successCountView.setNumber(success)
         
-        failCountView.setNumber(failCount)
+        failCountView.setNumber(fail)
     }
     
     private func initLayout() {
@@ -51,7 +51,7 @@ class DigitalScoreView: UIView {
         }
         
         countViewStack.snp.makeConstraints { make in
-            make.edges.equalToSuperview().inset(4)
+            make.edges.equalToSuperview().inset(6)
             make.height.equalTo(35)
         }
         

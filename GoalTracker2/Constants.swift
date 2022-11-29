@@ -38,21 +38,29 @@ enum K {
     static var screenHeight: CGFloat { UIScreen.main.bounds.height }
 }
 
-enum KeyStrings {
-    static let FirstLaunch: String = "UserDefaultKey_FirstLaunch"
+enum Keys {
+    static let firstLaunchCheck: String = "UserDefaultKey_FirstLaunch"
+    
+    
+    // Setting
+    static let setting_scoreViewType: String = "UserDefaultKey_Setting_ScoreViewType"
+    static let setting_vibrate: String = "UserDefaultKey_Setting_Vibrate"
+    
+    
     
     // Goal
-    static let Profile: String = "UserDefaultKey_Profile"
-    static let GoalModel: String = "UserDefaultKey_GoalModel"
- 
-    // Setting
-    static let Setting_Graph: String = "UserDefaultKey_Setting_Graph"
-    static let Setting_Colour: String = "UserDefaultKey_Setting_Colour"
-    static let Setting_GraphNumber: String = "UserDefaultKey_GraphNumber"
-    static let Setting_PushNoti: String = "UserDefaultKey_PushNoti"
+//    static let Profile: String = "UserDefaultKey_Profile"
+//    static let GoalModel: String = "UserDefaultKey_GoalModel"
+
+    
+    
+//    static let Setting_Graph: String = "UserDefaultKey_Setting_Graph"
+//    static let Setting_Colour: String = "UserDefaultKey_Setting_Colour"
+//    static let Setting_GraphNumber: String = "UserDefaultKey_GraphNumber"
+//    static let Setting_PushNoti: String = "UserDefaultKey_PushNoti"
     
     // Notification
-    static let Noti_goal_ended: String = "Noti_goal_ended"
+//    static let Noti_goal_ended: String = "Noti_goal_ended"
 }
 
 func now() -> CFTimeInterval {
