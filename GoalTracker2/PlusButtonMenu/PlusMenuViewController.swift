@@ -82,7 +82,12 @@ class PlusMenuViewController: UIViewController {
 
     let viewDismissSubject = PublishSubject<Void>()
     
+    var goalDeletedIdentifierSubject = PublishSubject<String>()
+    
     let disposeBag = DisposeBag()
+    
+    var selectedGoalIdentifier: String?
+    var selectedGoalTitle: String?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -127,29 +132,55 @@ class PlusMenuViewController: UIViewController {
     }
     
     @objc private func deleteGoalButtonTapped(_ sender: UIButton) {
-        print("deleteGoalButtonTapped")
-        GoalRealmManager.shared.deleteAll()
-        
-        dismiss(animated: false)
-    }
-    
-    @objc private func addGoalButtonTapped(_ sender: UIButton) {
-        guard GoalRealmManager.shared.numberOfGoals < 5 else {
+        guard let title = selectedGoalTitle, let id = selectedGoalIdentifier else {
             GTAlertViewController()
                 .make(
-                    subTitle: "Maximum number of goal is five.",
+                    subTitle: "There is no goal to delete.",
                     subTitleFont: .sfPro(size: 14, family: .Medium),
-                    buttonText: "Confirm"
+                    buttonText: "Close"
                 )
-                .addCancelAction {
-                }
-                .onCompletion {
-                }
                 .show()
-            
             return
         }
         
+        GTAlertViewController()
+            .make(
+                title: "Delete Goal",
+                titleFont: .sfPro(size: 14, family: .Medium),
+                subTitle: "\(title.filter({ !$0.isNewline }))",
+                subTitleFont: .sfPro(size: 14, family: .Light),
+                text: "** Deleted goals can not be recovered.",
+                textFont: .sfPro(size: 12, family: .Light),
+                buttonText: "Delete",
+                cancelButtonText: "Cancel",
+                buttonTextColor: .redA
+            )
+            .addAction {
+                GoalRealmManager.shared.deleteGoalWith(identifier: id)
+                
+                self.goalDeletedIdentifierSubject.onNext(id)
+                self.dismiss(animated: false)
+            }
+            .show()
+    }
+    
+    @objc private func addGoalButtonTapped(_ sender: UIButton) {
+//        guard GoalRealmManager.shared.numberOfGoals < 5 else {
+//            GTAlertViewController()
+//                .make(
+//                    subTitle: "Maximum number of goal is five.",
+//                    subTitleFont: .sfPro(size: 14, family: .Medium),
+//                    buttonText: "Confirm"
+//                )
+//                .addCancelAction {
+//                }
+//                .onCompletion {
+//                }
+//                .show()
+//            
+//            return
+//        }
+//
         let addgoalViewController = AddGoalViewController()
         addgoalViewController.modalPresentationStyle = .custom
         addgoalViewController.transitioningDelegate = self

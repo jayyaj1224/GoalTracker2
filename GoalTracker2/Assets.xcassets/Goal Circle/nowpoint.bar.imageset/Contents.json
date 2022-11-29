@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "dial.ver2.png",
+      "filename" : "nowpoint.bar.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "dial.ver2@2x.png",
+      "filename" : "nowpoint.bar@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "dial.ver2@3x.png",
+      "filename" : "nowpoint.bar@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

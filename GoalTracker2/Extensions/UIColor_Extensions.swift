@@ -51,5 +51,11 @@ extension UIColor {
     static let dimA = UIColor.black.withAlphaComponent(0.4)
     static let dimB = UIColor.black.withAlphaComponent(0.6)
     static let dimC = UIColor.black.withAlphaComponent(0.8)
+    
+    static let score_blue = UIColor(hex: "C3CDDA")
+    static let score_green = UIColor(hex: "A6D2C8")
+    static let score_yellow = UIColor(hex: "E3DA8A")
+    static let score_orange = UIColor(hex: "E9AE77")
+    static let score_red = UIColor(hex: "FF5555")
 }
 

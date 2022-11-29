@@ -51,16 +51,11 @@ class GoalRealmManager {
             let resetConfiguration = Realm.Configuration(deleteRealmIfMigrationNeeded: true)
             self.realm = try! Realm(configuration: resetConfiguration)
         }
-        
     }
 }
 
 extension GoalRealmManager {
     func realmWriteGoal(_ goal: Goal) {
-        var info = getProfile()
-        info.totalTrialCount+=1
-        saveProfile(profile: info)
-        
         if let goalEncoded = try? PropertyListEncoder().encode(goal) {
             let goalEncodedObject = GoalEncodedObject(goalEncoded: goalEncoded, identifier: goal.identifier)
             
@@ -69,19 +64,14 @@ extension GoalRealmManager {
             }
         }
     }
-    
-    
-//    func deleteGoal(identifier: String) {
-//        var profile = getProfile()
-//        profile.totalTrialCount-=1
-//        saveProfile(profile: profile)
-//
-//        if let goal = realm.object(ofType: Goal.self, forPrimaryKey: identifier) {
-//            try! realm.write {
-//                realm.delete(goal)
-//            }
-//        }
-//    }
+        
+    func deleteGoalWith(identifier: String) {
+        if let goal = realm.object(ofType: GoalEncodedObject.self, forPrimaryKey: identifier) {
+            try! realm.write {
+                realm.delete(goal)
+            }
+        }
+    }
     
     func deleteAll() {
         try! realm.write {

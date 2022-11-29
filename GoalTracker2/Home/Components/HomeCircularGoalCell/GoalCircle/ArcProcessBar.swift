@@ -12,11 +12,26 @@ class ArcProcessBar: UIView {
     var color: UIColor = .blueA
     var trackColor: UIColor = .crayon
     var trackWidth: CGFloat = 6
-    var fillPercentage: CGFloat = 100
+    var fillPercentage: CGFloat = 100 {
+        didSet {
+            switch fillPercentage {
+            case ...20:
+                color = .score_red
+            case ...40:
+                color = .score_orange
+            case ...60:
+                color = .score_yellow
+            case ...75:
+                color = .score_green
+            default:
+                color = .score_blue
+            }
+        }
+    }
     
     var percentagePath: UIBezierPath!
     
-    var nowPoint = UIImageView(imageName: "arc_nowPoint")
+    var nowPoint = UIImageView(imageName: "nowpoint.bar")
     
     init() {
         super.init(frame: .zero)
@@ -36,7 +51,7 @@ class ArcProcessBar: UIView {
         
         startPoint -= 25
         
-        let trueFillPercentage = fillPercentage + startPoint
+        let trueFillPercentage = fillPercentage + startPoint - 1
         
         let π: CGFloat = .pi
         
@@ -76,8 +91,6 @@ class ArcProcessBar: UIView {
             make.centerX.equalToSuperview()
         }
         
-        let point = self.convert(percentagePath.currentPoint, to: self.superview)
-        
         var angle = graphEndingPoint
         
         switch graphEndingPoint {
@@ -89,11 +102,6 @@ class ArcProcessBar: UIView {
             angle += 90.pi.cgFloat
         }
         
-        self.nowPoint.transform = CGAffineTransform.init(rotationAngle: angle)
-        self.nowPoint.snp.makeConstraints { make in
-            make.height.equalTo(16)
-            make.width.equalTo(8)
-            make.center.equalTo(point)
-        }
+        self.nowPoint.transform = CGAffineTransform.init(rotationAngle: ((2 * .pi) / 100) * (CGFloat(fillPercentage)))
     }   
 }

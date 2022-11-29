@@ -31,16 +31,16 @@ class GoalMonthlyCell: UITableViewCell {
         return label
     }()
     
-    
+
     private let daysCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
-        layout.itemSize = CGSize(width: 22, height: 32)
+        layout.itemSize = CGSize(width: 25, height: 90)
         layout.minimumLineSpacing = 3
         
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
         cv.register(GoalMonthlyTileCell.self, forCellWithReuseIdentifier: "GoalMonthlyTileCell")
-        cv.contentInset = UIEdgeInsets(top: 30, left: 180, bottom: 20, right: 30)
+        cv.contentInset = UIEdgeInsets(top: 0, left: 180, bottom: 0, right: 30)
         cv.backgroundColor = .clear
         cv.showsHorizontalScrollIndicator = false
         
@@ -114,8 +114,6 @@ class GoalMonthlyCell: UITableViewCell {
     }
     
     private func layout() {
-        
-        
         [daysCollectionView, goalTitleSubLabel, goalTitleLabelView]
             .forEach(contentView.addSubview)
         

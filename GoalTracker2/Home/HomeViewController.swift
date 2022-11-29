@@ -14,18 +14,13 @@ import RxCocoa
  - progress board analysis
  - message bar more function
  - today quick check
- - yearly track/period track
  - calendar score plate
- 
- PlusMenu
- - deleteGoal
  
  Setting
  - scorePlate
  - reset
  
  Calendar
- - year select
  - delete
  - edit
  - day-Fix
@@ -110,7 +105,7 @@ class HomeViewController: UIViewController {
     }()
     
     //MARK: - Logics
-    let homeViewModel = HomeVieWModel()
+    let homeViewModel = HomeViewModel()
     
     private lazy var circularScrollSignal = goalCircularCollectionView.rx.didScroll.asSignal()
     
@@ -137,6 +132,8 @@ class HomeViewController: UIViewController {
         
         // Calendar data preperation
         prepareCalendarViewModelData()
+        
+        pageIndicator.currentIndex = 0
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -165,6 +162,15 @@ class HomeViewController: UIViewController {
         let plusMenuViewController = PlusMenuViewController()
         plusMenuViewController.modalPresentationStyle = .overFullScreen
         
+        let row = Int(goalCircularCollectionView.contentOffset.y/K.singleRowHeight)
+        let goals = self.homeViewModel.goalViewModelsRelay.value.map { $0.goal }
+        
+        if goals.count != 0 {
+            let goal = goals[row]
+            plusMenuViewController.selectedGoalIdentifier = goal.identifier
+            plusMenuViewController.selectedGoalTitle = goal.title
+        }
+        
         let newGoalSaved = plusMenuViewController.newGoalSavedSubject
         
         newGoalSaved
@@ -177,6 +183,10 @@ class HomeViewController: UIViewController {
                     self?.sortGoalByMonth(goal: goal)
                 }
             })
+            .disposed(by: disposeBag)
+        
+        plusMenuViewController.goalDeletedIdentifierSubject
+            .bind(to: self.rx.deleteGoalWithIdentifier)
             .disposed(by: disposeBag)
         
         let plusMenuDismissed = plusMenuViewController.viewDismissSubject
@@ -309,6 +319,20 @@ extension Reactive where Base: HomeViewController {
     var setPageIndicator: Binder<Int> {
         Binder(base) { base, goalCount in
             base.pageIndicator.set(numberOfPages: goalCount)
+        }
+    }
+    
+    var deleteGoalWithIdentifier: Binder<String> {
+        Binder(base) { base, identifier in
+            DispatchQueue.main.async {
+                base.goalCircularCollectionView.setContentOffset(.zero, animated: false)
+            }
+            let goalVmsFiltered = base.homeViewModel
+                .goalViewModelsRelay.value
+                .filter { $0.goal.identifier != identifier }
+            
+            base.homeViewModel.goalViewModelsRelay
+                .accept(goalVmsFiltered)
         }
     }
 }

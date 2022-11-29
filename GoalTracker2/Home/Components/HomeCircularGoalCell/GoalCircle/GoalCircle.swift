@@ -17,7 +17,7 @@ class GoalCircle: UIView {
     private let circleInnerShadow = UIImageView(imageName: "circle_inner_shadow")
     
     private var dialImage: UIImageView = {
-        let imageView = UIImageView(imageName: "yearly_dial")
+        let imageView = UIImageView(imageName: "dial.ver2")
         imageView.clipsToBounds = true
         imageView.layer.cornerRadius = 294/380*K.circleRadius/2
         return imageView
@@ -26,6 +26,13 @@ class GoalCircle: UIView {
     private let innerCircleContentView = UIView()
     
     private let processArc = ArcProcessBar()
+    
+    private let percentageLabel: UILabel = {
+        let label = UILabel()
+        label.font = .sfPro(size: 11, family: .Medium)
+        label.textColor = .grayC
+        return label
+    }()
     
     private let goalTitleLabel: UILabel = {
         let label = UILabel()
@@ -64,11 +71,17 @@ class GoalCircle: UIView {
         successFailCountView.set(successCount: goal.successCount, failCount: goal.failCount)
         
         processArc.fillPercentage = viewModel.processPercentage
+        
+        percentageLabel.text = "\(Int(viewModel.processPercentage))"
     }
     
     private func initLayout() {
-        [processArc, circleInnerShadow, circleRimImageView, innerCircleImageView, dialImage, innerCircleContentView, processArc.nowPoint]
-            .forEach(addSubview)
+        [
+            processArc, circleInnerShadow, circleRimImageView,
+            innerCircleImageView, innerCircleContentView,
+            processArc.nowPoint, dialImage, percentageLabel
+            
+        ].forEach(addSubview)
         
         [circleInnerShadow, circleRimImageView, innerCircleImageView]
             .forEach { view in
@@ -87,9 +100,20 @@ class GoalCircle: UIView {
             make.center.equalTo(innerCircleImageView)
         }
         
+        percentageLabel.snp.makeConstraints { make in
+            make.centerX.equalToSuperview().offset(-2)
+            make.top.equalTo(dialImage).inset(9)
+        }
+        
         dialImage.snp.makeConstraints { make in
             make.center.equalToSuperview()
-            make.size.equalTo(rimSize-6)
+            make.size.equalTo(rimSize+6)
+        }
+        
+        processArc.nowPoint.snp.makeConstraints { make in
+            make.center.equalToSuperview()
+            make.height.equalTo(circleSize+17)
+            make.width.equalTo((circleSize+17)/740*25)
         }
         
         innerCircleContentLayout()

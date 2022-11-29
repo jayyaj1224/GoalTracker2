@@ -128,7 +128,7 @@ class AddGoalViewController: UIViewController {
         return label
     }()
     
-    private let yearlyTrackSwitch = NeumorphicSwitch(toggleAnimationType: .withSpring, size: CGSize(width: 48, height: 20))
+//    private let yearlyTrackSwitch = NeumorphicSwitch(toggleAnimationType: .withSpring, size: CGSize(width: 48, height: 20))
     
     private let daysSettingPickerView = UIPickerView()
     
@@ -170,14 +170,14 @@ class AddGoalViewController: UIViewController {
     }
     
     @objc private func saveButtonTapped(_ sender: UIButton) {
-        let goalType: GoalTrackType = yearlyTrackSwitch.isOn ? .Yearly : .Period
+        //let goalType: GoalTrackType = yearlyTrackSwitch.isOn ? .Yearly : .Period
 
         let goal = Goal(
             title: goalTitleInputTextView.text ?? "",
             detail: detailInputTextView.text ?? "",
             totalDays: daysSettingPickerView.selectedRow(inComponent: 0),
-            failCap: daysSettingPickerView.selectedRow(inComponent: 1)-1,
-            setType: goalType
+            failCap: daysSettingPickerView.selectedRow(inComponent: 1)-1
+            //setType: goalType
         )
 
         GoalRealmManager.shared.realmWriteGoal(goal)
@@ -295,22 +295,22 @@ extension AddGoalViewController {
             })
             .disposed(by: disposeBag)
         
-        let yearlyTrackSwitchSubjectShare = yearlyTrackSwitch.isOnSubject.share()
-        
-        yearlyTrackSwitchSubjectShare
-            .bind(to: vm.rx.yearlyTrackChanged)
-            .disposed(by: disposeBag)
-        
-        yearlyTrackSwitchSubjectShare
-            .subscribe(onNext: { [weak self] isYearlyTrack in
-
-                self?.changeTrackTypeLabel(isYearlyTrack)
-                
-                if isYearlyTrack == false {
-                    self?.periedPickerViewinitialSetting()
-                }
-            })
-            .disposed(by: disposeBag)
+//        let yearlyTrackSwitchSubjectShare = yearlyTrackSwitch.isOnSubject.share()
+//
+//        yearlyTrackSwitchSubjectShare
+//            .bind(to: vm.rx.yearlyTrackChanged)
+//            .disposed(by: disposeBag)
+//
+//        yearlyTrackSwitchSubjectShare
+//            .subscribe(onNext: { [weak self] isYearlyTrack in
+//
+//                self?.changeTrackTypeLabel(isYearlyTrack)
+//
+//                if isYearlyTrack == false {
+//                    self?.periedPickerViewinitialSetting()
+//                }
+//            })
+//            .disposed(by: disposeBag)
     }
 }
 
@@ -438,7 +438,7 @@ extension AddGoalViewController {
             descriptionTextViewEndShadowView,
             
             yearlyTrackSwitchLabel,
-            yearlyTrackSwitch,
+//            yearlyTrackSwitch,
             
             aimedPeriodSectionLabel,
             daysNumberSettingSectionDivider,
@@ -516,15 +516,15 @@ extension AddGoalViewController {
             make.height.equalTo(2)
         }
         
-        yearlyTrackSwitchLabel.snp.makeConstraints { make in
-            make.centerY.equalTo(yearlyTrackSwitch)
-            make.trailing.equalTo(yearlyTrackSwitch.snp.leading).offset(-6)
-        }
-        
-        yearlyTrackSwitch.snp.makeConstraints { make in
-            make.bottom.equalTo(daysNumberSettingSectionDivider.snp.top).offset(-3.5)
-            make.trailing.equalToSuperview().inset(15)
-        }
+//        yearlyTrackSwitchLabel.snp.makeConstraints { make in
+//            make.centerY.equalTo(yearlyTrackSwitch)
+//            make.trailing.equalTo(yearlyTrackSwitch.snp.leading).offset(-6)
+//        }
+//
+//        yearlyTrackSwitch.snp.makeConstraints { make in
+//            make.bottom.equalTo(daysNumberSettingSectionDivider.snp.top).offset(-3.5)
+//            make.trailing.equalToSuperview().inset(15)
+//        }
         
         // daysNumberSettingSection
         daysNumberSettingSectionDivider.snp.makeConstraints { make in

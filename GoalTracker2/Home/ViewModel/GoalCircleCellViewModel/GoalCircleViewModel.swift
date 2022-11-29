@@ -14,11 +14,15 @@ class GoalCircleViewModel {
         self.goal = goal
     }
     
+    
+    
     var processPercentage: CGFloat {
         let startDate = Date.inAnyFormat(dateString: goal.startDate)
         let daysCountToNow = startDate.daysCountToNow
-        var ratio = CGFloat(daysCountToNow)/CGFloat(goal.totalDays)
+        var ratio = CGFloat(goal.successCount)/CGFloat(daysCountToNow)
+        
         ratio = min(1, ratio)
+        
         return ratio*100
     }
 }

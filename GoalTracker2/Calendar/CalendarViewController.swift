@@ -8,22 +8,6 @@
 import UIKit
 import RxSwift
 import RxCocoa
-//
-//extension Reactive where Base: UITableView {
-//    var itemInserted: ControlEvent<IndexPath> {
-//
-//        let source = self.dataSource.methodInvoked(#selector(UITableViewDataSource.tableView(_:commit:forRowAt:)))
-//            .filter { a in
-//                return UITableViewCell.EditingStyle(rawValue: (try castOrThrow(NSNumber.self, a[1])).intValue) == .insert
-//            }
-//            .map { a in
-//                return (try castOrThrow(IndexPath.self, a[2]))
-//        }
-//
-//        return ControlEvent(events: source)
-//    }
-//}
-
 
 /*
  [CalendarViewController]
@@ -150,7 +134,6 @@ extension CalendarViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let deleteAction = UIContextualAction(style: .destructive, title: "", handler: { (ac:UIContextualAction, view:UIView, success:(Bool) -> Void) in
             //deleteAction
-            
             success(true)
         })
         deleteAction.image =  UIImage(systemName: "trash")?.withTintColor(.darkGray, renderingMode: .alwaysOriginal)

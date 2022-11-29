@@ -50,13 +50,13 @@ class GoalMonthlyTileCell: UICollectionViewCell {
             .forEach(contentView.addSubview)
         
         dayLabel.snp.makeConstraints { make in
-            make.top.equalToSuperview()
+            make.bottom.equalTo(statusImageView.snp.top)
             make.centerX.equalToSuperview()
         }
         
         statusImageView.snp.makeConstraints { make in
-            make.bottom.centerX.equalToSuperview()
-            make.size.equalTo(22)
+            make.center.equalToSuperview()
+            make.size.equalTo(25)
         }
     }
 }

@@ -9,9 +9,9 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-class HomeVieWModel: ReactiveCompatible {
+class HomeViewModel: ReactiveCompatible {
     let goalViewModelsRelay = BehaviorRelay<[GoalViewModel]>.init(value: [])
-
+    
     private let disposeBag = DisposeBag()
     
     init() {
@@ -21,12 +21,12 @@ class HomeVieWModel: ReactiveCompatible {
     private func setGoalsRelay() {
         let goalVmArray = GoalRealmManager.shared.goals
             .compactMap(GoalViewModel.init)
-        
+
         goalViewModelsRelay.accept(goalVmArray)
     }
 }
 
-extension Reactive where Base: HomeVieWModel {
+extension Reactive where Base: HomeViewModel {
     var relayAcceptNewGoal: Binder<Goal> {
         Binder(base) {base, goal in
             var goalsArray = base.goalViewModelsRelay.value
@@ -38,6 +38,8 @@ extension Reactive where Base: HomeVieWModel {
 }
 
 struct GoalViewModel {
+    let goal: Goal
+
     var goalCircleViewModel: GoalCircleViewModel!
     
     var tileViewModel: TileViewModel!
@@ -45,6 +47,8 @@ struct GoalViewModel {
     var goalAnalysisViewModel: GoalAnalysisViewModel!
     
     init(goal: Goal) {
+        self.goal = goal
+        
         goalCircleViewModel = GoalCircleViewModel(goal: goal)
         goalAnalysisViewModel = GoalAnalysisViewModel(goal: goal)
         tileViewModel = TileViewModel(goal: goal)

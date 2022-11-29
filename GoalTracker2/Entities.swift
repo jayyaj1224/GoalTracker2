@@ -53,7 +53,7 @@ struct Goal: Codable {
     var identifier: String = ""
     var title: String = ""
     var detail: String = ""
-    var setType: GoalTrackType = .Period
+    //var setType: GoalTrackType = .Period
     
     var totalDays: Int = 0
     var startDate: String = ""
@@ -69,7 +69,7 @@ struct Goal: Codable {
     
     var isPlaceHolder: Bool = false
     
-    init(title: String, detail: String, totalDays: Int, failCap: Int, setType: GoalTrackType) {
+    init(title: String, detail: String, totalDays: Int, failCap: Int) { //, setType: GoalTrackType) {
         let today = Date()
         
         switch title {
@@ -90,7 +90,7 @@ struct Goal: Codable {
         self.detail = detail
         self.identifier = today.stringFormat(of: .goalIdentifier)
         self.status = GoalStatus.none
-        self.setType = setType
+        //self.setType = setType
         self.totalDays = totalDays
         self.startDate = today.stringFormat(of: .yyyyMMdd)
         self.endDate = today.add(totalDays-1).stringFormat(of: .yyyyMMdd)
@@ -116,7 +116,7 @@ extension Goal {
         self.detail = "aaaa"
         self.identifier = Date().stringFormat(of: .goalIdentifier)
         self.status = GoalStatus.none
-        self.setType = GoalTrackType.Period
+        //self.setType = GoalTrackType.Period
         self.totalDays = 700
         
         let today = dateFormatter.date(from: "20220413") ?? Date()
@@ -150,7 +150,7 @@ extension Goal {
         self.detail = "aaaa"
         self.identifier = Date().stringFormat(of: .goalIdentifier)
         self.status = GoalStatus.none
-        self.setType = GoalTrackType.Period
+        //self.setType = GoalTrackType.Period
         self.totalDays = 900
         
         let today = dateFormatter.date(from: "20220413") ?? Date()
@@ -184,7 +184,7 @@ extension Goal {
         self.detail = "aaaa"
         self.identifier = Date().stringFormat(of: .goalIdentifier)
         self.status = GoalStatus.none
-        self.setType = GoalTrackType.Period
+        //self.setType = GoalTrackType.Period
         self.totalDays = 300
         
         let today = dateFormatter.date(from: "20220820") ?? Date()
