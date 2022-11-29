@@ -8,10 +8,10 @@
 import UIKit
 
 /// * size is fixed, layout location
-class SuccessFailCountView: UIView {
-    let successCountView = TrebleFigurePannel(title: "Success")
+class DigitalScoreView: UIView {
+    let successCountView = DigitalTrebleFigurePannel(title: "Success")
     
-    let failCountView = TrebleFigurePannel(title: "Fail", isFailCount: true)
+    let failCountView = DigitalTrebleFigurePannel(title: "Fail", isFailCount: true)
     
     let countViewStack: UIStackView = {
         let stackView = UIStackView()

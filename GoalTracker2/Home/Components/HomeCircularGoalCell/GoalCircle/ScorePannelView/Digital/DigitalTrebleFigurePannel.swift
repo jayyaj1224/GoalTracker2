@@ -7,7 +7,7 @@
 
 import UIKit
 
-class TrebleFigurePannel: UIView {
+class DigitalTrebleFigurePannel: UIView {
     private let titleLabel: UILabel = {
         let label = UILabel()
         label.font = .outFit(size: 9, family: .Thin)

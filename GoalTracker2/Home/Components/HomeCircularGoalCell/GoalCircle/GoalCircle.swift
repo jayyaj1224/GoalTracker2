@@ -45,7 +45,7 @@ class GoalCircle: UIView {
         return label
     }()
     
-    let successFailCountView = SuccessFailCountView()
+    let successFailCountView = DigitalScoreView()
     
     let circleSize = 222 / 380 * K.circleRadius
     
