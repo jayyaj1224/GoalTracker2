@@ -20,8 +20,12 @@ class TileViewModel {
     var spacing: CGFloat = 8
     
     var tileStatusObservable: Observable<[String]> {
-        let goalStatusRaw = goal.daysArray.map { $0.status }
-        return Observable<[String]>.just(goalStatusRaw)
+        let goalStatusString = goal.daysByMonth
+            .values
+            .reduce([], +)
+            .map(\.status)
+        
+        return Observable<[String]>.just(goalStatusString)
     }
     
     func needDateLabelVisible(at index: Int) -> Bool {

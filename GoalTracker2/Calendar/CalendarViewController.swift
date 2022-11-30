@@ -9,14 +9,6 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-/*
- [CalendarViewController]
-  ⎿ MonthsMenuCollectionView
-  ⎿ goalTableView
-        ⎿ GoalMonthlyCell
-            ⎿ GoalMonthlyTileCell
- */
-
 class CalendarViewController: UIViewController {
     // UI Components
     private let topNavigationView = UIView()
@@ -64,7 +56,6 @@ class CalendarViewController: UIViewController {
         tableView.backgroundColor = .crayon
         tableView.separatorStyle = .none
         tableView.register(GoalMonthlyCell.self, forCellReuseIdentifier: "GoalMonthlyCell")
-        
         return tableView
     }()
     
@@ -75,11 +66,23 @@ class CalendarViewController: UIViewController {
     
     let calendarViewModel = CalendarViewModel()
     
-    private let disposeBag = DisposeBag()
+    /// - PublishSubject<String> goal identifier
+    let goalDeletedSubject = PublishSubject<String>()
+    
+    let disposeBag = DisposeBag()
     
     private let thisMonth: Int = {
         let thisMonthString = Date().stringFormat(of: .M)
         return Int(thisMonthString) ?? 2
+    }()
+    
+    private let emptyLabel: UILabel = {
+        let label = UILabel()
+        label.text = "􀎸 Empty."
+        label.textColor = .grayA
+        label.font = .sfPro(size: 20, family: .Semibold)
+        label.isHidden = true
+        return label
     }()
     
     override func viewDidLoad() {
@@ -105,10 +108,6 @@ class CalendarViewController: UIViewController {
         }
     }
     
-    func prepareViewModelData() {
-        self.calendarViewModel.setViewModelsData()
-    }
-    
     @objc private func todayButtonTapped(_ sender: UIButton) {
         monthsMenuCollectionView.selectItem(at: IndexPath(row: thisMonth-1, section: 0), animated: false, scrollPosition: .centeredHorizontally)
         monthsMenuCollectionView.layoutSubviews()
@@ -128,26 +127,55 @@ class CalendarViewController: UIViewController {
 
 extension CalendarViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 90
+        return 100
     }
     
     func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let deleteAction = UIContextualAction(style: .destructive, title: "", handler: { (ac:UIContextualAction, view:UIView, success:(Bool) -> Void) in
-            //deleteAction
+            self.swipeDeleteAction(at: indexPath.row)
+            
             success(true)
         })
         deleteAction.image =  UIImage(systemName: "trash")?.withTintColor(.darkGray, renderingMode: .alwaysOriginal)
         deleteAction.backgroundColor = .crayon
         
-        let editAction = UIContextualAction(style: .destructive, title: "", handler: { (ac:UIContextualAction, view:UIView, success:(Bool) -> Void) in
-            //editAction
+        let noteEditAction = UIContextualAction(style: .destructive, title: "", handler: { (ac:UIContextualAction, view:UIView, success:(Bool) -> Void) in
+            self.noteEditButtonTapped(at: indexPath.row)
             
             success(true)
         })
-        editAction.image = UIImage(systemName: "hammer")?.withTintColor(.darkGray, renderingMode: .alwaysOriginal)
-        editAction.backgroundColor = .crayon
+        noteEditAction.image = UIImage(systemName: "note.text.badge.plus")?.withTintColor(.darkGray, renderingMode: .alwaysOriginal)
+        noteEditAction.backgroundColor = .crayon
         
-        return UISwipeActionsConfiguration(actions: [deleteAction, editAction])
+        return UISwipeActionsConfiguration(actions: [deleteAction, noteEditAction])
+    }
+    
+    private func swipeDeleteAction(at row: Int) {
+        let id = calendarViewModel.goalIdentifier(at: row)
+        let title = calendarViewModel.goalTitle(at: row)
+        
+        GTAlertViewController()
+            .make(
+                title: "Delete Goal",
+                titleFont: .sfPro(size: 14, family: .Medium),
+                subTitle: "\(title.filter({ !$0.isNewline }))",
+                subTitleFont: .sfPro(size: 14, family: .Light),
+                text: "** Deleted goals can not be recovered.",
+                textFont: .sfPro(size: 12, family: .Light),
+                buttonText: "Delete",
+                cancelButtonText: "Cancel",
+                buttonTextColor: .redA
+            )
+            .addAction {
+                self.goalDeletedSubject.onNext(id)
+                
+                self.calendarViewModel.deleteGoal(with: id)
+            }
+            .show()
+    }
+    
+    private func noteEditButtonTapped(at row: Int) {
+        
         
     }
 }
@@ -178,7 +206,7 @@ extension CalendarViewController{
     
     private func bind() {
         calendarViewModel
-            .goalsMonthlyRelay
+            .tableViewDatasourceRelay
             .bind(to: goalTableView.rx.items) { tv, row, goalMonthly in
                 guard let cell = tv.dequeueReusableCell(withIdentifier: "GoalMonthlyCell", for: IndexPath(row: row, section: 0)) as? GoalMonthlyCell else { return UITableViewCell() }
                 
@@ -191,14 +219,18 @@ extension CalendarViewController{
         goalTableView.rx.setDelegate(self)
             .disposed(by: disposeBag)
         
-        
         monthsMenuCollectionView.itemSelectedSignal
             .emit { [weak self] indexPath in
                 self?.calendarViewModel.selectedMonth = String(format: "%02d", indexPath.row+1)
                 self?.calendarViewModel.displaySelected()
-                
-                
             }
+            .disposed(by: disposeBag)
+        
+        calendarViewModel
+            .tableViewDatasourceRelay
+            .subscribe(onNext: { [weak self] datasource in
+                self?.emptyLabel.isHidden = !datasource.isEmpty
+            })
             .disposed(by: disposeBag)
     }
     
@@ -231,7 +263,7 @@ extension CalendarViewController{
     private func layout() {
         setCustomNavigationBar()
         
-        [monthsMenuCollectionView, goalTableView, topNavigationView, scrollShadowImageView]
+        [monthsMenuCollectionView, goalTableView, topNavigationView, scrollShadowImageView, emptyLabel]
             .forEach(view.addSubview)
         
         topNavigationView.snp.makeConstraints { make in
@@ -255,6 +287,11 @@ extension CalendarViewController{
         scrollShadowImageView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
             make.top.equalTo(goalTableView)
+        }
+        
+        emptyLabel.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.top.equalTo(goalTableView).offset(130)
         }
     }
 }

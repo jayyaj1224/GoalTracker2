@@ -65,7 +65,7 @@ extension GoalRealmManager {
         }
     }
         
-    func deleteGoalWith(identifier: String) {
+    func deleteGoal(with identifier: String) {
         if let goal = realm.object(ofType: GoalEncodedObject.self, forPrimaryKey: identifier) {
             try! realm.write {
                 realm.delete(goal)
@@ -87,13 +87,13 @@ extension GoalRealmManager {
 //            object: status.rawValue
 //        )
 //    }
-//    
-//    
+//
+//
 //    // Profile
 //    private func saveProfile(profile: Profile) {
 //        UserDefaults.standard.set(try? PropertyListEncoder().encode(profile), forKey: KeyStrings.Profile)
 //    }
-//    
+//
 //    private func getProfile() -> Profile {
 //        if let data = UserDefaults.standard.data(forKey: KeyStrings.Profile),
 //           let userInfo = try? PropertyListDecoder().decode(Profile.self, from: data) {

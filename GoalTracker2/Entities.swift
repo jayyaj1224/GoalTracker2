@@ -65,7 +65,7 @@ struct Goal: Codable {
     var failCount: Int = 0
     var failCap: Int = 0
     
-    var daysArray: [Day] = []
+    var daysByMonth: [String: [Day]] = [:]
     
     var isPlaceHolder: Bool = false
     
@@ -97,12 +97,15 @@ struct Goal: Codable {
         self.failCap = failCap
         
         Array(0...totalDays-1).forEach { i in
-            let day = Day(
-                date: today.add(i-1).stringFormat(of: .yyyyMMdd),
-                index: i,
-                status: GoalStatus.none.rawValue
-            )
-            self.daysArray.append(day)
+            let date = today.add(i-1)
+            let yyyyMM = date.stringFormat(of: .yyyyMM)
+            let yyyyMMdd = date.stringFormat(of: .yyyyMMdd)
+            
+            let day = Day(date: yyyyMMdd,index: i, status: "none")
+            
+            var temp = daysByMonth[yyyyMM] ?? []
+            temp.append(day)
+            daysByMonth[yyyyMM] = temp
         }
     }
 }
@@ -127,9 +130,12 @@ extension Goal {
         self.failCount = 4
         
         for i in 1...totalDays {
-            var day = Day()
-            day.date = today.add(i-1).stringFormat(of: .yyyyMMdd)
-            day.index = i
+            let date = today.add(i-1)
+            let yyyyMM = date.stringFormat(of: .yyyyMM)
+            let yyyyMMdd = date.stringFormat(of: .yyyyMMdd)
+            
+            var day = Day(date: yyyyMMdd,index: i, status: "none")
+            
             switch i {
             case 100,102,103,105:
                 day.status = GoalStatus.fail.rawValue
@@ -138,7 +144,10 @@ extension Goal {
             default:
                 day.status = GoalStatus.none.rawValue
             }
-            self.daysArray.append(day)
+            
+            var temp = daysByMonth[yyyyMM] ?? []
+            temp.append(day)
+            daysByMonth[yyyyMM] = temp
         }
     }
     
@@ -161,9 +170,12 @@ extension Goal {
         self.failCount = 4
         
         for i in 1...totalDays {
-            var day = Day()
-            day.date = today.add(i-1).stringFormat(of: .yyyyMMdd)
-            day.index = i
+            let date = today.add(i-1)
+            let yyyyMM = date.stringFormat(of: .yyyyMM)
+            let yyyyMMdd = date.stringFormat(of: .yyyyMMdd)
+            
+            var day = Day(date: yyyyMMdd,index: i, status: "none")
+            
             switch i {
             case 100,102,103,105:
                 day.status = GoalStatus.fail.rawValue
@@ -172,7 +184,10 @@ extension Goal {
             default:
                 day.status = GoalStatus.none.rawValue
             }
-            self.daysArray.append(day)
+            
+            var temp = daysByMonth[yyyyMM] ?? []
+            temp.append(day)
+            daysByMonth[yyyyMM] = temp
         }
     }
     
@@ -195,9 +210,12 @@ extension Goal {
         self.failCount = 4
         
         for i in 1...totalDays {
-            var day = Day()
-            day.date = today.add(i-1).stringFormat(of: .yyyyMMdd)
-            day.index = i
+            let date = today.add(i-1)
+            let yyyyMM = date.stringFormat(of: .yyyyMM)
+            let yyyyMMdd = date.stringFormat(of: .yyyyMMdd)
+            
+            var day = Day(date: yyyyMMdd,index: i, status: "none")
+            
             switch i {
             case 100,102,103,105,106,107,108:
                 day.status = GoalStatus.fail.rawValue
@@ -206,7 +224,10 @@ extension Goal {
             default:
                 day.status = GoalStatus.none.rawValue
             }
-            self.daysArray.append(day)
+            
+            var temp = daysByMonth[yyyyMM] ?? []
+            temp.append(day)
+            daysByMonth[yyyyMM] = temp
         }
     }
 }

@@ -74,7 +74,7 @@ class GoalMonthlyCell: UITableViewCell {
         }
     }
     
-    func configure(goalMonthly: GoalMonthlyViewModel) {
+    func configure(goalMonthly: GoalMonth) {
         daysInMonthRelay.accept(goalMonthly.days)
         
         let title = goalMonthly.title.filter { !$0.isNewline }

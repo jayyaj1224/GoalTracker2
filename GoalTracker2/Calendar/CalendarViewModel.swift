@@ -11,42 +11,41 @@ import RxCocoa
 
 /*
  CalendarViewModel
-  ⎿ yyyyMM : [GoalMonthlyViewModel]
+  ⎿ yyyyMM : Goal[GoalMonthlyViewModel]
   
  */
 
 class CalendarViewModel {
-    let goalsMonthlyRelay = BehaviorRelay<[GoalMonthlyViewModel]>(value: [])
+    let tableViewDatasourceRelay = BehaviorRelay<[GoalMonth]>(value: [])
     
-    var goalMonthlyViewModels: [String : [GoalMonthlyViewModel]] = [:]
+    var calendarModel: CalendarModel!
     
     var selectedMonth: String = Date().stringFormat(of: .MM)
-    
     var selectedYear: String = Date().stringFormat(of: .yyyy)
     
     func displaySelected() {
-        let key = (selectedYear+selectedMonth)
-        let selectedMonthGoals = goalMonthlyViewModels[key] ?? []
+        let keyDate = (selectedYear+selectedMonth)
+        let goalMonths = calendarModel.goalMonth(in: keyDate)
         
-        goalsMonthlyRelay.accept(selectedMonthGoals)
-    }
-    
-    func setViewModelsData() {
-        goalMonthlyViewModels.removeAll(keepingCapacity: true)
-        
-        
-        
+        tableViewDatasourceRelay.accept(goalMonths)
     }
 }
 
-struct GoalMonthlyViewModel {
-    let title: String
-    let days: [Day]
-    let identifier: String
+extension CalendarViewModel {
+    func goalTitle(at row: Int) -> String {
+        return tableViewDatasourceRelay.value[row].title
+    }
     
-    init(title: String, days: [Day], identifier: String) {
-        self.title = title
-        self.days = days
-        self.identifier = identifier
+    func goalIdentifier(at row: Int) -> String {
+        return tableViewDatasourceRelay.value[row].identifier
+    }
+    
+    func deleteGoal(with identifier: String) {
+        calendarModel.deleteGoal(with: identifier) { [weak self] in
+            
+            self?.displaySelected()
+        }
     }
 }
+
+

@@ -156,7 +156,7 @@ class PlusMenuViewController: UIViewController {
                 buttonTextColor: .redA
             )
             .addAction {
-                GoalRealmManager.shared.deleteGoalWith(identifier: id)
+                GoalRealmManager.shared.deleteGoal(with: id)
                 
                 self.goalDeletedIdentifierSubject.onNext(id)
                 self.dismiss(animated: false)

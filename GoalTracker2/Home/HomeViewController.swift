@@ -12,17 +12,14 @@ import RxCocoa
 /*
  Home
  - progress board analysis
- - message bar more function
+ - message bar more function -> + Memo
  - today quick check
- - calendar score plate
+ - plusButtonTapped 쪼개기
  
  
  Calendar
- - delete
  - edit
  - day-Fix
- - todayButtonTap
- - collectionview layout fix (cell center)
  
  
  */
@@ -76,7 +73,7 @@ class HomeViewController: UIViewController {
         return button
     }()
     
-    let pageIndicator = VerticalPageIndicator()
+    let pageIndicator = DotPageIndicator(pageSize: K.singleRowHeight)
     
     let scrollBackButton: UIButton = {
         var configuration = UIButton.Configuration.plain()
@@ -104,11 +101,9 @@ class HomeViewController: UIViewController {
     //MARK: - Logics
     let homeViewModel = HomeViewModel()
     
-    private lazy var circularScrollSignal = goalCircularCollectionView.rx.didScroll.asSignal()
+    private lazy var collectionViewDidScrollSignal = goalCircularCollectionView.rx.didScroll.asSignal()
     
     private let disposeBag = DisposeBag()
-    
-    private var calendarDataPreperation: [String : [GoalMonthlyViewModel]] = [:]
     
     private var goalCircularViewIsScrolling = false {
         didSet {
@@ -121,6 +116,9 @@ class HomeViewController: UIViewController {
     private var initialSettingDone = false
     
     var horizontalDidStartScrollBuzzed = false
+    
+    // Calendar data preperation
+    var calendarModel: CalendarModel?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -180,14 +178,14 @@ class HomeViewController: UIViewController {
         newGoalSaved
             .subscribe(onNext: { [weak self] goal in
                 DispatchQueue.global(qos: .userInteractive).async {
-                    self?.sortGoalByMonth(goal: goal)
+                    self?.calendarModel?.addGoalByMonth(goal: goal)
                 }
             })
-            .disposed(by: disposeBag)
+            .disposed(by: plusMenuViewController.disposeBag)
         
         plusMenuViewController.goalDeletedIdentifierSubject
             .bind(to: self.rx.deleteGoalWithIdentifier)
-            .disposed(by: disposeBag)
+            .disposed(by: plusMenuViewController.disposeBag)
         
         let plusMenuDismissed = plusMenuViewController.viewDismissSubject
         
@@ -201,13 +199,13 @@ class HomeViewController: UIViewController {
                     self?.plusRotatingButtonInsideImageView.alpha = 1
                 }
             })
-            .disposed(by: disposeBag)
+            .disposed(by: plusMenuViewController.disposeBag)
         
         Observable
             .zip(newGoalSaved.asObservable(), plusMenuDismissed.asObservable())
             .flatMap { _ in return Observable.just(()) }
             .subscribe(self.rx.scrollToAddedGoal)
-            .disposed(by: disposeBag)
+            .disposed(by: plusMenuViewController.disposeBag)
        
         present(plusMenuViewController, animated: false) {
             DispatchQueue.main.async {
@@ -226,7 +224,11 @@ class HomeViewController: UIViewController {
     
     @objc private func calenderButtonsTapped() {
         let calendarViewController = CalendarViewController()
-        calendarViewController.calendarViewModel.goalMonthlyViewModels = calendarDataPreperation
+        calendarViewController.calendarViewModel.calendarModel = calendarModel
+        
+        calendarViewController.goalDeletedSubject
+            .bind(to: self.rx.deleteGoalWithIdentifier)
+            .disposed(by: calendarViewController.disposeBag)
         
         navigationController?.pushViewController(calendarViewController, animated: true)
         
@@ -243,28 +245,10 @@ class HomeViewController: UIViewController {
 
 extension HomeViewController {
     private func prepareCalendarViewModelData() {
-        GoalRealmManager.shared.goals.forEach(sortGoalByMonth)
-    }
-    
-    private func sortGoalByMonth(goal: Goal) {
-        var daysTemp: [String: [Day]] = [:]
+        let calendarModel = CalendarModel()
+        calendarModel.setData()
         
-        goal.daysArray
-            .forEach { day in
-                let date = Date.inAnyFormat(dateString: day.date)
-                let yyyyMM = date.stringFormat(of: .yyyyMM)
-                
-                var days = daysTemp[yyyyMM] ?? []
-                days.append(day)
-                daysTemp[yyyyMM] = days
-            }
-        
-        for key in daysTemp.keys {
-            var vmsTemp = self.calendarDataPreperation[key] ?? []
-            vmsTemp.append(GoalMonthlyViewModel.init(title: goal.title, days: daysTemp[key]!, identifier: goal.identifier))
-            
-            self.calendarDataPreperation[key] = vmsTemp
-        }
+        self.calendarModel = calendarModel
     }
 }
 
@@ -323,23 +307,45 @@ extension Reactive where Base: HomeViewController {
         }
     }
     
-    var setPageIndicator: Binder<Int> {
-        Binder(base) { base, goalCount in
-            base.pageIndicator.set(numberOfPages: goalCount)
-        }
-    }
-    
     var deleteGoalWithIdentifier: Binder<String> {
         Binder(base) { base, identifier in
-            DispatchQueue.main.async {
-                base.goalCircularCollectionView.setContentOffset(.zero, animated: false)
-            }
-            let goalVmsFiltered = base.homeViewModel
-                .goalViewModelsRelay.value
-                .filter { $0.goal.identifier != identifier }
+            let numberOfItems = base.homeViewModel.goalViewModelsRelay.value.count
             
-            base.homeViewModel.goalViewModelsRelay
-                .accept(goalVmsFiltered)
+            var isFistItemDelete = false
+            
+            DispatchQueue.main.async {
+                let y = base.goalCircularCollectionView.contentOffset.y
+                let oneRowBefore = CGPoint(x: 0, y: y-K.singleRowHeight)
+                
+                if oneRowBefore.y >= 0 {
+                    base.goalCircularCollectionView.setContentOffset(oneRowBefore, animated: true)
+                    
+                } else if oneRowBefore.y < 0 {
+                    guard  numberOfItems > 1 else { return }
+                    
+                    isFistItemDelete = true
+                    
+                    let oneRowAfter = CGPoint(x: 0, y: y+K.singleRowHeight)
+                    base.goalCircularCollectionView.setContentOffset(oneRowAfter, animated: true)
+                }
+            }
+            
+            let delay = (numberOfItems==1) ? 0.0 : 0.6
+            
+            DispatchQueue.main.asyncAfter(deadline: .now()+delay) {
+                if isFistItemDelete {
+                    base.goalCircularCollectionView.setContentOffset(.zero, animated: false)
+                }
+                
+                let goalVmsFiltered = base.homeViewModel
+                    .goalViewModelsRelay.value
+                    .filter { $0.goal.identifier != identifier }
+                
+                base.homeViewModel.goalViewModelsRelay
+                    .accept(goalVmsFiltered)
+                
+                base.calendarModel?.deleteGoal(with: identifier, completion: nil)
+            }
         }
     }
 }
@@ -399,7 +405,7 @@ extension HomeViewController {
                 Signal
                     .merge(
                         self.scrollBackButton.rx.tap.asSignal(),
-                        self.circularScrollSignal
+                        self.collectionViewDidScrollSignal
                     )
                     .emit(to: cell.rx.setContentOffsetZero)
                     .disposed(by: cell.disposeBag)
@@ -427,18 +433,13 @@ extension HomeViewController {
             }
             .disposed(by: disposeBag)
         
-        didEndDecelerating
-            .withLatestFrom(goalCircularCollectionView.rx.contentOffset)
-            .subscribe(pageIndicator.rx.shouldSetPage)
-            .disposed(by: disposeBag)
-        
         goalCircularCollectionView.rx.didEndDragging
             .subscribe(onNext: { _ in
                 UIImpactFeedbackGenerator(style: .light).impactOccurred()
             })
             .disposed(by: disposeBag)
         
-        circularScrollSignal
+        collectionViewDidScrollSignal
             .emit { _ in
                 DispatchQueue.main.async {
                     self.scrollBackButton.alpha = 0
@@ -451,8 +452,16 @@ extension HomeViewController {
     private func pageIndicatorBind() {
         homeViewModel
             .goalViewModelsRelay
-            .flatMap { Observable.just($0.count) }
-            .bind(to: self.rx.setPageIndicator)
+            .flatMap { Observable.just(($0.count, self.goalCircularCollectionView.contentOffset.y)) }
+            .bind(to: pageIndicator.rx.numberOfPages)
+            .disposed(by: disposeBag)
+        
+        collectionViewDidScrollSignal
+            .flatMap {
+                Observable.just(self.goalCircularCollectionView.contentOffset.y)
+                    .asSignal(onErrorSignalWith: .empty())
+            }
+            .emit(to: pageIndicator.rx.updateIndicators)
             .disposed(by: disposeBag)
     }
 

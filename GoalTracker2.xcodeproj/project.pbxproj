@@ -22,7 +22,7 @@
 		621AEAF228CEF74300D53F2C /* ArcProcessBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 621AEAE228CEF74300D53F2C /* ArcProcessBar.swift */; };
 		621AEAF328CEF74300D53F2C /* GoalCircle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 621AEAE328CEF74300D53F2C /* GoalCircle.swift */; };
 		621AEAF428CEF74300D53F2C /* GTAlertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 621AEAE528CEF74300D53F2C /* GTAlertViewController.swift */; };
-		621AEAF728CEF74300D53F2C /* VerticalPageIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 621AEAE828CEF74300D53F2C /* VerticalPageIndicator.swift */; };
+		621AEAF728CEF74300D53F2C /* DotPageIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 621AEAE828CEF74300D53F2C /* DotPageIndicator.swift */; };
 		621AEAF828CEF74300D53F2C /* MainDimView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 621AEAE928CEF74300D53F2C /* MainDimView.swift */; };
 		621AEAF928CEF74300D53F2C /* MessageBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 621AEAEA28CEF74300D53F2C /* MessageBar.swift */; };
 		621AEAFA28CEF74300D53F2C /* CircularCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 621AEAEC28CEF74300D53F2C /* CircularCollectionView.swift */; };
@@ -84,6 +84,7 @@
 		624453E828FD3D0F003A9117 /* PeriodSettingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 624453E728FD3D0F003A9117 /* PeriodSettingViewModel.swift */; };
 		6248936028FC154A004580CB /* SwitchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6248935F28FC154A004580CB /* SwitchController.swift */; };
 		624E91E728FD6EC400E15735 /* PeriodSettingModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 624E91E628FD6EC400E15735 /* PeriodSettingModel.swift */; };
+		626742AE2937A5860068FFE6 /* CalendarModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 626742AD2937A5860068FFE6 /* CalendarModel.swift */; };
 		62767E3E2936A69B00622A4B /* ScorePannel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62767E3D2936A69B00622A4B /* ScorePannel.swift */; };
 		62B5723928CEE6A000015354 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62B5723828CEE6A000015354 /* AppDelegate.swift */; };
 		62B5723B28CEE6A000015354 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62B5723A28CEE6A000015354 /* SceneDelegate.swift */; };
@@ -144,7 +145,7 @@
 		621AEAE228CEF74300D53F2C /* ArcProcessBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArcProcessBar.swift; sourceTree = "<group>"; };
 		621AEAE328CEF74300D53F2C /* GoalCircle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoalCircle.swift; sourceTree = "<group>"; usesTabs = 0; };
 		621AEAE528CEF74300D53F2C /* GTAlertViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GTAlertViewController.swift; sourceTree = "<group>"; };
-		621AEAE828CEF74300D53F2C /* VerticalPageIndicator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VerticalPageIndicator.swift; sourceTree = "<group>"; };
+		621AEAE828CEF74300D53F2C /* DotPageIndicator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DotPageIndicator.swift; sourceTree = "<group>"; };
 		621AEAE928CEF74300D53F2C /* MainDimView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainDimView.swift; sourceTree = "<group>"; };
 		621AEAEA28CEF74300D53F2C /* MessageBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageBar.swift; sourceTree = "<group>"; };
 		621AEAEC28CEF74300D53F2C /* CircularCollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircularCollectionView.swift; sourceTree = "<group>"; };
@@ -206,6 +207,7 @@
 		624453E728FD3D0F003A9117 /* PeriodSettingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeriodSettingViewModel.swift; sourceTree = "<group>"; };
 		6248935F28FC154A004580CB /* SwitchController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwitchController.swift; sourceTree = "<group>"; };
 		624E91E628FD6EC400E15735 /* PeriodSettingModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeriodSettingModel.swift; sourceTree = "<group>"; };
+		626742AD2937A5860068FFE6 /* CalendarModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarModel.swift; sourceTree = "<group>"; };
 		62767E3D2936A69B00622A4B /* ScorePannel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScorePannel.swift; sourceTree = "<group>"; };
 		62B5723528CEE6A000015354 /* GoalTracker2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GoalTracker2.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		62B5723828CEE6A000015354 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -323,7 +325,7 @@
 			isa = PBXGroup;
 			children = (
 				621AEAE528CEF74300D53F2C /* GTAlertViewController.swift */,
-				621AEAE828CEF74300D53F2C /* VerticalPageIndicator.swift */,
+				621AEAE828CEF74300D53F2C /* DotPageIndicator.swift */,
 				621AEAE928CEF74300D53F2C /* MainDimView.swift */,
 				621AEAFD28CEF74D00D53F2C /* PresentationController.swift */,
 				AA9990CE28D1A1C800FE4A26 /* NeumorphicView.swift */,
@@ -594,6 +596,7 @@
 			isa = PBXGroup;
 			children = (
 				622F135128DCAD2A0072E5BF /* CalendarViewController.swift */,
+				626742AD2937A5860068FFE6 /* CalendarModel.swift */,
 				62CA1866293270AD006F046D /* YearSelectViewController.swift */,
 				62CA1864293215A1006F046D /* CalendarViewModel.swift */,
 				62CA185C292FCE9F006F046D /* MonthsMenuCollectionView.swift */,
@@ -916,7 +919,7 @@
 				622F135528DCAD390072E5BF /* SettingsViewController.swift in Sources */,
 				AAAFB8A328D2E572002CE265 /* NeumorphicButton.swift in Sources */,
 				62B5726928CEE84000015354 /* HomeViewController.swift in Sources */,
-				621AEAF728CEF74300D53F2C /* VerticalPageIndicator.swift in Sources */,
+				621AEAF728CEF74300D53F2C /* DotPageIndicator.swift in Sources */,
 				621AEB0328CF056400D53F2C /* AddGoalViewModel11.swift in Sources */,
 				62CE1ED728D6F62C00F08EF0 /* AddGoalViewController.swift in Sources */,
 				62B5726C28CEE88500015354 /* UIColor_Extensions.swift in Sources */,
@@ -927,6 +930,7 @@
 				621AEAFE28CEF74D00D53F2C /* PresentationController.swift in Sources */,
 				621AEAF228CEF74300D53F2C /* ArcProcessBar.swift in Sources */,
 				62F249932936A3820017530F /* Settings.swift in Sources */,
+				626742AE2937A5860068FFE6 /* CalendarModel.swift in Sources */,
 				622697F8290EC804007754CA /* GoalCircleViewModel.swift in Sources */,
 				62CA1867293270AD006F046D /* YearSelectViewController.swift in Sources */,
 				62767E3E2936A69B00622A4B /* ScorePannel.swift in Sources */,
