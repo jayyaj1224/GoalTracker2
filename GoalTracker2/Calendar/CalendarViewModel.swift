@@ -29,6 +29,11 @@ class CalendarViewModel {
         
         tableViewDatasourceRelay.accept(goalMonths)
     }
+    
+    var yearsRange: [String] {
+        Array(calendarModel.minYear...calendarModel.maxYear)
+            .map(String.init)
+    }
 }
 
 extension CalendarViewModel {

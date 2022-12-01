@@ -86,6 +86,8 @@
 		624E91E728FD6EC400E15735 /* PeriodSettingModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 624E91E628FD6EC400E15735 /* PeriodSettingModel.swift */; };
 		626742AE2937A5860068FFE6 /* CalendarModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 626742AD2937A5860068FFE6 /* CalendarModel.swift */; };
 		62767E3E2936A69B00622A4B /* ScorePannel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62767E3D2936A69B00622A4B /* ScorePannel.swift */; };
+		62A562BD2938CFEF00E4C695 /* thumbsup_lottie.json in Resources */ = {isa = PBXBuildFile; fileRef = 62A562BC2938CFEF00E4C695 /* thumbsup_lottie.json */; };
+		62A562BF2939057D00E4C695 /* thumbs-up-burst.json in Resources */ = {isa = PBXBuildFile; fileRef = 62A562BE2939057D00E4C695 /* thumbs-up-burst.json */; };
 		62B5723928CEE6A000015354 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62B5723828CEE6A000015354 /* AppDelegate.swift */; };
 		62B5723B28CEE6A000015354 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62B5723A28CEE6A000015354 /* SceneDelegate.swift */; };
 		62B5724228CEE6A100015354 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 62B5724128CEE6A100015354 /* Assets.xcassets */; };
@@ -209,6 +211,8 @@
 		624E91E628FD6EC400E15735 /* PeriodSettingModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeriodSettingModel.swift; sourceTree = "<group>"; };
 		626742AD2937A5860068FFE6 /* CalendarModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarModel.swift; sourceTree = "<group>"; };
 		62767E3D2936A69B00622A4B /* ScorePannel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScorePannel.swift; sourceTree = "<group>"; };
+		62A562BC2938CFEF00E4C695 /* thumbsup_lottie.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = thumbsup_lottie.json; path = Figma/thumbsup_lottie.json; sourceTree = SOURCE_ROOT; };
+		62A562BE2939057D00E4C695 /* thumbs-up-burst.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = "thumbs-up-burst.json"; path = "Figma/thumbs-up-burst.json"; sourceTree = SOURCE_ROOT; };
 		62B5723528CEE6A000015354 /* GoalTracker2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GoalTracker2.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		62B5723828CEE6A000015354 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		62B5723A28CEE6A000015354 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -468,6 +472,15 @@
 			path = GoalCircleCellViewModel;
 			sourceTree = "<group>";
 		};
+		62A562BB2938CFD400E4C695 /* Lottie */ = {
+			isa = PBXGroup;
+			children = (
+				62A562BE2939057D00E4C695 /* thumbs-up-burst.json */,
+				62A562BC2938CFEF00E4C695 /* thumbsup_lottie.json */,
+			);
+			path = Lottie;
+			sourceTree = "<group>";
+		};
 		62B5722C28CEE6A000015354 = {
 			isa = PBXGroup;
 			children = (
@@ -505,6 +518,7 @@
 				621AEAFF28CEF81C00D53F2C /* Constants.swift */,
 				621AEAFC28CEF74D00D53F2C /* CommonComponents */,
 				62B5726A28CEE87A00015354 /* Extensions */,
+				62A562BB2938CFD400E4C695 /* Lottie */,
 				6226907528D5895900E4AA01 /* Fonts */,
 				62B5724128CEE6A100015354 /* Assets.xcassets */,
 				62B5724328CEE6A100015354 /* LaunchScreen.storyboard */,
@@ -768,6 +782,7 @@
 				622690AA28D5896B00E4AA01 /* SF-Pro-Display-BlackItalic.otf in Resources */,
 				622690BA28D589E600E4AA01 /* Outfit-Black.ttf in Resources */,
 				6226909528D5896B00E4AA01 /* NotoSans-Black.ttf in Resources */,
+				62A562BF2939057D00E4C695 /* thumbs-up-burst.json in Resources */,
 				6226909928D5896B00E4AA01 /* NotoSans-Light.ttf in Resources */,
 				622690BF28D589E600E4AA01 /* Outfit-Medium.ttf in Resources */,
 				622690A428D5896B00E4AA01 /* SF-Pro-Display-Semibold.otf in Resources */,
@@ -783,6 +798,7 @@
 				62B5724228CEE6A100015354 /* Assets.xcassets in Resources */,
 				622690BE28D589E600E4AA01 /* Outfit-ExtraBold.ttf in Resources */,
 				6226909A28D5896B00E4AA01 /* NotoSans-ExtraLight.ttf in Resources */,
+				62A562BD2938CFEF00E4C695 /* thumbsup_lottie.json in Resources */,
 				622690B928D589E600E4AA01 /* Outfit-Regular.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

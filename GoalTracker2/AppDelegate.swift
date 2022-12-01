@@ -12,6 +12,7 @@ import RxSwift
 import RxCocoa
 import RealmSwift
 import Toast_Swift
+import Lottie
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {

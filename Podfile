@@ -13,6 +13,7 @@ target 'GoalTracker2' do
   pod 'RxCocoa'
   pod 'RxDataSources'
   pod 'Toast-Swift'
+  pod 'lottie-ios'
 
   # Pods for GoalTracker2
 

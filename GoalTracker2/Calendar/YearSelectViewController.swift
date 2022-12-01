@@ -6,6 +6,8 @@
 //
 
 import UIKit
+import RxSwift
+import RxCocoa
 
 class YearSelectViewController: UIViewController {
     // UI Components
@@ -39,7 +41,11 @@ class YearSelectViewController: UIViewController {
     }()
     
     // Logic
-    private let years: [String] = ["2022", "2023", "2024"]
+    var years: [String] = [] //["2022", "2023", "2024"]
+    
+    var selectedYear = ""
+    
+    let yearSelectedSubject = PublishSubject<String>()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -119,9 +125,9 @@ extension YearSelectViewController: UICollectionViewDataSource, UICollectionView
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if indexPath.row == 0 {
-            shouldDismiss()
-        }
+        yearSelectedSubject.onNext(years[indexPath.row])
+        
+        shouldDismiss()
     }
 }
 
@@ -129,8 +135,7 @@ extension YearSelectViewController: UICollectionViewDataSource, UICollectionView
 class YearSelectCell: UICollectionViewCell {
     private let yearLabel: UILabel = {
         let label = UILabel()
-        label.font = .outFit(size: 9, family: .Medium)
-        label.textColor = .grayC
+        label.textColor = .black
         label.textAlignment = .center
         return label
     }()
@@ -153,10 +158,10 @@ class YearSelectCell: UICollectionViewCell {
     func configure(year: String) {
         yearLabel.text = year
         
-        if year == "2022" {
-            yearLabel.textColor = .black
+        if year == Date().stringFormat(of: .yyyy) {
+            yearLabel.font = .outFit(size: 14, family: .Semibold)
         } else {
-            yearLabel.textColor = .grayA
+            yearLabel.font = .outFit(size: 14, family: .Light)
         }
     }
 }

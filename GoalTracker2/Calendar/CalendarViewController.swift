@@ -120,8 +120,44 @@ class CalendarViewController: UIViewController {
     @objc private func yearButtonTapped(_ sender: UIButton) {
         let yearSelectViewController = YearSelectViewController()
         yearSelectViewController.modalPresentationStyle = .overFullScreen
+        yearSelectViewController.years = calendarViewModel.yearsRange
+        yearSelectViewController.selectedYear = calendarViewModel.selectedYear
+        
+        yearSelectViewController.yearSelectedSubject
+            .bind { [weak self] year in
+                self?.yearSelected(year)
+            }
+            .disposed(by: disposeBag)
         
         present(yearSelectViewController, animated: false)
+    }
+    
+    private func yearSelected(_ selectedYear: String) {
+        let thisYear = Date().stringFormat(of: .yyyy)
+        
+        var indexPath: IndexPath!
+        var selectedMonth: Int!
+        
+        if selectedYear < thisYear {
+            selectedMonth = 12
+            indexPath = IndexPath(row: selectedMonth-1, section: 0)
+            
+        } else if selectedYear > thisYear {
+            selectedMonth = 1
+            indexPath = IndexPath(row: selectedMonth-1, section: 0)
+            
+        } else if selectedYear == thisYear {
+            selectedMonth = thisMonth
+            indexPath = IndexPath(row: thisMonth-1, section: 0)
+        }
+        
+        calendarViewModel.selectedMonth = String(format: "%02d", selectedMonth)
+        calendarViewModel.selectedYear = selectedYear
+        calendarViewModel.displaySelected()
+        
+        setYear(selectedYear)
+        
+        monthsMenuCollectionView.selectItem(at: indexPath, animated: false, scrollPosition: .centeredHorizontally)
     }
 }
 
@@ -180,6 +216,28 @@ extension CalendarViewController: UITableViewDelegate {
     }
 }
 
+extension Reactive where Base: CalendarViewController {
+    var tileCellSelected: Binder<(indexPath: IndexPath, goalMonth: GoalMonth)> {
+        Binder(base) { base, data in
+            GTAlertViewController()
+                .make(
+                    title: "Fix the Day",
+                    titleFont: .sfPro(size: 14, family: .Medium),
+                    subTitle: "\(data.goalMonth.title)",
+                    subTitleFont: .sfPro(size: 14, family: .Light),
+                    text: "** Deleted goals can not be recovered.",
+                    textFont: .sfPro(size: 12, family: .Light),
+                    buttonText: "Success",
+                    cancelButtonText: "Fail"
+                )
+                .addAction {
+                    
+                }
+                .show()
+        }
+    }
+}
+
 //MARK: - ui setting
 extension CalendarViewController{
     private func initialUiSetting() {
@@ -189,14 +247,14 @@ extension CalendarViewController{
         layout()
         addButtonTargets()
         bind()
-        setYear()
+        setYear(Date().stringFormat(of: .yyyy))
     }
-    
-    private func setYear() {
+
+    private func setYear(_ year: String) {
         let attributtedTitle = AttributedString(
-            "\(Date().stringFormat(of: .yyyy)) 􀆈",
+            "  \(year) 􀆈",
             attributes: AttributeContainer([
-                .font: UIFont.sfPro(size: 12, family: .Medium),
+                .font: UIFont.sfPro(size: 13, family: .Medium),
                 .foregroundColor: UIColor.grayC
             ])
         )
@@ -207,10 +265,14 @@ extension CalendarViewController{
     private func bind() {
         calendarViewModel
             .tableViewDatasourceRelay
-            .bind(to: goalTableView.rx.items) { tv, row, goalMonthly in
+            .bind(to: goalTableView.rx.items) { tv, row, goalMonth in
                 guard let cell = tv.dequeueReusableCell(withIdentifier: "GoalMonthlyCell", for: IndexPath(row: row, section: 0)) as? GoalMonthlyCell else { return UITableViewCell() }
                 
-                cell.configure(goalMonthly: goalMonthly)
+                cell.configure(goalMonthly: goalMonth)
+                
+                cell.itemSelectedSignal
+                    .emit(to: self.rx.tileCellSelected)
+                    .disposed(by: cell.disposeBag)
                 
                 return cell
             }
@@ -256,7 +318,7 @@ extension CalendarViewController{
         yearButton.snp.makeConstraints { make in
             make.centerX.equalToSuperview().offset(2)
             make.top.bottom.equalToSuperview()
-            make.width.equalTo(70)
+            make.width.equalTo(80)
         }
     }
     

@@ -49,11 +49,20 @@ class GoalMonthlyCell: UITableViewCell {
     
     private let daysInMonthRelay: BehaviorRelay<[Day]> = BehaviorRelay(value: [])
     
-    private let disposeBag = DisposeBag()
+    var itemSelectedSignal: Signal<(indexPath: IndexPath, goalMonth: GoalMonth)>!
+    
+    var goalMonth: GoalMonth!
+    
+    let disposeBag = DisposeBag()
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         contentView.backgroundColor = .crayon
+        
+        itemSelectedSignal = daysCollectionView.rx
+            .itemSelected
+            .withLatestFrom(Observable.just(goalMonth)) { ($0, $1!) }
+            .asSignal(onErrorSignalWith: .empty())
         
         layout()
         bind()
@@ -76,6 +85,7 @@ class GoalMonthlyCell: UITableViewCell {
     
     func configure(goalMonthly: GoalMonth) {
         daysInMonthRelay.accept(goalMonthly.days)
+        goalMonth = goalMonthly
         
         let title = goalMonthly.title.filter { !$0.isNewline }
         

@@ -8,6 +8,7 @@
 import UIKit
 import RxSwift
 import RxCocoa
+import Lottie
 
 /*
  Home
@@ -16,9 +17,11 @@ import RxCocoa
  - today quick check
  - plusButtonTapped 쪼개기
  
+ flatmap, flatmap latest concat 등 rx 모르는것 다 끝내고 가기
+ 
  
  Calendar
- - edit
+ - MemoEdit
  - day-Fix
  
  
@@ -75,6 +78,23 @@ class HomeViewController: UIViewController {
     
     let pageIndicator = DotPageIndicator(pageSize: K.singleRowHeight)
     
+    let checkButton: UIButton = {
+        let button = UIButton()
+        button.tintColor = .clear
+        button.configuration = UIButton.Configuration.borderless()
+        button.configurationUpdateHandler = { button in
+            switch button.state {
+            case [.normal]:
+                button.configuration?.image = UIImage(named: "check.neumorphism")
+            case .selected:
+                button.configuration?.image =  UIImage(named: "thumbs.up.neumorphism")
+            default:
+                break
+            }
+        }
+        return button
+    }()
+    
     let scrollBackButton: UIButton = {
         var configuration = UIButton.Configuration.plain()
         configuration.image = UIImage(named: "back.neumorphism")
@@ -96,6 +116,21 @@ class HomeViewController: UIViewController {
         view.backgroundColor = .crayon
         view.alpha = 0
         return view
+    }()
+    
+    private let lottieContainingBlurView: UIView = {
+        let containView = UIView()
+        containView.backgroundColor = .crayon.withAlphaComponent(0.7)
+        containView.isHidden = true
+        return containView
+    }()
+    
+    private let thumbsUpLottieView: AnimationView = {
+        let animationView = AnimationView.init(name: "thumbs-up-burst")
+        animationView.contentMode = .scaleToFill
+        animationView.loopMode = .playOnce
+        animationView.animationSpeed = 2
+        return animationView
     }()
     
     //MARK: - Logics
@@ -144,12 +179,6 @@ class HomeViewController: UIViewController {
     }
 
 //MARK: -  Button Actions
-    private func addButtonTargets() {
-        plusRotatingButton.addTarget(self, action: #selector(plusButtonTapped), for: .touchUpInside)
-        settingsButton.addTarget(self, action: #selector(settingsButtonsTapped), for: .touchUpInside)
-        bottomDateCalendarButton.addTarget(self, action: #selector(calenderButtonsTapped), for: .touchUpInside)
-    }
-    
     // selector functions
     @objc private func plusButtonTapped() {
         UIImpactFeedbackGenerator(style: .medium).impactOccurred()
@@ -214,6 +243,37 @@ class HomeViewController: UIViewController {
         }
     }
     
+    @objc private func checkButtonTapped(_ sender: Any) {
+        if sender is UITapGestureRecognizer && checkButton.isSelected {
+            return
+        }
+        
+        let page = pageIndicator.currentIndex
+
+        if checkButton.isSelected == false {
+            dayCheckAnimation()
+            homeViewModel.dayCheck(at: page)
+        } else {
+            homeViewModel.dayUncheck(at: page)
+        }
+
+        checkButton.isSelected.toggle()
+    }
+    
+    private func dayCheckAnimation() {
+        lottieContainingBlurView.isHidden = false
+        thumbsUpLottieView.play(completion: { _ in
+            DispatchQueue.main.asyncAfter(deadline: .now()+0.3) {
+                UIView.animate(withDuration: 0.2, delay: 0) {
+                    self.lottieContainingBlurView.alpha = 0
+                } completion: { _ in
+                    self.lottieContainingBlurView.isHidden = true
+                    self.lottieContainingBlurView.alpha = 1
+                }
+            }
+        })
+    }
+    
     private func plusIconImageRotate180Degree() {
         UIView.animate(withDuration: 0.3, delay: 0, options: .curveLinear) {
             self.plusRotatingButtonInsideImageView.transform = CGAffineTransform(rotationAngle: 180.pi.cgFloat)
@@ -270,7 +330,7 @@ extension Reactive where Base: HomeViewController {
             }
             
             let showing = [base.topScreenView, base.bottomScreenView, base.scrollBackButton]
-            let hiding = [base.pageIndicator, base.plusRotatingButton]
+            let hiding = [base.checkButton, base.plusRotatingButton]
             let hidingFast = [base.pageIndicator]
             
             DispatchQueue.main.async {
@@ -370,6 +430,19 @@ extension HomeViewController {
         setDateCalendarButtonTitle()
     }
     
+    private func addButtonTargets() {
+        plusRotatingButton.addTarget(self, action: #selector(plusButtonTapped), for: .touchUpInside)
+        settingsButton.addTarget(self, action: #selector(settingsButtonsTapped), for: .touchUpInside)
+        bottomDateCalendarButton.addTarget(self, action: #selector(calenderButtonsTapped), for: .touchUpInside)
+        checkButton.addTarget(self, action: #selector(checkButtonTapped), for: .touchUpInside)
+        
+        let tapGestureRecognizer = UITapGestureRecognizer()
+        tapGestureRecognizer.numberOfTapsRequired = 2
+        tapGestureRecognizer.addTarget(self, action: #selector(checkButtonTapped))
+        
+        goalCircularCollectionView.addGestureRecognizer(tapGestureRecognizer)
+    }
+    
     private func setDateCalendarButtonTitle() {
         let attributtedTitle = AttributedString(
             Date().stringFormat(of: .ddMMMEEEE_Comma_Space),
@@ -440,11 +513,24 @@ extension HomeViewController {
             .disposed(by: disposeBag)
         
         collectionViewDidScrollSignal
-            .emit { _ in
+            .emit { [weak self] _ in
                 DispatchQueue.main.async {
-                    self.scrollBackButton.alpha = 0
-                    self.plusRotatingButton.alpha = 1
+                    self?.scrollBackButton.alpha = 0
+                    self?.plusRotatingButton.alpha = 1
                 }
+            }
+            .disposed(by: disposeBag)
+        
+        collectionViewDidScrollSignal
+            .flatMap {
+                Observable.just(self.goalCircularCollectionView.contentOffset.y)
+                    .asSignal(onErrorSignalWith: .empty())
+            }
+            .emit { [weak self] y in
+                guard let self = self else { return }
+                let page = Int(y/K.singleRowHeight)
+                let viewModel = self.homeViewModel.goalViewModelsRelay.value[page]
+                self.checkButton.isSelected = viewModel.todayChecked
             }
             .disposed(by: disposeBag)
     }
@@ -476,8 +562,9 @@ extension HomeViewController {
             topTransparentScreenView,       bottomTransparentScreenView,
             topScreenView,                  bottomScreenView,
             messageBar,                     plusRotatingButton,
-            scrollBackButton,               settingsButton,
-            bottomDateCalendarButton
+            checkButton,                    scrollBackButton,
+            settingsButton,                 bottomDateCalendarButton,
+            lottieContainingBlurView
         ]
             .forEach(view.addSubview(_:))
 
@@ -520,7 +607,13 @@ extension HomeViewController {
         scrollBackButton.snp.makeConstraints { make in
             make.size.equalTo(40)
             make.trailing.equalTo(plusRotatingButton)
-            make.bottom.equalTo(plusRotatingButton.snp.top).offset(-10)
+            make.bottom.equalTo(goalCircularCollectionView).inset(90)
+        }
+        
+        checkButton.snp.makeConstraints { make in
+            make.size.equalTo(40)
+            make.trailing.equalTo(plusRotatingButton)
+            make.bottom.equalTo(plusRotatingButton.snp.top).offset(-16)
         }
 
         pageIndicator.snp.makeConstraints { make in
@@ -539,6 +632,18 @@ extension HomeViewController {
             make.bottom.equalTo(messageBar.snp.top)
             make.height.equalTo(28)
             // automatic width
+        }
+        
+        lottieContainingBlurView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview()
+            make.height.equalTo(lottieContainingBlurView.snp.width)
+            make.centerY.equalToSuperview()
+        }
+        
+        lottieContainingBlurView.addSubview(thumbsUpLottieView)
+        thumbsUpLottieView.snp.makeConstraints { make in
+            make.center.equalToSuperview()
+            make.size.equalTo(200)
         }
     }
     

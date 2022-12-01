@@ -9,9 +9,14 @@ import Foundation
 
 class CalendarModel {
     private var goalMonthByDate: [String:[GoalMonth]] = [:]
+
+    var minYear: Int = 2999
+    var maxYear: Int = 0
     
     func setData() {
-        GoalRealmManager.shared.goals.forEach(addGoalByMonth)
+        GoalRealmManager.shared.goals
+            .sorted { $0.identifier < $1.identifier }
+            .forEach(addGoalByMonth)
     }
     
     func addGoalByMonth(goal: Goal) {
@@ -21,11 +26,13 @@ class CalendarModel {
         goal.daysByMonth
             .forEach { day in
                 var tempArray = goalMonthByDate[day.key] ?? []
-                let count = tempArray.count
                 
                 tempArray.append(GoalMonth(title: title, days: day.value, identifier: identifier))
                 goalMonthByDate[day.key] = tempArray
             }
+        
+        minYear = min(Int(goal.startDate)!/10000, minYear)
+        maxYear = max(Int(goal.endDate)!/10000, maxYear)
     }
     
     func goalMonth(in date: String) -> [GoalMonth] {

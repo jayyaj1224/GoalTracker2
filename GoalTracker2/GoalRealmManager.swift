@@ -78,6 +78,16 @@ extension GoalRealmManager {
             realm.deleteAll()
         }
     }
+    
+    func update(_ goal: Goal) {
+        if let goalEncoded = try? PropertyListEncoder().encode(goal) {
+            let goalEncodedObject = GoalEncodedObject(goalEncoded: goalEncoded, identifier: goal.identifier)
+             
+            try! self.realm.write {
+                self.realm.add(goalEncodedObject, update: .modified)
+            }
+        }
+    }
 }
 //
 //extension GoalRealmManager {
