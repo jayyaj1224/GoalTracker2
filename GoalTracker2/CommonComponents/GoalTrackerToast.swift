@@ -7,6 +7,8 @@
 
 import UIKit
 
+var iii = 0
+
 class GoalTrackerToast: NeumorphicView {
     private let titleLabel: UILabel = {
         let label = UILabel()
@@ -125,9 +127,9 @@ extension GoalTrackerToast {
         }
         UIView.animate(withDuration: 0.3, delay: 2, usingSpringWithDamping: 1, initialSpringVelocity: 1) {
             switch self.position {
-            case .Top, .Bottom:
+            case .Top:
                 self.transform = .identity
-            case .MiddleTop:
+            case .Bottom, .MiddleTop:
                 break
             }
             self.alpha = 0

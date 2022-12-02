@@ -41,7 +41,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         IQKeyboardManager.shared.enable = true
         IQKeyboardManager.shared.keyboardDistanceFromTextField = 100
         IQKeyboardManager.shared.toolbarDoneBarButtonItemText = "Cancel"
-        IQKeyboardManager.shared.toolbarTintColor = .crayon
+        IQKeyboardManager.shared.toolbarTintColor = .black
         IQKeyboardManager.shared.shouldResignOnTouchOutside = true
     }
     

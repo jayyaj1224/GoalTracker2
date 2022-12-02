@@ -43,7 +43,7 @@ class PresentationController: UIPresentationController {
         blurView.alpha = 0
         self.containerView?.addSubview(blurView)
         self.presentedViewController.transitionCoordinator?.animate(alongsideTransition: { _ in
-            self.blurView.alpha = 0.7
+            self.blurView.alpha = 0.2
         })
     }
     
@@ -57,7 +57,7 @@ class PresentationController: UIPresentationController {
     
     override func containerViewWillLayoutSubviews() {
         super.containerViewWillLayoutSubviews()
-        presentedView!.roundCorners([.topLeft, .topRight], radius: 15)
+        presentedView!.roundCorners([.topLeft, .topRight], radius: 18)
     }
     
     override func containerViewDidLayoutSubviews() {

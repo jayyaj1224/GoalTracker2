@@ -46,6 +46,10 @@ enum Keys {
     static let setting_scoreViewType: String = "UserDefaultKey_Setting_ScoreViewType"
     static let setting_vibrate: String = "UserDefaultKey_Setting_Vibrate"
     
+    static func userNoteKey(for identifier: String) -> String {
+        return "UserNoteKey_identifier_\(identifier)"
+    }
+    
     
     
     // Goal

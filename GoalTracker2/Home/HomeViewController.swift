@@ -9,7 +9,6 @@ import UIKit
 import RxSwift
 import RxCocoa
 import Lottie
-import ToastViewSwift
 
 /*
  Home
@@ -271,10 +270,20 @@ class HomeViewController: UIViewController {
     
     @objc private func lottieBlurViewTapped() {
         DispatchQueue.main.async {
-            self.lottieContainingBlurView.isHidden = true
+            self.lottieDismissAnimation()
             
             GoalTrackerToast.hideAllToast()
         }
+    }
+    
+    @objc private func messageBarTapped() {
+        // viewmodel -> goalIdentifier
+        
+        let noteViewController = UserNoteViewController(goalIdentifier: "")
+        noteViewController.modalPresentationStyle = .custom
+        noteViewController.transitioningDelegate = self
+        
+        present(noteViewController, animated: true)
     }
     
     private func dayCheckLottieAnimation() {
@@ -282,14 +291,18 @@ class HomeViewController: UIViewController {
         
         thumbsUpLottieView.play(completion: { _ in
             DispatchQueue.main.asyncAfter(deadline: .now()+0.5) {
-                UIView.animate(withDuration: 0.2, delay: 0) {
-                    self.lottieContainingBlurView.alpha = 0
-                } completion: { _ in
-                    self.lottieContainingBlurView.isHidden = true
-                    self.lottieContainingBlurView.alpha = 1
-                }
+                self.lottieDismissAnimation()
             }
         })
+    }
+    
+    private func lottieDismissAnimation() {
+        UIView.animate(withDuration: 0.2, delay: 0) {
+            self.lottieContainingBlurView.alpha = 0
+        } completion: { _ in
+            self.lottieContainingBlurView.isHidden = true
+            self.lottieContainingBlurView.alpha = 1
+        }
     }
     
     private func dayCheckToast() {
@@ -297,8 +310,8 @@ class HomeViewController: UIViewController {
             .make(
                 titleText: "Success +1",
                 subTitleText: "Good Job!",
-                imageName: "hands.clap",
-                position: .MiddleTop
+                imageName: "figure.wave",//"hands.clap",
+                position: .Bottom
             )
             .show()
     }
@@ -338,6 +351,13 @@ extension HomeViewController {
         calendarModel.setData()
         
         self.calendarModel = calendarModel
+    }
+}
+
+extension HomeViewController: UIViewControllerTransitioningDelegate {
+    func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
+
+        return PresentationController(contentHeight: K.screenHeight*0.4, presentedViewController: presented, presenting: presenting)
     }
 }
 
@@ -474,7 +494,8 @@ extension HomeViewController {
         settingsButton.addTarget(self, action: #selector(settingsButtonsTapped), for: .touchUpInside)
         bottomDateCalendarButton.addTarget(self, action: #selector(calenderButtonsTapped), for: .touchUpInside)
         checkButton.addTarget(self, action: #selector(checkButtonTapped), for: .touchUpInside)
-        
+        messageBar.addTarget(self, action: #selector(messageBarTapped), for: .touchUpInside)
+
         let cvtapGestureRecognizer = UITapGestureRecognizer()
         cvtapGestureRecognizer.numberOfTapsRequired = 2
         cvtapGestureRecognizer.addTarget(self, action: #selector(checkButtonTapped))

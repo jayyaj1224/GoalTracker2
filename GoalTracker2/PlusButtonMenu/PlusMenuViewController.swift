@@ -286,7 +286,7 @@ class PlusMenuViewController: UIViewController {
 extension PlusMenuViewController: UIViewControllerTransitioningDelegate {
     func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
 
-        return PresentationController(contentHeight: K.screenHeight*0.7, presentedViewController: presented, presenting: presenting)
+        return PresentationController(contentHeight: K.screenHeight*0.8, presentedViewController: presented, presenting: presenting)
     }
 }
 

@@ -7,7 +7,7 @@
 
 import UIKit
 
-class MessageBar: NeumorphicView {
+class MessageBar: NeumorphicButton {
     private let messageLabel: UILabel = {
         let label = UILabel()
         label.font = .sfPro(size: 14, family: .Regular)
@@ -15,7 +15,7 @@ class MessageBar: NeumorphicView {
     }()
     
     init() {
-        super.init(backgroundColor: .crayon, shadowSize: .medium)
+        super.init(color: .crayon, shadowSize: .medium)
         layer.cornerRadius = 12
         
         layoutMessageBar()

@@ -188,7 +188,7 @@ class AddGoalViewController: UIViewController {
     @objc func handleDismiss(sender: UIPanGestureRecognizer) {
         let touchPoint = sender.location(in: view?.window)
         
-        let modalScreenHieght = K.screenHeight*0.7
+        let modalScreenHieght = K.screenHeight*0.8
         let initialHeightPoint = K.screenHeight-modalScreenHieght
         
         switch sender.state {
