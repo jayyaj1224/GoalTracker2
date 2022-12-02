@@ -8,15 +8,17 @@
 import Foundation
 
 class CalendarModel {
+    private var goals: [Goal] = []
     private var goalMonthByDate: [String:[GoalMonth]] = [:]
 
     var minYear: Int = 2999
     var maxYear: Int = 0
     
     func setData() {
-        GoalRealmManager.shared.goals
+        goals = GoalRealmManager.shared.goals
             .sorted { $0.identifier < $1.identifier }
-            .forEach(addGoalByMonth)
+        
+        goals.forEach(addGoalByMonth)
     }
     
     func addGoalByMonth(goal: Goal) {
@@ -35,7 +37,7 @@ class CalendarModel {
         maxYear = max(Int(goal.endDate)!/10000, maxYear)
     }
     
-    func goalMonth(in date: String) -> [GoalMonth] {
+    func goalMonth(yyyyMM date: String) -> [GoalMonth] {
         return goalMonthByDate[date] ?? []
     }
     
@@ -60,11 +62,29 @@ class CalendarModel {
         
         completion?()
     }
+    
+    func goalFixedReplace(with fixedData: [GoalMonth], date yyyyMM: String, goalAt: Int, dayAt: Int, newStatus: GoalStatus) {
+        goalMonthByDate[yyyyMM] = fixedData
+        
+        if var goal = goals.filter({ $0.identifier == fixedData[goalAt].identifier }).first {
+            if newStatus == .success {
+                goal.successCount+=1
+                goal.failCount-=1
+            }
+            if newStatus == .fail {
+                goal.successCount-=1
+                goal.failCount+=1
+            }
+            goal.daysByMonth[yyyyMM]?[dayAt].status = newStatus.rawValue
+            
+            GoalRealmManager.shared.update(goal)
+        }
+    }
 }
 
 struct GoalMonth {
     let title: String
-    let days: [Day]
+    var days: [Day]
     let identifier: String
     
     init(title: String, days: [Day], identifier: String) {

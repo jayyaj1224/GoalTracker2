@@ -25,7 +25,7 @@ class CalendarViewModel {
     
     func displaySelected() {
         let keyDate = (selectedYear+selectedMonth)
-        let goalMonths = calendarModel.goalMonth(in: keyDate)
+        let goalMonths = calendarModel.goalMonth(yyyyMM: keyDate)
         
         tableViewDatasourceRelay.accept(goalMonths)
     }
@@ -50,6 +50,17 @@ extension CalendarViewModel {
             
             self?.displaySelected()
         }
+    }
+    
+    func fixGoal(goalAt: Int, dayAt: Int, status: GoalStatus, goalMonth: GoalMonth) {
+        // fix viewModel
+        var temp = tableViewDatasourceRelay.value
+        temp[goalAt].days[dayAt].status = status.rawValue
+        tableViewDatasourceRelay.accept(temp)
+        
+        // fix model
+        let yyyyMM = (selectedYear+selectedMonth)
+        calendarModel.goalFixedReplace(with: temp, date: yyyyMM, goalAt: goalAt, dayAt: dayAt, newStatus: status)
     }
 }
 

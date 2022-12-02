@@ -10,7 +10,7 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-class GoalMonthlyCell: UITableViewCell {
+class GoalMonthCell: UITableViewCell {
     private let goalTitleLabelView = UIView()
     
     private let goalTitleLabel: UILabel = {
@@ -49,20 +49,14 @@ class GoalMonthlyCell: UITableViewCell {
     
     private let daysInMonthRelay: BehaviorRelay<[Day]> = BehaviorRelay(value: [])
     
-    var itemSelectedSignal: Signal<(indexPath: IndexPath, goalMonth: GoalMonth)>!
-    
-    var goalMonth: GoalMonth!
+    var dayInGoalMonthSelectedSignal: Signal<(goalAt: Int, dayAt: Int, goalMonth: GoalMonth)>!
     
     let disposeBag = DisposeBag()
+    var reuseBag = DisposeBag()
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         contentView.backgroundColor = .crayon
-        
-        itemSelectedSignal = daysCollectionView.rx
-            .itemSelected
-            .withLatestFrom(Observable.just(goalMonth)) { ($0, $1!) }
-            .asSignal(onErrorSignalWith: .empty())
         
         layout()
         bind()
@@ -74,23 +68,34 @@ class GoalMonthlyCell: UITableViewCell {
     
     override func prepareForReuse() {
         super.prepareForReuse()
+        reuseBag = DisposeBag()
+        
         DispatchQueue.main.async {
+            self.goalTitleLabel.alpha = 0.3
             self.daysCollectionView.setContentOffset(CGPoint(x: -172, y: 0), animated: false)
         }
         
         DispatchQueue.main.async {
-            self.daysCollectionView.setContentOffset(CGPoint(x: -185, y: 0), animated: true)
+            UIView.animate(withDuration: 0.6, delay: 0) {
+                self.goalTitleLabel.alpha = 1
+                self.daysCollectionView.setContentOffset(CGPoint(x: -185, y: 0), animated: false)
+            }
         }
     }
     
-    func configure(goalMonthly: GoalMonth) {
-        daysInMonthRelay.accept(goalMonthly.days)
-        goalMonth = goalMonthly
+    func configure(with goalMonth: GoalMonth, tableViewRow: Int) {
+        daysInMonthRelay.accept(goalMonth.days)
         
-        let title = goalMonthly.title.filter { !$0.isNewline }
-        
+        let title = goalMonth.title.filter { !$0.isNewline }
         goalTitleLabel.text = title
         goalTitleSubLabel.text = title
+        
+        dayInGoalMonthSelectedSignal = daysCollectionView.rx
+            .itemSelected
+            .withLatestFrom(Observable.just(goalMonth)) {
+                (goalAt: tableViewRow, dayAt: $0.row, goalMonth: $1)
+            }
+            .asSignal(onErrorSignalWith: .empty())
     }
     
     private func bind()  {

@@ -10,7 +10,7 @@ import RxSwift
 import RxCocoa
 
 class CalendarViewController: UIViewController {
-    // UI Components
+    //MARK: UI Components
     private let topNavigationView = UIView()
     
     private let backButton: UIButton = {
@@ -55,13 +55,23 @@ class CalendarViewController: UIViewController {
         let tableView = UITableView()
         tableView.backgroundColor = .crayon
         tableView.separatorStyle = .none
-        tableView.register(GoalMonthlyCell.self, forCellReuseIdentifier: "GoalMonthlyCell")
+        tableView.register(GoalMonthCell.self, forCellReuseIdentifier: "GoalMonthCell")
         return tableView
     }()
     
     private let scrollShadowImageView = UIImageView(imageName: "bar.scrollshadow")
     
-    // Logic
+    
+    private let emptyLabel: UILabel = {
+        let label = UILabel()
+        label.text = "􀎸 Empty."
+        label.textColor = .grayA
+        label.font = .sfPro(size: 20, family: .Semibold)
+        label.isHidden = true
+        return label
+    }()
+    
+    //MARK: Logic
     var isInitialSettingDone = false
     
     let calendarViewModel = CalendarViewModel()
@@ -75,16 +85,8 @@ class CalendarViewController: UIViewController {
         let thisMonthString = Date().stringFormat(of: .M)
         return Int(thisMonthString) ?? 2
     }()
-    
-    private let emptyLabel: UILabel = {
-        let label = UILabel()
-        label.text = "􀎸 Empty."
-        label.textColor = .grayA
-        label.font = .sfPro(size: 20, family: .Semibold)
-        label.isHidden = true
-        return label
-    }()
-    
+
+    //MARK: ViewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -108,6 +110,7 @@ class CalendarViewController: UIViewController {
         }
     }
     
+    //MARK: Button Actions
     @objc private func todayButtonTapped(_ sender: UIButton) {
         monthsMenuCollectionView.selectItem(at: IndexPath(row: thisMonth-1, section: 0), animated: false, scrollPosition: .centeredHorizontally)
         monthsMenuCollectionView.layoutSubviews()
@@ -161,6 +164,7 @@ class CalendarViewController: UIViewController {
     }
 }
 
+//MARK: UITableViewDelegate
 extension CalendarViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 100
@@ -216,29 +220,51 @@ extension CalendarViewController: UITableViewDelegate {
     }
 }
 
+//MARK: RxExtensions
 extension Reactive where Base: CalendarViewController {
-    var tileCellSelected: Binder<(indexPath: IndexPath, goalMonth: GoalMonth)> {
-        Binder(base) { base, data in
+    var tileCellSelected: Binder<(goalAt: Int, dayAt: Int, goalMonth: GoalMonth)> {
+        Binder(base) { base, binder in
+            let goalMonth = binder.goalMonth
+            let day = goalMonth.days[binder.dayAt]
+                
+            let dateString = Date
+                .inAnyFormat(dateString: day.date)
+                .stringFormat(of: .ddMMMEEEE_Comma_Space)
+            
+            var selected: GoalStatus!
+            
             GTAlertViewController()
                 .make(
-                    title: "Fix the Day",
+                    title: "\(dateString)",
                     titleFont: .sfPro(size: 14, family: .Medium),
-                    subTitle: "\(data.goalMonth.title)",
+                    subTitle: "\(binder.goalMonth.title)",
                     subTitleFont: .sfPro(size: 14, family: .Light),
-                    text: "** Deleted goals can not be recovered.",
+                    text: "** Current status: \(day.status)",
                     textFont: .sfPro(size: 12, family: .Light),
                     buttonText: "Success",
-                    cancelButtonText: "Fail"
+                    cancelButtonText: "Fail",
+                    backgroundDismiss: true
                 )
                 .addAction {
-                    
+                    selected = .success
+                }
+                .addCancelAction {
+                    selected = .fail
+                }
+                .onCompletion {
+                    base.calendarViewModel.fixGoal(
+                        goalAt: binder.goalAt,
+                        dayAt: binder.dayAt,
+                        status: selected,
+                        goalMonth: goalMonth
+                    )
                 }
                 .show()
         }
     }
 }
 
-//MARK: - ui setting
+//MARK: - Initial UI Setting
 extension CalendarViewController{
     private func initialUiSetting() {
         view.backgroundColor = .crayon
@@ -266,13 +292,13 @@ extension CalendarViewController{
         calendarViewModel
             .tableViewDatasourceRelay
             .bind(to: goalTableView.rx.items) { tv, row, goalMonth in
-                guard let cell = tv.dequeueReusableCell(withIdentifier: "GoalMonthlyCell", for: IndexPath(row: row, section: 0)) as? GoalMonthlyCell else { return UITableViewCell() }
+                guard let cell = tv.dequeueReusableCell(withIdentifier: "GoalMonthCell", for: IndexPath(row: row, section: 0)) as? GoalMonthCell else { return UITableViewCell() }
                 
-                cell.configure(goalMonthly: goalMonth)
+                cell.configure(with: goalMonth, tableViewRow: row)
                 
-                cell.itemSelectedSignal
+                cell.dayInGoalMonthSelectedSignal
                     .emit(to: self.rx.tileCellSelected)
-                    .disposed(by: cell.disposeBag)
+                    .disposed(by: cell.reuseBag)
                 
                 return cell
             }

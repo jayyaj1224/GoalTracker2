@@ -9,12 +9,14 @@ import UIKit
 import RxSwift
 import RxCocoa
 import Lottie
+import ToastViewSwift
 
 /*
  Home
  - progress board analysis
  - message bar more function -> + Memo
- - today quick check
+ 
+ Additional
  - plusButtonTapped 쪼개기
  
  flatmap, flatmap latest concat 등 rx 모르는것 다 끝내고 가기
@@ -87,7 +89,9 @@ class HomeViewController: UIViewController {
             case [.normal]:
                 button.configuration?.image = UIImage(named: "check.neumorphism")
             case .selected:
-                button.configuration?.image =  UIImage(named: "thumbs.up.neumorphism")
+                button.configuration?.image = UIImage(named: "thumbs.up.neumorphism")
+            case .disabled:
+                button.configuration?.image = UIImage(named: "check.neumorphism.disabled")
             default:
                 break
             }
@@ -248,10 +252,15 @@ class HomeViewController: UIViewController {
             return
         }
         
+        guard !homeViewModel.goalViewModelsRelay.value.isEmpty else {
+            return
+        }
+        
         let page = pageIndicator.currentIndex
 
         if checkButton.isSelected == false {
-            dayCheckAnimation()
+            dayCheckLottieAnimation()
+            dayCheckToast()
             homeViewModel.dayCheck(at: page)
         } else {
             homeViewModel.dayUncheck(at: page)
@@ -260,10 +269,19 @@ class HomeViewController: UIViewController {
         checkButton.isSelected.toggle()
     }
     
-    private func dayCheckAnimation() {
+    @objc private func lottieBlurViewTapped() {
+        DispatchQueue.main.async {
+            self.lottieContainingBlurView.isHidden = true
+            
+            GoalTrackerToast.hideAllToast()
+        }
+    }
+    
+    private func dayCheckLottieAnimation() {
         lottieContainingBlurView.isHidden = false
+        
         thumbsUpLottieView.play(completion: { _ in
-            DispatchQueue.main.asyncAfter(deadline: .now()+0.3) {
+            DispatchQueue.main.asyncAfter(deadline: .now()+0.5) {
                 UIView.animate(withDuration: 0.2, delay: 0) {
                     self.lottieContainingBlurView.alpha = 0
                 } completion: { _ in
@@ -272,6 +290,17 @@ class HomeViewController: UIViewController {
                 }
             }
         })
+    }
+    
+    private func dayCheckToast() {
+        GoalTrackerToast
+            .make(
+                titleText: "Success +1",
+                subTitleText: "Good Job!",
+                imageName: "hands.clap",
+                position: .MiddleTop
+            )
+            .show()
     }
     
     private func plusIconImageRotate180Degree() {
@@ -337,6 +366,16 @@ extension Reactive where Base: HomeViewController {
                 showing.forEach { $0.alpha = alpha}
                 hiding.forEach { $0.alpha = 1 - alpha }
                 hidingFast.forEach { $0.alpha = 1 - alpha*2.5 }
+            }
+        }
+    }
+    
+    var datasourceSet: Binder<[GoalViewModel]> {
+        Binder(base) { base, viewModels in
+            if viewModels.isEmpty {
+                base.checkButton.isEnabled = false
+            } else {
+                base.checkButton.isEnabled = true
             }
         }
     }
@@ -436,11 +475,14 @@ extension HomeViewController {
         bottomDateCalendarButton.addTarget(self, action: #selector(calenderButtonsTapped), for: .touchUpInside)
         checkButton.addTarget(self, action: #selector(checkButtonTapped), for: .touchUpInside)
         
-        let tapGestureRecognizer = UITapGestureRecognizer()
-        tapGestureRecognizer.numberOfTapsRequired = 2
-        tapGestureRecognizer.addTarget(self, action: #selector(checkButtonTapped))
+        let cvtapGestureRecognizer = UITapGestureRecognizer()
+        cvtapGestureRecognizer.numberOfTapsRequired = 2
+        cvtapGestureRecognizer.addTarget(self, action: #selector(checkButtonTapped))
+        goalCircularCollectionView.addGestureRecognizer(cvtapGestureRecognizer)
         
-        goalCircularCollectionView.addGestureRecognizer(tapGestureRecognizer)
+        let lottieTapGestureRecognizer = UITapGestureRecognizer()
+        lottieTapGestureRecognizer.addTarget(self, action: #selector(lottieBlurViewTapped))
+        lottieContainingBlurView.addGestureRecognizer(lottieTapGestureRecognizer)
     }
     
     private func setDateCalendarButtonTitle() {
@@ -486,8 +528,11 @@ extension HomeViewController {
                 return cell
             }
             .disposed(by: disposeBag)
+        
+        homeViewModel.goalViewModelsRelay
+            .bind(to: self.rx.datasourceSet)
+            .disposed(by: disposeBag)
     }
-    
     
     private func scrollStatusBind() {
         goalCircularCollectionView.rx.willBeginDragging
@@ -529,8 +574,10 @@ extension HomeViewController {
             .emit { [weak self] y in
                 guard let self = self else { return }
                 let page = Int(y/K.singleRowHeight)
-                let viewModel = self.homeViewModel.goalViewModelsRelay.value[page]
-                self.checkButton.isSelected = viewModel.todayChecked
+                let viewModels = self.homeViewModel.goalViewModelsRelay.value
+                
+                guard !viewModels.isEmpty else { return }
+                self.checkButton.isSelected = viewModels[page].todayChecked
             }
             .disposed(by: disposeBag)
     }
