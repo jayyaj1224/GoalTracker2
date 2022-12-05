@@ -21,7 +21,7 @@ class DigitalScoreView: UIView, ScorePannel {
         return stackView
     }()
     
-    private let backgroundView = NeumorphicView(backgroundColor: .crayon, shadowSize: .small)
+    private let backgroundView = NeumorphicView(backgroundColor: .crayon, type: .small)
     
     init() {
         super.init(frame: .zero)

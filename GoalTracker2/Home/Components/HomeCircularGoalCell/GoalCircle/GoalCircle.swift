@@ -29,14 +29,14 @@ class GoalCircle: UIView {
     
     private let percentageLabel: UILabel = {
         let label = UILabel()
-        label.font = .sfPro(size: 11, family: .Medium)
+        label.font = .outFit(size: 11, family: .Medium)
         label.textColor = .grayC
         return label
     }()
     
     private let goalTitleLabel: UILabel = {
         let label = UILabel()
-        label.font = .sfPro(size: 16, family: .Light)
+        label.font = .noto(size: 17, family: .Light)
         label.adjustsFontSizeToFitWidth = true
         label.minimumScaleFactor = 0.8
         label.numberOfLines = 3

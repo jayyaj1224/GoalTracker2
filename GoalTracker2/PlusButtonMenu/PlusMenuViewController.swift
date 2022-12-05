@@ -18,7 +18,7 @@ class PlusMenuViewController: UIViewController {
             let attributedString = NSMutableAttributedString(
                 string: title,
                 attributes: [
-                    NSMutableAttributedString.Key.font: UIFont.sfPro(size: 17, family: .Semibold),
+                    NSMutableAttributedString.Key.font: UIFont.noto(size: 17, family: .Semibold),
                     NSMutableAttributedString.Key.foregroundColor: UIColor.crayon
                 ]
             )
@@ -60,7 +60,7 @@ class PlusMenuViewController: UIViewController {
     }()
     
     private let cancelRotatingButton: NeumorphicButton = {
-        let button = NeumorphicButton(color: .crayon, shadowSize: .medium)
+        let button = NeumorphicButton(color: .crayon, type: .smallShadow)
         button.layer.cornerRadius = 20
         return button
     }()
@@ -273,7 +273,7 @@ class PlusMenuViewController: UIViewController {
         cancelRotatingButton.snp.makeConstraints { make in
             make.size.equalTo(40)
             make.trailing.equalToSuperview().inset(18)
-            make.bottom.equalToSuperview().inset((K.hasNotch ? 125 : 86)*K.ratioFactor)
+            make.bottom.equalToSuperview().inset((K.hasNotch ? 120 : 86)*K.ratioFactor)
         }
 
         plusIconImageView.snp.makeConstraints { make in

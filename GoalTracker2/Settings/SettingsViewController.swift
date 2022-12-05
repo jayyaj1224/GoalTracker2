@@ -7,6 +7,10 @@
 
 import UIKit
 
+protocol SettingsProtocol {
+    func dataHasReset()
+}
+
 class SettingsViewController: UIViewController {
     private let backButton: UIButton = {
         var configuration = UIButton.Configuration.plain()
@@ -56,7 +60,7 @@ class SettingsViewController: UIViewController {
     }()
     
     private let resetButton: UIButton = {
-        let button = NeumorphicButton(color: .crayon, shadowSize: .medium)
+        let button = NeumorphicButton(color: .crayon, type: .medium)
         button.layer.cornerRadius = 6
         
         let attributedString = NSMutableAttributedString(
@@ -79,14 +83,14 @@ class SettingsViewController: UIViewController {
         return button
     }()
     
-    
-    
     private let aboutLabel: UILabel = {
         let label = UILabel()
         label.text = "About"
         label.font = .sfPro(size: 13, family: .Semibold)
         return label
     }()
+    
+    var settingsDelegate: SettingsProtocol?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -117,6 +121,8 @@ class SettingsViewController: UIViewController {
                 GoalRealmManager.shared.deleteAll()
                 self?.resetButton.isEnabled = false
                 self?.view.makeToast("Complete.", position: .center)
+                
+                self?.settingsDelegate?.dataHasReset()
             }
             .show()
     }

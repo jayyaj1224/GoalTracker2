@@ -7,9 +7,7 @@
 
 import UIKit
 
-var iii = 0
-
-class GoalTrackerToast: NeumorphicView {
+class GtToast: NeumorphicView {
     private let titleLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .center
@@ -47,27 +45,30 @@ class GoalTrackerToast: NeumorphicView {
     
     var position: Position = .Bottom
     
-    static var toastShowing: [GoalTrackerToast] = []
+    var time: CGFloat = 2.0
+    
+    static var toastShowing: [GtToast] = []
 
-    static public func make(titleText: String, subTitleText: String, imageName: String, position: Position) -> GoalTrackerToast {
-        let toast = GoalTrackerToast()
+    static func make(titleText: String, subTitleText: String, imageName: String, position: Position, time: CGFloat) -> GtToast {
+        let toast = GtToast()
         toast.setTitle(titleText)
         toast.setSubTitle(subTitleText)
         toast.setImage(name: imageName)
         toast.position = position
+        toast.time = time
         
-        GoalTrackerToast.toastShowing.insert(toast, at: 0)
+        GtToast.toastShowing.insert(toast, at: 0)
         
         return toast
     }
     
-    static public func hideAllToast() {
-        GoalTrackerToast.toastShowing.forEach { $0.removeFromSuperview() }
-        GoalTrackerToast.toastShowing.removeAll()
+    static func hideAllToast() {
+        GtToast.toastShowing.forEach { $0.removeFromSuperview() }
+        GtToast.toastShowing.removeAll()
     }
         
     private init() {
-        super.init(backgroundColor: .white, shadowSize: .medium)
+        super.init(backgroundColor: .crayon, type: .medium)
         
         layout()
     }
@@ -82,16 +83,16 @@ class GoalTrackerToast: NeumorphicView {
 }
 
 //MARK: View & Animation
-extension GoalTrackerToast {
-    public func show() {
-        layoutSelf()
+extension GtToast {
+    func show() {
+        layoutToast()
         
         DispatchQueue.main.async {
             self.presentAnimation()
         }
     }
     
-    private func layoutSelf() {
+    private func layoutToast() {
         guard let topView = topController()?.view else { return }
         
         topView.addSubview(self)
@@ -125,7 +126,7 @@ extension GoalTrackerToast {
         UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1) {
             self.transform = CGAffineTransform(translationX: 0, y: translationYAmount)
         }
-        UIView.animate(withDuration: 0.3, delay: 2, usingSpringWithDamping: 1, initialSpringVelocity: 1) {
+        UIView.animate(withDuration: 0.3, delay: time, usingSpringWithDamping: 1, initialSpringVelocity: 1) {
             switch self.position {
             case .Top:
                 self.transform = .identity
@@ -137,8 +138,8 @@ extension GoalTrackerToast {
         } completion: { _ in
             self.removeFromSuperview()
             
-            if GoalTrackerToast.toastShowing.isEmpty == false {
-                GoalTrackerToast.toastShowing.removeLast()
+            if GtToast.toastShowing.isEmpty == false {
+                GtToast.toastShowing.removeLast()
             }
         }
     }
@@ -157,7 +158,7 @@ extension GoalTrackerToast {
 }
 
 //MARK: UI Settings
-extension GoalTrackerToast {
+extension GtToast {
     private func setTitle(_ title: String) {
         let attributtedString = NSMutableAttributedString(
             string: title,

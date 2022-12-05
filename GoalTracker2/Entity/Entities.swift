@@ -110,20 +110,9 @@ struct Goal: Codable {
     }
 }
 
-struct UserNote: Codable {
-    var goalIdentifier: String = ""
-    var note: String = ""
-    var date: String = "" //yyyymmdd
-    var isKeyNote: Bool = false
-}
 
 
-
-
-
-
-
-
+//MARK: TEST TEST TEST TEST
 extension Goal {
     mutating func dummyInit1() {
         let dateFormatter = DateFormatter()

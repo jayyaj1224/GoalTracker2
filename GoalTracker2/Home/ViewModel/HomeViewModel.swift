@@ -15,14 +15,18 @@ class HomeViewModel: ReactiveCompatible {
     private let disposeBag = DisposeBag()
     
     init() {
-        setGoalsRelay()
-    }
-    
-    private func setGoalsRelay() {
         let goalVmArray = GoalRealmManager.shared.goals
             .compactMap(GoalViewModel.init)
 
         goalViewModelsRelay.accept(goalVmArray)
+    }
+    
+    func goalIdentifier(at row: Int) -> String {
+        let viewModels = goalViewModelsRelay.value
+        
+        guard viewModels.isEmpty == false else { return "" }
+        
+        return viewModels[row].goal.identifier
     }
 }
 

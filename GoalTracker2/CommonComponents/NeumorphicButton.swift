@@ -16,7 +16,7 @@ class NeumorphicButton: UIButton {
     
     private let underBlackShadowLayer = CALayer()
     
-    init(color: UIColor, shadowSize: ShadowSize) {
+    init(color: UIColor, type: NeumorphicType) {
         super.init(frame: .zero)
         backgroundColor = color
         
@@ -26,7 +26,7 @@ class NeumorphicButton: UIButton {
             layer.insertSublayer(shadowLayer, at: 0)
         }
         
-        setNeumorphicShadow(at: [upperWhiteShadowLayer, underBlackShadowLayer], shadowSize: shadowSize)
+        setNeumorphicShadow(at: [upperWhiteShadowLayer, underBlackShadowLayer], type: type)
     }
     
     override func layoutSubviews() {

@@ -20,20 +20,18 @@ import Lottie
  
  flatmap, flatmap latest concat 등 rx 모르는것 다 끝내고 가기
  
- 
  Calendar
  - MemoEdit
  - day-Fix
- 
- 
  */
+
 
 class HomeViewController: UIViewController {
     //MARK: - UI Components
     let goalCircularCollectionView = CircularCollectionView()
     
     let plusRotatingButton: NeumorphicButton = {
-        let button = NeumorphicButton(color: .crayon, shadowSize: .medium)
+        let button = NeumorphicButton(color: .crayon, type: .large)
         button.layer.cornerRadius = 20
         return button
     }()
@@ -48,14 +46,14 @@ class HomeViewController: UIViewController {
         return imageView
     }()
 
-    private let messageBar = MessageBar()
+    fileprivate let messageBar = MessageBar()
     
     private let topTransparentScreenView = UIView()
     
     private let bottomTransparentScreenView = UIView()
     
     private let settingsButton: NeumorphicButton = {
-        let button = NeumorphicButton(color: .crayon, shadowSize: .medium)
+        let button = NeumorphicButton(color: .crayon, type: .medium)
         button.layer.cornerRadius = 18
         var configuration = UIButton.Configuration.plain()
         configuration.image = UIImage(named: "gear.neumorphism")
@@ -136,20 +134,31 @@ class HomeViewController: UIViewController {
         return animationView
     }()
     
+    private let emptyLabel: UILabel = {
+        let label = UILabel()
+        label.text = "􀎸 Empty."
+        label.textColor = .grayA
+        label.font = .sfPro(size: 20, family: .Semibold)
+        label.isHidden = true
+        return label
+    }()
+    
     //MARK: - Logics
     let homeViewModel = HomeViewModel()
     
-    private lazy var collectionViewDidScrollSignal = goalCircularCollectionView.rx.didScroll.asSignal()
+    /// - .isScrolling  :     didScroll
+    /// - .stopped      :     didEndDecelerating, didEndDragging
+    private let circularCvScrollStautsRelay = BehaviorRelay<ScrollInfo>(value: (status: .stopped, y: 0))
+    
+    fileprivate let scrollStoppedAtRelay = BehaviorRelay<CGFloat>(value: 0)
+    
+    private let scrollStartedAtRelay = BehaviorRelay<CGFloat>(value: 0)
     
     private let disposeBag = DisposeBag()
     
-    private var goalCircularViewIsScrolling = false {
-        didSet {
-            if goalCircularViewIsScrolling {
-                [topScreenView, bottomScreenView].forEach { $0.alpha = 0 }
-            }
-        }
-    }
+    typealias ScrollInfo = (status: ScrollStatus, y: CGFloat)
+    
+    enum ScrollStatus { case  isScorlling, stopped }
     
     private var initialSettingDone = false
     
@@ -158,15 +167,26 @@ class HomeViewController: UIViewController {
     // Calendar data preperation
     var calendarModel: CalendarModel?
     
+    init() {
+        super.init(nibName: nil, bundle: nil)
+        
+        configure()
+        layoutComponents()
+        addButtonTargets()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        configure()
+        bindings()
         
-        // Calendar data preperation
         prepareCalendarViewModelData()
         
-        pageIndicator.currentIndex = 0
+//        pageIndicator.currentIndex = 0
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -209,8 +229,11 @@ class HomeViewController: UIViewController {
         
         newGoalSaved
             .subscribe(onNext: { [weak self] goal in
+                guard let self = self else { return }
+                self.messageBar.setNewGoalPlaceHolderMessage()
+                
                 DispatchQueue.global(qos: .userInteractive).async {
-                    self?.calendarModel?.addGoalByMonth(goal: goal)
+                    self.calendarModel?.addGoalByMonth(goal: goal)
                 }
             })
             .disposed(by: plusMenuViewController.disposeBag)
@@ -227,8 +250,10 @@ class HomeViewController: UIViewController {
                 plusMenuDismissed.asObservable()
             )
             .subscribe(onNext: { [weak self] _ in
+                guard let self = self else { return }
+                
                 DispatchQueue.main.async {
-                    self?.plusRotatingButtonInsideImageView.alpha = 1
+                    self.plusRotatingButtonInsideImageView.alpha = 1
                 }
             })
             .disposed(by: plusMenuViewController.disposeBag)
@@ -272,16 +297,22 @@ class HomeViewController: UIViewController {
         DispatchQueue.main.async {
             self.lottieDismissAnimation()
             
-            GoalTrackerToast.hideAllToast()
+            GtToast.hideAllToast()
         }
     }
     
     @objc private func messageBarTapped() {
-        // viewmodel -> goalIdentifier
+        let row = Int(goalCircularCollectionView.contentOffset.y/K.singleRowHeight)
+        let identifier = homeViewModel.goalIdentifier(at: row)
         
-        let noteViewController = UserNoteViewController(goalIdentifier: "")
+        let noteViewController = UserNoteViewController(goalIdentifier: identifier)
         noteViewController.modalPresentationStyle = .custom
         noteViewController.transitioningDelegate = self
+        noteViewController.noteViewModel.userNoteSubject
+            .subscribe(onNext: { [weak self] noteArray in
+                self?.messageBar.configure(with: noteArray)
+            })
+            .disposed(by: noteViewController.disposeBag)
         
         present(noteViewController, animated: true)
     }
@@ -306,12 +337,13 @@ class HomeViewController: UIViewController {
     }
     
     private func dayCheckToast() {
-        GoalTrackerToast
+        GtToast
             .make(
                 titleText: "Success +1",
                 subTitleText: "Good Job!",
-                imageName: "figure.wave",//"hands.clap",
-                position: .Bottom
+                imageName: "hands.clap",
+                position: .Bottom,
+                time: 1.3
             )
             .show()
     }
@@ -339,9 +371,30 @@ class HomeViewController: UIViewController {
     
     @objc private func settingsButtonsTapped(_ sender: UIButton) {
         let settingsViewController = SettingsViewController()
+        settingsViewController.settingsDelegate = self
+        
         navigationController?.pushViewController(settingsViewController, animated: true)
         
         scrollBackButton.sendActions(for: .touchUpInside)
+    }
+    
+    fileprivate func emptySettingsIfNeeded() {
+        if homeViewModel.goalViewModelsRelay.value.isEmpty {
+            messageBar.setGoalEmptyMessage()
+            emptyLabel.isHidden = false
+            checkButton.isEnabled = false
+        } else {
+            emptyLabel.isHidden = true
+            checkButton.isEnabled = true
+        }
+    }
+}
+
+extension HomeViewController: SettingsProtocol {
+    func dataHasReset() {
+        homeViewModel.goalViewModelsRelay.accept([])
+        
+        messageBar.setGoalEmptyMessage()
     }
 }
 
@@ -357,7 +410,7 @@ extension HomeViewController {
 extension HomeViewController: UIViewControllerTransitioningDelegate {
     func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
 
-        return PresentationController(contentHeight: K.screenHeight*0.4, presentedViewController: presented, presenting: presenting)
+        return PresentationController(contentHeight: K.screenHeight*0.7, presentedViewController: presented, presenting: presenting)
     }
 }
 
@@ -390,13 +443,9 @@ extension Reactive where Base: HomeViewController {
         }
     }
     
-    var datasourceSet: Binder<[GoalViewModel]> {
+    var viewModelDidChange: Binder<[GoalViewModel]> {
         Binder(base) { base, viewModels in
-            if viewModels.isEmpty {
-                base.checkButton.isEnabled = false
-            } else {
-                base.checkButton.isEnabled = true
-            }
+            base.emptySettingsIfNeeded()
         }
     }
     
@@ -467,6 +516,16 @@ extension Reactive where Base: HomeViewController {
             }
         }
     }
+    
+    var setMessageBar: Binder<CGFloat> {
+        Binder(base) {base, offsetY in
+            let page = Int(offsetY/K.singleRowHeight)
+            let id = base.homeViewModel.goalIdentifier(at: page)
+            if let userNotes = UserNoteManager.shared.userNotesDictionary[id] {
+                base.messageBar.configure(with: userNotes)
+            }
+        }
+    }
 }
 
 
@@ -478,14 +537,6 @@ extension HomeViewController {
         modalTransitionStyle = .coverVertical
         modalPresentationStyle = .automatic
         
-        layoutComponents()
-        
-        collectionViewBind()
-        scrollStatusBind()
-        messageBarBind()
-        pageIndicatorBind()
-        
-        addButtonTargets()
         setDateCalendarButtonTitle()
     }
     
@@ -506,18 +557,56 @@ extension HomeViewController {
         lottieContainingBlurView.addGestureRecognizer(lottieTapGestureRecognizer)
     }
     
+    private func bindings() {
+        bindScrollStatusRelay()
+        bindCollectionView()
+        scrollStatusBind()
+        messageBarBind()
+        pageIndicatorBind()
+    }
+
+    
     private func setDateCalendarButtonTitle() {
         let attributtedTitle = AttributedString(
             Date().stringFormat(of: .ddMMMEEEE_Comma_Space),
             attributes: AttributeContainer([
-                .font: UIFont.sfPro(size: 12, family: .Medium),
+                .font: UIFont.outFit(size: 13, family: .Medium),
                 .foregroundColor: UIColor.grayC
             ])
         )
         bottomDateCalendarButton.configuration?.attributedTitle = attributtedTitle
     }
     
-    private func collectionViewBind() {
+    private func bindScrollStatusRelay() {
+        let scrollStatusChanged = Observable
+            .merge(
+                goalCircularCollectionView.rx.didScroll.map { ScrollStatus.isScorlling },
+                goalCircularCollectionView.rx.didEndDragging.map { _ in ScrollStatus.stopped },
+                goalCircularCollectionView.rx.didEndDecelerating.map { ScrollStatus.stopped }
+            )
+            .distinctUntilChanged()
+        
+        scrollStatusChanged
+            .withLatestFrom(goalCircularCollectionView.rx.contentOffset) {
+                ScrollInfo(status: $0, y: $1.y)
+            }
+            .bind(to: circularCvScrollStautsRelay)
+            .disposed(by: disposeBag)
+        
+        circularCvScrollStautsRelay
+            .filter { $0.status == .isScorlling }
+            .map { $0.y }
+            .bind(to: scrollStartedAtRelay)
+            .disposed(by: disposeBag)
+        
+        circularCvScrollStautsRelay
+            .filter { $0.status == .stopped }
+            .map { $0.y }
+            .bind(to: scrollStoppedAtRelay)
+            .disposed(by: disposeBag)
+    }
+    
+    private func bindCollectionView() {
         homeViewModel.goalViewModelsRelay
             .bind(to: goalCircularCollectionView.rx.items) { [weak self] cv, row, viewModel in
                 let cell = cv.dequeueReusableCell(withReuseIdentifier: "GoalCircleCell", for: IndexPath(row: row, section: 0))
@@ -527,8 +616,7 @@ extension HomeViewController {
                 cell.setupCell(viewModel)
                 
                 let didScrollToXSignal = cell.didScrollToXSignal
-                    .filter { _ in self.goalCircularViewIsScrolling == false }
-                
+                    .filter { _ in self.circularCvScrollStautsRelay.value.status == .stopped }
                 
                 didScrollToXSignal
                     .emit(to: self.rx.scrolledToXUIChange)
@@ -538,48 +626,31 @@ extension HomeViewController {
                     .emit(to: self.rx.buzzToScrollOffsetX)
                     .disposed(by: cell.disposeBag)
                 
-                Signal
+                Observable
                     .merge(
-                        self.scrollBackButton.rx.tap.asSignal(),
-                        self.collectionViewDidScrollSignal
+                        self.scrollBackButton.rx.tap.asObservable(),
+                        self.scrollStoppedAtRelay.map { _ in }.asObservable()
                     )
-                    .emit(to: cell.rx.setContentOffsetZero)
+                    .bind(to: cell.rx.setContentOffsetZero)
                     .disposed(by: cell.disposeBag)
-                
                 return cell
             }
             .disposed(by: disposeBag)
         
         homeViewModel.goalViewModelsRelay
-            .bind(to: self.rx.datasourceSet)
+            .bind(to: self.rx.viewModelDidChange)
             .disposed(by: disposeBag)
     }
     
     private func scrollStatusBind() {
-        goalCircularCollectionView.rx.willBeginDragging
-            .bind { [weak self] in
-                self?.goalCircularViewIsScrolling = true
-            }
-            .disposed(by: disposeBag)
-        
-        let didEndDecelerating = goalCircularCollectionView
-            .rx.didEndDecelerating
-            .share()
-        
-        didEndDecelerating
-            .bind { [weak self] in
-                self?.goalCircularViewIsScrolling = false
-            }
-            .disposed(by: disposeBag)
-        
         goalCircularCollectionView.rx.didEndDragging
             .subscribe(onNext: { _ in
                 UIImpactFeedbackGenerator(style: .light).impactOccurred()
             })
             .disposed(by: disposeBag)
         
-        collectionViewDidScrollSignal
-            .emit { [weak self] _ in
+        scrollStartedAtRelay
+            .bind { [weak self] _ in
                 DispatchQueue.main.async {
                     self?.scrollBackButton.alpha = 0
                     self?.plusRotatingButton.alpha = 1
@@ -587,12 +658,8 @@ extension HomeViewController {
             }
             .disposed(by: disposeBag)
         
-        collectionViewDidScrollSignal
-            .flatMap {
-                Observable.just(self.goalCircularCollectionView.contentOffset.y)
-                    .asSignal(onErrorSignalWith: .empty())
-            }
-            .emit { [weak self] y in
+        scrollStoppedAtRelay // ---- checkButton
+            .bind { [weak self] y in
                 guard let self = self else { return }
                 let page = Int(y/K.singleRowHeight)
                 let viewModels = self.homeViewModel.goalViewModelsRelay.value
@@ -610,18 +677,15 @@ extension HomeViewController {
             .bind(to: pageIndicator.rx.numberOfPages)
             .disposed(by: disposeBag)
         
-        collectionViewDidScrollSignal
-            .flatMap {
-                Observable.just(self.goalCircularCollectionView.contentOffset.y)
-                    .asSignal(onErrorSignalWith: .empty())
-            }
-            .emit(to: pageIndicator.rx.updateIndicators)
+        scrollStoppedAtRelay
+            .bind(to: pageIndicator.rx.updateIndicators)
             .disposed(by: disposeBag)
     }
-
     
     private func messageBarBind() {
-        messageBar.mock_setMessage()
+        scrollStoppedAtRelay
+            .bind(to: self.rx.setMessageBar)
+            .disposed(by: disposeBag)
     }
     
     private func layoutComponents() {
@@ -629,10 +693,11 @@ extension HomeViewController {
             goalCircularCollectionView,     pageIndicator,
             topTransparentScreenView,       bottomTransparentScreenView,
             topScreenView,                  bottomScreenView,
-            messageBar,                     plusRotatingButton,
+            plusRotatingButton,
             checkButton,                    scrollBackButton,
             settingsButton,                 bottomDateCalendarButton,
-            lottieContainingBlurView
+            lottieContainingBlurView,       emptyLabel,
+            messageBar
         ]
             .forEach(view.addSubview(_:))
 
@@ -663,13 +728,13 @@ extension HomeViewController {
         plusRotatingButton.snp.makeConstraints { make in
             make.size.equalTo(40)
             make.trailing.equalToSuperview().inset(18)
-            make.bottom.equalToSuperview().inset((K.hasNotch ? 125 : 86)*K.ratioFactor)
+            make.bottom.equalToSuperview().inset((K.hasNotch ? 120 : 86)*K.ratioFactor)
         }
 
         messageBar.snp.makeConstraints { make in
-            make.height.equalTo(50*K.ratioFactor)
+            make.height.equalTo(60*K.ratioFactor)
             make.leading.trailing.equalToSuperview().inset(18)
-            make.bottom.equalToSuperview().inset((K.hasNotch ? 59 : 20)*K.ratioFactor)
+            make.bottom.equalToSuperview().inset((K.hasNotch ? 30 : 20)*K.ratioFactor)
         }
         
         scrollBackButton.snp.makeConstraints { make in
@@ -681,7 +746,7 @@ extension HomeViewController {
         checkButton.snp.makeConstraints { make in
             make.size.equalTo(40)
             make.trailing.equalTo(plusRotatingButton)
-            make.bottom.equalTo(plusRotatingButton.snp.top).offset(-16)
+            make.bottom.equalTo(plusRotatingButton.snp.top).offset(-12)
         }
 
         pageIndicator.snp.makeConstraints { make in
@@ -696,10 +761,9 @@ extension HomeViewController {
         }
         
         bottomDateCalendarButton.snp.makeConstraints { make in
-            make.leading.equalTo(messageBar)
-            make.bottom.equalTo(messageBar.snp.top)
+            make.leading.equalToSuperview().inset(15)
+            make.bottom.equalTo(messageBar.snp.top).offset(-4)
             make.height.equalTo(28)
-            // automatic width
         }
         
         lottieContainingBlurView.snp.makeConstraints { make in
@@ -712,6 +776,10 @@ extension HomeViewController {
         thumbsUpLottieView.snp.makeConstraints { make in
             make.center.equalToSuperview()
             make.size.equalTo(200)
+        }
+        
+        emptyLabel.snp.makeConstraints { make in
+            make.center.equalToSuperview()
         }
     }
     

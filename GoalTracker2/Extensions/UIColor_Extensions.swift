@@ -48,6 +48,8 @@ extension UIColor {
     static let grayB = UIColor(hex: "909090")
     static let grayC = UIColor(hex: "626262")
     
+    static let lightGrayA = UIColor(hex: "EDEFF4")
+    
     static let dimA = UIColor.black.withAlphaComponent(0.4)
     static let dimB = UIColor.black.withAlphaComponent(0.6)
     static let dimC = UIColor.black.withAlphaComponent(0.8)

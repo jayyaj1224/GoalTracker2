@@ -27,8 +27,8 @@ class GoalCircleCell: UICollectionViewCell {
     private let tileBoardLabel: UILabel = {
         let label = UILabel()
         label.text = "Progress Board"
-        label.font = .sfPro(size: 16, family: .Thin)
-        label.textColor = .lightGray
+        label.font = .outFit(size: 19, family: .Thin)
+        label.textColor = .grayB
         return label
     }()
     
@@ -148,7 +148,7 @@ extension GoalCircleCell {
         }
 
         tileBoardLabel.snp.makeConstraints { make in
-            make.leading.equalTo(tileBoard).offset(10)
+            make.leading.equalTo(tileBoard).offset(5)
             make.bottom.equalTo(tileBoard.snp.top).offset(-10)
         }
     }

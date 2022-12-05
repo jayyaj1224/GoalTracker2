@@ -10,10 +10,10 @@
 		2A978355B5DA0EF882D565E1 /* Pods_GoalTracker2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0B1B21EABD8BA56813343784 /* Pods_GoalTracker2.framework */; };
 		4D48197F419328D96712A530 /* Pods_GoalTracker2_GoalTracker2UITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D7F12845C4B9F031CBE5F31 /* Pods_GoalTracker2_GoalTracker2UITests.framework */; };
 		620A7C60291D19BB0091177E /* UILabel_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 620A7C5F291D19BB0091177E /* UILabel_Extension.swift */; };
-		620A808D293A51B000158850 /* GoalTrackerToast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 620A808C293A51B000158850 /* GoalTrackerToast.swift */; };
+		620A808D293A51B000158850 /* GtToast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 620A808C293A51B000158850 /* GtToast.swift */; };
 		620A8090293A6A1D00158850 /* UserNoteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 620A808F293A6A1D00158850 /* UserNoteViewController.swift */; };
 		620A8092293A703000158850 /* TextField_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 620A8091293A703000158850 /* TextField_Extension.swift */; };
-		620A8094293AAFAB00158850 /* NoteViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 620A8093293AAFAB00158850 /* NoteViewModel.swift */; };
+		620A8094293AAFAB00158850 /* UserNoteViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 620A8093293AAFAB00158850 /* UserNoteViewModel.swift */; };
 		620A8096293AB0C400158850 /* UserNoteCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 620A8095293AB0C400158850 /* UserNoteCell.swift */; };
 		621AEAC528CEF58800D53F2C /* UIFont_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 621AEAC428CEF58800D53F2C /* UIFont_Extension.swift */; };
 		621AEAC928CEF5A300D53F2C /* Numeric_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 621AEAC728CEF5A300D53F2C /* Numeric_Extension.swift */; };
@@ -93,6 +93,8 @@
 		62767E3E2936A69B00622A4B /* ScorePannel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62767E3D2936A69B00622A4B /* ScorePannel.swift */; };
 		62A562BD2938CFEF00E4C695 /* thumbsup_lottie.json in Resources */ = {isa = PBXBuildFile; fileRef = 62A562BC2938CFEF00E4C695 /* thumbsup_lottie.json */; };
 		62A562BF2939057D00E4C695 /* thumbs-up-burst.json in Resources */ = {isa = PBXBuildFile; fileRef = 62A562BE2939057D00E4C695 /* thumbs-up-burst.json */; };
+		62B3752D293C038A000F523B /* UserNote.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62B3752C293C038A000F523B /* UserNote.swift */; };
+		62B3752F293C0692000F523B /* UserNoteManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62B3752E293C0692000F523B /* UserNoteManager.swift */; };
 		62B5723928CEE6A000015354 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62B5723828CEE6A000015354 /* AppDelegate.swift */; };
 		62B5723B28CEE6A000015354 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62B5723A28CEE6A000015354 /* SceneDelegate.swift */; };
 		62B5724228CEE6A100015354 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 62B5724128CEE6A100015354 /* Assets.xcassets */; };
@@ -140,10 +142,10 @@
 		0B1B21EABD8BA56813343784 /* Pods_GoalTracker2.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_GoalTracker2.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		1D7F12845C4B9F031CBE5F31 /* Pods_GoalTracker2_GoalTracker2UITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_GoalTracker2_GoalTracker2UITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		620A7C5F291D19BB0091177E /* UILabel_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UILabel_Extension.swift; sourceTree = "<group>"; };
-		620A808C293A51B000158850 /* GoalTrackerToast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalTrackerToast.swift; sourceTree = "<group>"; };
+		620A808C293A51B000158850 /* GtToast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GtToast.swift; sourceTree = "<group>"; };
 		620A808F293A6A1D00158850 /* UserNoteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserNoteViewController.swift; sourceTree = "<group>"; };
 		620A8091293A703000158850 /* TextField_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextField_Extension.swift; sourceTree = "<group>"; };
-		620A8093293AAFAB00158850 /* NoteViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteViewModel.swift; sourceTree = "<group>"; };
+		620A8093293AAFAB00158850 /* UserNoteViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserNoteViewModel.swift; sourceTree = "<group>"; };
 		620A8095293AB0C400158850 /* UserNoteCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserNoteCell.swift; sourceTree = "<group>"; };
 		621AEAC428CEF58800D53F2C /* UIFont_Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIFont_Extension.swift; sourceTree = "<group>"; };
 		621AEAC728CEF5A300D53F2C /* Numeric_Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Numeric_Extension.swift; sourceTree = "<group>"; };
@@ -223,6 +225,8 @@
 		62767E3D2936A69B00622A4B /* ScorePannel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScorePannel.swift; sourceTree = "<group>"; };
 		62A562BC2938CFEF00E4C695 /* thumbsup_lottie.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = thumbsup_lottie.json; path = Figma/thumbsup_lottie.json; sourceTree = SOURCE_ROOT; };
 		62A562BE2939057D00E4C695 /* thumbs-up-burst.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = "thumbs-up-burst.json"; path = "Figma/thumbs-up-burst.json"; sourceTree = SOURCE_ROOT; };
+		62B3752C293C038A000F523B /* UserNote.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserNote.swift; sourceTree = "<group>"; };
+		62B3752E293C0692000F523B /* UserNoteManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserNoteManager.swift; sourceTree = "<group>"; };
 		62B5723528CEE6A000015354 /* GoalTracker2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GoalTracker2.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		62B5723828CEE6A000015354 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		62B5723A28CEE6A000015354 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -290,7 +294,9 @@
 			children = (
 				620A808F293A6A1D00158850 /* UserNoteViewController.swift */,
 				620A8095293AB0C400158850 /* UserNoteCell.swift */,
-				620A8093293AAFAB00158850 /* NoteViewModel.swift */,
+				620A8093293AAFAB00158850 /* UserNoteViewModel.swift */,
+				62B3752C293C038A000F523B /* UserNote.swift */,
+				62B3752E293C0692000F523B /* UserNoteManager.swift */,
 			);
 			path = UserNote;
 			sourceTree = "<group>";
@@ -363,7 +369,7 @@
 				AA9990CE28D1A1C800FE4A26 /* NeumorphicView.swift */,
 				AAAFB8A228D2E572002CE265 /* NeumorphicButton.swift */,
 				6248935F28FC154A004580CB /* SwitchController.swift */,
-				620A808C293A51B000158850 /* GoalTrackerToast.swift */,
+				620A808C293A51B000158850 /* GtToast.swift */,
 			);
 			path = CommonComponents;
 			sourceTree = "<group>";
@@ -960,7 +966,7 @@
 			files = (
 				622697F3290EA00A007754CA /* DigitalNumber.swift in Sources */,
 				620A8092293A703000158850 /* TextField_Extension.swift in Sources */,
-				620A8094293AAFAB00158850 /* NoteViewModel.swift in Sources */,
+				620A8094293AAFAB00158850 /* UserNoteViewModel.swift in Sources */,
 				621AEACE28CEF66A00D53F2C /* Date_Extension.swift in Sources */,
 				62B5723928CEE6A000015354 /* AppDelegate.swift in Sources */,
 				621AEB0628CF058B00D53F2C /* UIView_Extension.swift in Sources */,
@@ -988,6 +994,7 @@
 				621AEAC928CEF5A300D53F2C /* Numeric_Extension.swift in Sources */,
 				622697F1290E9FC2007754CA /* DigitalScoreView.swift in Sources */,
 				62CA1865293215A1006F046D /* CalendarViewModel.swift in Sources */,
+				62B3752D293C038A000F523B /* UserNote.swift in Sources */,
 				620A8090293A6A1D00158850 /* UserNoteViewController.swift in Sources */,
 				622697FA290EC894007754CA /* GoalAnalysisViewModel.swift in Sources */,
 				621AEAF328CEF74300D53F2C /* GoalCircle.swift in Sources */,
@@ -1015,7 +1022,8 @@
 				62CA1869293283CA006F046D /* GoalMonthlyTileCell.swift in Sources */,
 				62CA186329311623006F046D /* GoalMonthCell.swift in Sources */,
 				621AEAF128CEF74300D53F2C /* DigitalTrebleFigurePannel.swift in Sources */,
-				620A808D293A51B000158850 /* GoalTrackerToast.swift in Sources */,
+				62B3752F293C0692000F523B /* UserNoteManager.swift in Sources */,
+				620A808D293A51B000158850 /* GtToast.swift in Sources */,
 				622697EE290E9E05007754CA /* UIImageView_Extension.swift in Sources */,
 				621AEB0028CEF81C00D53F2C /* Constants.swift in Sources */,
 				62D5D2AE28FDF81E003E222F /* UIPicker + Rx.swift in Sources */,

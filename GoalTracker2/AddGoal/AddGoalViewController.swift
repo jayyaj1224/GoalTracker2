@@ -44,7 +44,6 @@ class AddGoalViewController: UIViewController {
         button.setAttributedTitle(enabledAttributedString, for: .normal)
         button.setAttributedTitle(disabledAttributedString, for: .disabled)
         button.isEnabled = false
-        
         return button
     }()
     
@@ -183,6 +182,8 @@ class AddGoalViewController: UIViewController {
         if let homeNavigationController = self.presentingViewController?.presentingViewController {
             homeNavigationController.dismiss(animated: true)
         }
+        
+        UserNoteManager.shared.saveNewGoalDefaultUserNote(goalIdentifier: goal.identifier)
     }
     
     @objc func handleDismiss(sender: UIPanGestureRecognizer) {
