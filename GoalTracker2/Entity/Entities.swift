@@ -64,6 +64,7 @@ struct Goal: Codable {
     var successCount: Int = 0
     var failCount: Int = 0
     var failCap: Int = 0
+    var maxStreak: Int = 0
     
     var daysByMonth: [String: [Day]] = [:]
     

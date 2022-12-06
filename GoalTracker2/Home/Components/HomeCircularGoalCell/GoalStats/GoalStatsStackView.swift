@@ -50,6 +50,7 @@ class GoalStatsStackView: UIView {
             statsLabel.snp.makeConstraints { make in
                 make.leading.equalToSuperview()
                 make.top.equalTo(titleLabel.snp.bottom).offset(-2)
+                make.bottom.equalToSuperview()
             }
         }
     }
@@ -64,7 +65,7 @@ class GoalStatsStackView: UIView {
 
     private let successCount = StatsView(title: "Success count")
 
-    private let failCount = StatsView(title: "Fail count")
+    private let failCount = StatsView(title: "Fail count/cap")
 
     init() {
         super.init(frame: .zero)
@@ -108,7 +109,6 @@ extension GoalStatsStackView {
             case 1:
                 let leadingInset = i/2*140
                 view.snp.makeConstraints { make in
-                    make.top.equalToSuperview().inset(60)
                     make.bottom.equalToSuperview()
                     make.leading.equalToSuperview().inset(leadingInset)
                 }
@@ -118,8 +118,9 @@ extension GoalStatsStackView {
             }
         }
         
-        statsView.last??.snp.makeConstraints { make in
-            mak
+        self.snp.makeConstraints { make in
+            make.width.equalTo(500)
+            make.height.equalTo(80)
         }
     }
 }

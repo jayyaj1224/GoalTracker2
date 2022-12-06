@@ -5,6 +5,7 @@
 //  Created by Jay Lee on 30/10/2022.
 //
 
+import Foundation
 
 class GoalStatsViewModel {
     var goal: Goal
@@ -19,12 +20,25 @@ class GoalStatsViewModel {
     
     init(goal: Goal) {
         self.goal = goal
-        self.executionRate = "98.32 %"
-        self.maxStreak = "37 days"
-        self.daysLeft = "132 daysLeft"
-        self.dateRange = "12 Aug 2022 - 31 Dec 2023"
-        self.successCount = "132"
-        self.failCount = "2"
+        
+        let daysCountToNow = Date.inAnyFormat(dateString: goal.startDate).daysCountToNow
+        let rate = CGFloat(goal.successCount)/CGFloat(daysCountToNow)*100
+        let rateString = String(format: "%.2f", rate)
+        
+        let daysLeft = Date.inAnyFormat(dateString: goal.endDate).futureCount
+        
+        
+        let dateRangeString = [goal.startDate, goal.endDate]
+            .map {
+                Date.inAnyFormat(dateString: $0)
+                    .stringFormat(of: .ddMMMyyyy)
+            }
+        self.executionRate = "\(rateString) %"
+        self.maxStreak = "\(goal.maxStreak) days"
+        self.daysLeft = "\(daysLeft) days left"
+        self.dateRange = "\(dateRangeString[0]) - \(dateRangeString[1])"
+        self.successCount = "\(goal.successCount)"
+        self.failCount = "\(goal.failCount)/\(goal.failCap)"
     }
 }
 

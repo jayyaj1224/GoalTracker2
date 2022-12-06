@@ -82,6 +82,8 @@ extension Date {
         case yyMMdd_Dot = "yy.MM.dd"
 
         case ddMMMEEEE_Comma_Space = "dd MMM, EEEE"
+        
+        case ddMMMyyyy = "dd MMM yyyy"
 
         static let allCases: [Format] = [
             yyyyMMdd_Slash,         ddMMMM,         EEEE,           goalIdentifier,

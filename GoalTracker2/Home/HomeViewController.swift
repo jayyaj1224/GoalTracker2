@@ -172,6 +172,12 @@ class HomeViewController: UIViewController {
     init() {
         super.init(nibName: nil, bundle: nil)
         
+        goalCircularCollectionView.rx.didScroll
+            .bind {
+                print(self.goalCircularCollectionView.contentOffset.y)
+            }
+            .disposed(by: disposeBag)
+        
         configure()
         layoutComponents()
         addButtonTargets()
@@ -187,8 +193,6 @@ class HomeViewController: UIViewController {
         bindings()
         
         prepareCalendarViewModelData()
-        
-//        pageIndicator.currentIndex = 0
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -198,6 +202,7 @@ class HomeViewController: UIViewController {
         
         if initialSettingDone == false {
             addGradient()
+            circularCvScrollStautsRelay.accept(ScrollInfo(status: .stopped, y: 0))
             
             initialSettingDone = true
         }
@@ -560,9 +565,11 @@ extension HomeViewController {
     }
     
     private func bindings() {
-        bindScrollStatusRelay()
         bindCollectionView()
+        
         scrollStatusBind()
+        bindScrollStatusRelay()
+        
         messageBarBind()
         pageIndicatorBind()
     }
@@ -642,6 +649,8 @@ extension HomeViewController {
         homeViewModel.goalViewModelsRelay
             .bind(to: self.rx.viewModelDidChange)
             .disposed(by: disposeBag)
+        
+//        circularCvScrollStautsRelay.accept(ScrollInfo(status: .stopped, y: 0))
     }
     
     private func scrollStatusBind() {
@@ -711,7 +720,7 @@ extension HomeViewController {
 
         topTransparentScreenView.snp.makeConstraints { make in
             make.top.leading.trailing.equalToSuperview()
-            make.bottom.equalTo(self.goalCircularCollectionView.snp.top).offset(100)
+            make.bottom.equalTo(self.goalCircularCollectionView.snp.top).offset(20)
         }
         
         bottomTransparentScreenView.snp.makeConstraints { make in

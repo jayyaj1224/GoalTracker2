@@ -147,21 +147,18 @@ extension GoalCircleCell {
         
         tileBoard.snp.makeConstraints { make in
             make.leading.equalTo(goalCircle.snp.trailing).offset(70)
-            make.centerY.equalToSuperview()
-            make.trailing.equalToSuperview().offset(-100)
+            make.centerY.equalToSuperview().offset(36)
+            make.trailing.equalToSuperview().offset(-80)
         }
         
-        goalStatsView.layer.borderWidth = 1
         goalStatsView.snp.makeConstraints { make in
-            make.bottom.equalTo(tileBoard.snp.top).offset(-10)
+            make.bottom.equalTo(tileBoard.snp.top).offset(-12)
             make.leading.equalTo(tileBoard).inset(3)
         }
         
-        
         GoalAnalysisLabel.snp.makeConstraints { make in
-            make.leading.equalTo(tileBoard).offset(5)
-            make.bottom.equalTo(goalStatsView.snp.top).offset(-10)
+            make.leading.equalTo(tileBoard).inset(1)
+            make.bottom.equalTo(goalStatsView.snp.top).offset(-8)
         }
-        
     }
 }
