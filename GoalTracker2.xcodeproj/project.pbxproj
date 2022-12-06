@@ -83,7 +83,7 @@
 		622697F3290EA00A007754CA /* DigitalNumber.swift in Sources */ = {isa = PBXBuildFile; fileRef = 622697F2290EA00A007754CA /* DigitalNumber.swift */; };
 		622697F6290EC7F1007754CA /* TileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 622697F5290EC7F1007754CA /* TileViewModel.swift */; };
 		622697F8290EC804007754CA /* GoalCircleViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 622697F7290EC804007754CA /* GoalCircleViewModel.swift */; };
-		622697FA290EC894007754CA /* GoalAnalysisViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 622697F9290EC894007754CA /* GoalAnalysisViewModel.swift */; };
+		622697FA290EC894007754CA /* GoalStatsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 622697F9290EC894007754CA /* GoalStatsViewModel.swift */; };
 		622F135228DCAD2A0072E5BF /* CalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 622F135128DCAD2A0072E5BF /* CalendarViewController.swift */; };
 		622F135528DCAD390072E5BF /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 622F135428DCAD390072E5BF /* SettingsViewController.swift */; };
 		624453E828FD3D0F003A9117 /* PeriodSettingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 624453E728FD3D0F003A9117 /* PeriodSettingViewModel.swift */; };
@@ -95,6 +95,9 @@
 		62A562BF2939057D00E4C695 /* thumbs-up-burst.json in Resources */ = {isa = PBXBuildFile; fileRef = 62A562BE2939057D00E4C695 /* thumbs-up-burst.json */; };
 		62B3752D293C038A000F523B /* UserNote.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62B3752C293C038A000F523B /* UserNote.swift */; };
 		62B3752F293C0692000F523B /* UserNoteManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62B3752E293C0692000F523B /* UserNoteManager.swift */; };
+		62B37533293E3D60000F523B /* yellow-diamond2.json in Resources */ = {isa = PBXBuildFile; fileRef = 62B37532293E3D60000F523B /* yellow-diamond2.json */; };
+		62B37535293E3E4A000F523B /* blue-diamond.json in Resources */ = {isa = PBXBuildFile; fileRef = 62B37534293E3E4A000F523B /* blue-diamond.json */; };
+		62B37538293E6897000F523B /* GoalStatsStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62B37537293E6897000F523B /* GoalStatsStackView.swift */; };
 		62B5723928CEE6A000015354 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62B5723828CEE6A000015354 /* AppDelegate.swift */; };
 		62B5723B28CEE6A000015354 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62B5723A28CEE6A000015354 /* SceneDelegate.swift */; };
 		62B5724228CEE6A100015354 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 62B5724128CEE6A100015354 /* Assets.xcassets */; };
@@ -215,7 +218,7 @@
 		622697F2290EA00A007754CA /* DigitalNumber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DigitalNumber.swift; sourceTree = "<group>"; };
 		622697F5290EC7F1007754CA /* TileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TileViewModel.swift; sourceTree = "<group>"; };
 		622697F7290EC804007754CA /* GoalCircleViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalCircleViewModel.swift; sourceTree = "<group>"; };
-		622697F9290EC894007754CA /* GoalAnalysisViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalAnalysisViewModel.swift; sourceTree = "<group>"; };
+		622697F9290EC894007754CA /* GoalStatsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalStatsViewModel.swift; sourceTree = "<group>"; };
 		622F135128DCAD2A0072E5BF /* CalendarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewController.swift; sourceTree = "<group>"; };
 		622F135428DCAD390072E5BF /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		624453E728FD3D0F003A9117 /* PeriodSettingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeriodSettingViewModel.swift; sourceTree = "<group>"; };
@@ -227,6 +230,9 @@
 		62A562BE2939057D00E4C695 /* thumbs-up-burst.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = "thumbs-up-burst.json"; path = "Figma/thumbs-up-burst.json"; sourceTree = SOURCE_ROOT; };
 		62B3752C293C038A000F523B /* UserNote.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserNote.swift; sourceTree = "<group>"; };
 		62B3752E293C0692000F523B /* UserNoteManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserNoteManager.swift; sourceTree = "<group>"; };
+		62B37532293E3D60000F523B /* yellow-diamond2.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "yellow-diamond2.json"; sourceTree = "<group>"; };
+		62B37534293E3E4A000F523B /* blue-diamond.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "blue-diamond.json"; sourceTree = "<group>"; };
+		62B37537293E6897000F523B /* GoalStatsStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalStatsStackView.swift; sourceTree = "<group>"; };
 		62B5723528CEE6A000015354 /* GoalTracker2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GoalTracker2.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		62B5723828CEE6A000015354 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		62B5723A28CEE6A000015354 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -344,6 +350,7 @@
 			isa = PBXGroup;
 			children = (
 				621AEADF28CEF74300D53F2C /* GoalCircleCell.swift */,
+				62B37536293E687E000F523B /* GoalStats */,
 				621AEADB28CEF74300D53F2C /* TileBoard */,
 				622690C328D58B3C00E4AA01 /* GoalCircle */,
 			);
@@ -502,7 +509,7 @@
 			children = (
 				622697F7290EC804007754CA /* GoalCircleViewModel.swift */,
 				622697F5290EC7F1007754CA /* TileViewModel.swift */,
-				622697F9290EC894007754CA /* GoalAnalysisViewModel.swift */,
+				622697F9290EC894007754CA /* GoalStatsViewModel.swift */,
 			);
 			path = GoalCircleCellViewModel;
 			sourceTree = "<group>";
@@ -510,10 +517,20 @@
 		62A562BB2938CFD400E4C695 /* Lottie */ = {
 			isa = PBXGroup;
 			children = (
+				62B37534293E3E4A000F523B /* blue-diamond.json */,
+				62B37532293E3D60000F523B /* yellow-diamond2.json */,
 				62A562BE2939057D00E4C695 /* thumbs-up-burst.json */,
 				62A562BC2938CFEF00E4C695 /* thumbsup_lottie.json */,
 			);
 			path = Lottie;
+			sourceTree = "<group>";
+		};
+		62B37536293E687E000F523B /* GoalStats */ = {
+			isa = PBXGroup;
+			children = (
+				62B37537293E6897000F523B /* GoalStatsStackView.swift */,
+			);
+			path = GoalStats;
 			sourceTree = "<group>";
 		};
 		62B5722C28CEE6A000015354 = {
@@ -831,8 +848,10 @@
 				6226909C28D5896B00E4AA01 /* SF-Pro-Display-Thin.otf in Resources */,
 				6226909428D5896B00E4AA01 /* NotoSans-Medium.ttf in Resources */,
 				622690AC28D5896B00E4AA01 /* SF-Pro-Display-ThinItalic.otf in Resources */,
+				62B37535293E3E4A000F523B /* blue-diamond.json in Resources */,
 				622690A128D5896B00E4AA01 /* SF-Pro-Display-Bold.otf in Resources */,
 				62B5724228CEE6A100015354 /* Assets.xcassets in Resources */,
+				62B37533293E3D60000F523B /* yellow-diamond2.json in Resources */,
 				622690BE28D589E600E4AA01 /* Outfit-ExtraBold.ttf in Resources */,
 				6226909A28D5896B00E4AA01 /* NotoSans-ExtraLight.ttf in Resources */,
 				62A562BD2938CFEF00E4C695 /* thumbsup_lottie.json in Resources */,
@@ -996,7 +1015,7 @@
 				62CA1865293215A1006F046D /* CalendarViewModel.swift in Sources */,
 				62B3752D293C038A000F523B /* UserNote.swift in Sources */,
 				620A8090293A6A1D00158850 /* UserNoteViewController.swift in Sources */,
-				622697FA290EC894007754CA /* GoalAnalysisViewModel.swift in Sources */,
+				622697FA290EC894007754CA /* GoalStatsViewModel.swift in Sources */,
 				621AEAF328CEF74300D53F2C /* GoalCircle.swift in Sources */,
 				621AEB0828CF05A000D53F2C /* UIButton_Extension.swift in Sources */,
 				622F135228DCAD2A0072E5BF /* CalendarViewController.swift in Sources */,
@@ -1028,6 +1047,7 @@
 				621AEB0028CEF81C00D53F2C /* Constants.swift in Sources */,
 				62D5D2AE28FDF81E003E222F /* UIPicker + Rx.swift in Sources */,
 				622690CD28D59DFE00E4AA01 /* PlusMenuViewController.swift in Sources */,
+				62B37538293E6897000F523B /* GoalStatsStackView.swift in Sources */,
 				620A7C60291D19BB0091177E /* UILabel_Extension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

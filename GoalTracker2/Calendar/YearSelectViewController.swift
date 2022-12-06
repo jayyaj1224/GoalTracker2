@@ -12,7 +12,7 @@ import RxCocoa
 class YearSelectViewController: UIViewController {
     // UI Components
     private let yearSelectView: UIView = {
-        let view = NeumorphicView(backgroundColor: .crayon)
+        let view = NeumorphicView(backgroundColor: .crayon, type: .mediumShadow)
         view.layer.cornerRadius = 10
         return view
     }()

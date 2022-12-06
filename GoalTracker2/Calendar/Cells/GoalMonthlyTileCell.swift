@@ -33,6 +33,14 @@ class GoalMonthlyTileCell: UICollectionViewCell {
         
         dayLabel.text = String(day.date.suffix(2))
         
+        guard day.date <= Date().stringFormat(of: .yyyyMMdd) else {
+            statusImageView.image = UIImage(named: "tile_empty_disabled")
+            isUserInteractionEnabled = false
+            return
+        }
+        
+        isUserInteractionEnabled = true
+        
         status = GoalStatus(rawValue: day.status) ?? .none
         
         switch status {

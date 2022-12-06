@@ -64,7 +64,9 @@ class GoalViewModel {
     
     var tileViewModel: TileViewModel!
     
-    var goalAnalysisViewModel: GoalAnalysisViewModel!
+    var goalAnalysisViewModel: GoalStatsViewModel!
+    
+    var goalStatsViewModel: GoalStatsViewModel!
     
     var todayChecked = false
     
@@ -105,8 +107,9 @@ class GoalViewModel {
     
     private func setViewModel(with goal: Goal) {
         goalCircleViewModel = GoalCircleViewModel(goal: goal)
-        goalAnalysisViewModel = GoalAnalysisViewModel(goal: goal)
+        goalAnalysisViewModel = GoalStatsViewModel(goal: goal)
         tileViewModel = TileViewModel(goal: goal)
+        goalStatsViewModel = GoalStatsViewModel(goal: goal)
     }
     
     private func setTodayChecked() {

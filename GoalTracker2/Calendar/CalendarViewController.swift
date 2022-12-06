@@ -164,6 +164,13 @@ class CalendarViewController: UIViewController {
     }
 }
 
+extension CalendarViewController: UIViewControllerTransitioningDelegate {
+    func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
+
+        return PresentationController(contentHeight: K.screenHeight*0.7, presentedViewController: presented, presenting: presenting)
+    }
+}
+
 //MARK: UITableViewDelegate
 extension CalendarViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -178,16 +185,7 @@ extension CalendarViewController: UITableViewDelegate {
         })
         deleteAction.image =  UIImage(systemName: "trash")?.withTintColor(.darkGray, renderingMode: .alwaysOriginal)
         deleteAction.backgroundColor = .crayon
-        
-        let noteEditAction = UIContextualAction(style: .destructive, title: "", handler: { (ac:UIContextualAction, view:UIView, success:(Bool) -> Void) in
-            self.noteEditButtonTapped(at: indexPath.row)
-            
-            success(true)
-        })
-        noteEditAction.image = UIImage(systemName: "note.text.badge.plus")?.withTintColor(.darkGray, renderingMode: .alwaysOriginal)
-        noteEditAction.backgroundColor = .crayon
-        
-        return UISwipeActionsConfiguration(actions: [deleteAction, noteEditAction])
+        return UISwipeActionsConfiguration(actions: [deleteAction])
     }
     
     private func swipeDeleteAction(at row: Int) {
@@ -212,11 +210,6 @@ extension CalendarViewController: UITableViewDelegate {
                 self.calendarViewModel.deleteGoal(with: id)
             }
             .show()
-    }
-    
-    private func noteEditButtonTapped(at row: Int) {
-        
-        
     }
 }
 

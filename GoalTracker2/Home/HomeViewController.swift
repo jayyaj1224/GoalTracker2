@@ -12,17 +12,19 @@ import Lottie
 
 /*
  Home
- - progress board analysis
- - message bar more function -> + Memo
  
- Additional
+ ** progress board analysis
+ - Success Num
+ - Fail Num
+ - Execution Rate
+ - Days Left
+ 
+ 
+
+ ** Finishing
  - plusButtonTapped 쪼개기
+ - flatmap, flatmap latest concat 등 rx 모르는것 다 끝내고 가기
  
- flatmap, flatmap latest concat 등 rx 모르는것 다 끝내고 가기
- 
- Calendar
- - MemoEdit
- - day-Fix
  */
 
 
@@ -797,9 +799,9 @@ extension HomeViewController {
         let bottomLayer = CAGradientLayer()
         bottomLayer.colors = [
             UIColor.crayon.withAlphaComponent(0).cgColor,
-            UIColor.crayon.withAlphaComponent(0.85).cgColor
+            UIColor.crayon.withAlphaComponent(1).cgColor
         ]
-        bottomLayer.locations = [0.0, 0.7]
+        bottomLayer.locations = [0.0, 0.3]
         bottomLayer.frame = bottomTransparentScreenView.bounds
         bottomTransparentScreenView.layer.addSublayer(bottomLayer)
     }

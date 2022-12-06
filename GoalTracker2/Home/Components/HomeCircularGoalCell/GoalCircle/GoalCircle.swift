@@ -8,6 +8,7 @@
 import UIKit
 import RxSwift
 import RxCocoa
+import Lottie
 
 class GoalCircle: UIView {
     private let circleRimImageView = UIImageView(imageName: "circle_rim")
@@ -16,8 +17,8 @@ class GoalCircle: UIView {
     
     private let circleInnerShadow = UIImageView(imageName: "circle_inner_shadow")
     
-    private var dialImage: UIImageView = {
-        let imageView = UIImageView(imageName: "dial.ver2")
+    private var dialImageView: UIImageView = {
+        let imageView = UIImageView(imageName: "dial.ver3")
         imageView.clipsToBounds = true
         imageView.layer.cornerRadius = 294/380*K.circleRadius/2
         return imageView
@@ -47,6 +48,24 @@ class GoalCircle: UIView {
     
     var scoreView: ScorePannel!
     
+    private let blueDiamondLottieView: AnimationView = {
+        let animationView = AnimationView.init(name: "blue-diamond")
+        animationView.contentMode = .scaleAspectFit
+        animationView.loopMode = .loop
+        animationView.animationSpeed = 1
+        return animationView
+    }()
+    
+    private let yellowDiamondLottieView: AnimationView = {
+        let animationView = AnimationView.init(name: "yellow-diamond2")
+        animationView.contentMode = .scaleAspectFit
+        animationView.loopMode = .loop
+        animationView.animationSpeed = 1
+        return animationView
+    }()
+    
+    private let diamondShadowImageView = UIImageView(imageName: "diamond.shadow-1")
+    
     let circleSize = 222 / 380 * K.circleRadius
     
     let rimSize = 294 / 380 * K.circleRadius
@@ -70,11 +89,11 @@ class GoalCircle: UIView {
         
         goalTitleLabel.text = goal.title
         
-        processArc.fillPercentage = viewModel.processPercentage
-        
-        percentageLabel.text = "\(Int(viewModel.processPercentage))"
+        processArc.fillPercentage = viewModel.executionRate
         
         scoreView.set(success: goal.successCount, fail: goal.failCount)
+        
+        configureExecutionRate(with: viewModel.executionRate)
     }
     
     private func configure() {
@@ -86,11 +105,40 @@ class GoalCircle: UIView {
         }
     }
     
+    private func configureExecutionRate(with executionRate: CGFloat) {
+        percentageLabel.text = "\(Int(executionRate))"
+        diamondShadowImageView.isHidden = false
+        
+        switch executionRate {
+        case 98...:
+            yellowDiamondLottieView.isHidden = false
+            yellowDiamondLottieView.play()
+            
+            blueDiamondLottieView.isHidden = true
+            blueDiamondLottieView.stop()
+            percentageLabel.font = .outFit(size: 11, family: .Black)
+        case 91...97:
+            blueDiamondLottieView.isHidden = false
+            blueDiamondLottieView.play()
+            
+            yellowDiamondLottieView.isHidden = true
+            yellowDiamondLottieView.stop()
+            percentageLabel.font = .outFit(size: 11, family: .Semibold)
+        default:
+            diamondShadowImageView.isHidden = true
+            [blueDiamondLottieView, yellowDiamondLottieView]
+                .forEach { lottie in
+                    lottie.isHidden = true
+                    lottie.stop()
+                }
+        }
+    }
+    
     private func initLayout() {
         [
             processArc, circleInnerShadow, circleRimImageView,
             innerCircleImageView, innerCircleContentView,
-            processArc.nowPoint, dialImage, percentageLabel
+            processArc.nowPoint, dialImageView, percentageLabel, diamondShadowImageView, yellowDiamondLottieView, blueDiamondLottieView
             
         ].forEach(addSubview)
         
@@ -113,10 +161,10 @@ class GoalCircle: UIView {
         
         percentageLabel.snp.makeConstraints { make in
             make.centerX.equalToSuperview().offset(-2)
-            make.top.equalTo(dialImage).inset(9)
+            make.top.equalTo(dialImageView).inset(9)
         }
         
-        dialImage.snp.makeConstraints { make in
+        dialImageView.snp.makeConstraints { make in
             make.center.equalToSuperview()
             make.size.equalTo(rimSize+6)
         }
@@ -125,6 +173,24 @@ class GoalCircle: UIView {
             make.center.equalToSuperview()
             make.height.equalTo(circleSize+17)
             make.width.equalTo((circleSize+17)/740*25)
+        }
+        
+        blueDiamondLottieView.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.top.equalToSuperview().inset(2)
+            make.size.equalTo(60)
+        }
+        
+        yellowDiamondLottieView.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.top.equalToSuperview().inset(2)
+            make.size.equalTo(60)
+        }
+        
+        diamondShadowImageView.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.top.equalToSuperview().inset(2)
+            make.size.equalTo(60)
         }
         
         innerCircleContentLayout()

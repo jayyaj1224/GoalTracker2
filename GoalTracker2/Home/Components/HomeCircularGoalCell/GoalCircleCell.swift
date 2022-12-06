@@ -24,13 +24,15 @@ class GoalCircleCell: UICollectionViewCell {
     
     private let tileBoard = TileBoardCollectionView()
     
-    private let tileBoardLabel: UILabel = {
+    private let GoalAnalysisLabel: UILabel = {
         let label = UILabel()
-        label.text = "Progress Board"
+        label.text = "Analysis"
         label.font = .outFit(size: 19, family: .Thin)
-        label.textColor = .grayB
+        label.textColor = .grayC
         return label
     }()
+    
+    private let goalStatsView = GoalStatsStackView()
     
     private let doubleTapView = UIView()
     
@@ -69,6 +71,8 @@ class GoalCircleCell: UICollectionViewCell {
         goalCircle.setup(with: viewModel.goalCircleViewModel)
         
         tileBoard.setup(with: viewModel.tileViewModel)
+        
+        goalStatsView.setStat(with: viewModel.goalStatsViewModel)
     }
 
     @objc private func doubleTap() {
@@ -112,7 +116,7 @@ extension GoalCircleCell {
         contentView.addSubview(scrollView)
         scrollView.addSubview(scrollContentView)
         
-        [goalCircle, tileBoardLabel, tileBoard, doubleTapView]
+        [goalCircle, GoalAnalysisLabel, tileBoard, goalStatsView, doubleTapView]
             .forEach(scrollContentView.addSubview(_:))
         
         // - frames
@@ -146,10 +150,18 @@ extension GoalCircleCell {
             make.centerY.equalToSuperview()
             make.trailing.equalToSuperview().offset(-100)
         }
-
-        tileBoardLabel.snp.makeConstraints { make in
-            make.leading.equalTo(tileBoard).offset(5)
+        
+        goalStatsView.layer.borderWidth = 1
+        goalStatsView.snp.makeConstraints { make in
             make.bottom.equalTo(tileBoard.snp.top).offset(-10)
+            make.leading.equalTo(tileBoard).inset(3)
         }
+        
+        
+        GoalAnalysisLabel.snp.makeConstraints { make in
+            make.leading.equalTo(tileBoard).offset(5)
+            make.bottom.equalTo(goalStatsView.snp.top).offset(-10)
+        }
+        
     }
 }
