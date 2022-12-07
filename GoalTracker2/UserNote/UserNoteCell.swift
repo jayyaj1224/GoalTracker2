@@ -56,7 +56,7 @@ class UserNoteCell: UITableViewCell {
         isKeyNote = userNote.isKeyNote
         
         if userNote.isKeyNote {
-            noteLabel.font = .outFit(size: 16, family: .Medium)
+            noteLabel.font = .outFit(size: 16, family: .Regular)
             noteLabel.textColor = .black
             keyImageView.isHidden = false
         } else {

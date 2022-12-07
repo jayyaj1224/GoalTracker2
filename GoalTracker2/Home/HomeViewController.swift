@@ -11,19 +11,16 @@ import RxCocoa
 import Lottie
 
 /*
- Home
- 
- ** progress board analysis
- - Success Num
- - Fail Num
- - Execution Rate
- - Days Left
- 
- 
 
  ** Finishing
  - plusButtonTapped 쪼개기
  - flatmap, flatmap latest concat 등 rx 모르는것 다 끝내고 가기
+ 
+ 
+ addGoal
+ - circleDoubleTap
+ - checkButton
+ 
  
  */
 
@@ -171,12 +168,6 @@ class HomeViewController: UIViewController {
     
     init() {
         super.init(nibName: nil, bundle: nil)
-        
-        goalCircularCollectionView.rx.didScroll
-            .bind {
-                print(self.goalCircularCollectionView.contentOffset.y)
-            }
-            .disposed(by: disposeBag)
         
         configure()
         layoutComponents()
