@@ -1,0 +1,778 @@
+//
+//  HomeViewController.swift
+//  GoalTracker2
+//
+//  Created by Jay Lee on 12/09/2022.
+//
+
+import UIKit
+import RxSwift
+import RxCocoa
+import Lottie
+
+class HomeViewController: UIViewController {
+    //MARK: - UI Components
+    fileprivate let goalCircularCollectionView = CircularCollectionView()
+    
+    fileprivate let plusRotatingButton: NeumorphicButton = {
+        let button = NeumorphicButton(color: .crayon, type: .large)
+        button.layer.cornerRadius = 20
+        return button
+    }()
+    
+    lazy fileprivate var plusRotatingButtonInsideImageView: UIImageView = {
+        let imageView = UIImageView(imageName: "plus.neumorphism")
+        plusRotatingButton.addSubview(imageView)
+        imageView.snp.makeConstraints { make in
+            make.center.equalToSuperview()
+            make.size.equalTo(22)
+        }
+        return imageView
+    }()
+    
+    fileprivate let messageBar = MessageBar()
+    
+    private let topTransparentScreenView = UIView()
+    
+    private let bottomTransparentScreenView = UIView()
+    
+    private let settingsButton: NeumorphicButton = {
+        let button = NeumorphicButton(color: .crayon, type: .medium)
+        button.layer.cornerRadius = 18
+        var configuration = UIButton.Configuration.plain()
+        configuration.image = UIImage(named: "gear.neumorphism")
+        button.configuration = configuration
+        return button
+    }()
+    
+    private let bottomDateCalendarButton: UIButton = {
+        var configuration = UIButton.Configuration.plain()
+        configuration.image = UIImage(named: "calendar.neumorphism")
+        configuration.imagePlacement = .leading
+        configuration.titleAlignment = .trailing
+        configuration.imagePadding = 6
+        configuration.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10)
+        let button = UIButton()
+        button.configuration = configuration
+        button.backgroundColor = .crayon.withAlphaComponent(0.6)
+        button.layer.cornerRadius = 10
+        return button
+    }()
+    
+    fileprivate let pageIndicator = DotPageIndicator(pageSize: K.singleRowHeight)
+    
+    fileprivate let checkButton: UIButton = {
+        let button = UIButton()
+        button.tintColor = .clear
+        button.configuration = UIButton.Configuration.borderless()
+        button.configurationUpdateHandler = { button in
+            switch button.state {
+            case [.normal]:
+                button.configuration?.image = UIImage(named: "check.neumorphism")
+            case .selected:
+                button.configuration?.image = UIImage(named: "thumbs.up.neumorphism")
+            case .disabled:
+                button.configuration?.image = UIImage(named: "check.neumorphism.disabled")
+            default:
+                break
+            }
+        }
+        return button
+    }()
+    
+    fileprivate let scrollBackButton: UIButton = {
+        var configuration = UIButton.Configuration.plain()
+        configuration.image = UIImage(named: "back.neumorphism")
+        let button = UIButton()
+        button.configuration = configuration
+        button.alpha = 0
+        return button
+    }()
+    
+    fileprivate let topScreenView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .crayon
+        view.alpha = 0
+        return view
+    }()
+    
+    fileprivate let bottomScreenView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .crayon
+        view.alpha = 0
+        return view
+    }()
+    
+    private let lottieContainingBlurView: UIView = {
+        let containView = UIView()
+        containView.backgroundColor = .crayon.withAlphaComponent(0.7)
+        containView.isHidden = true
+        return containView
+    }()
+    
+    private let thumbsUpLottieView: AnimationView = {
+        let animationView = AnimationView.init(name: "thumbs-up-burst")
+        animationView.contentMode = .scaleToFill
+        animationView.loopMode = .playOnce
+        animationView.animationSpeed = 2
+        return animationView
+    }()
+    
+    private let emptyLabel: UILabel = {
+        let label = UILabel()
+        label.text = "􀎸 Empty."
+        label.textColor = .grayA
+        label.font = .sfPro(size: 20, family: .Semibold)
+        label.isHidden = true
+        return label
+    }()
+    
+    //MARK: - Logics
+    typealias CircleScroll = (status: ScrollStatus, y: CGFloat)
+    
+    enum ScrollStatus {
+        case  isScorlling, stopped
+    }
+    
+    fileprivate let homeViewModel = HomeViewModel()
+    
+    /// - .isScrolling  :     didScroll
+    /// - .stopped      :     didEndDecelerating, didEndDragging
+    private let circularCvScrollStautsRelay = BehaviorRelay<CircleScroll>(value: (status: .stopped, y: 0))
+    
+    fileprivate let scrollStoppedAtRelay = BehaviorRelay<CGFloat>(value: 0)
+    
+    private let scrollStartedAtRelay = BehaviorRelay<CGFloat>(value: 0)
+    
+    private let newGoalSavedSubject = PublishSubject<Goal>()
+    
+    private let disposeBag = DisposeBag()
+    
+    private var initialSettingDone = false
+    
+    fileprivate var horizontalDidStartScrollBuzzed = false
+    
+    // Calendar data preperation
+    fileprivate var calendarModel: CalendarModel?
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        configure()
+        
+        prepareCalendarViewModelData()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        plusIconImageRotate180Degree()
+        
+        if initialSettingDone == false {
+            addGradient()
+            circularCvScrollStautsRelay.accept(CircleScroll(status: .stopped, y: 0))
+            
+            initialSettingDone = true
+        }
+    }
+}
+
+//MARK: - UI Setting
+extension HomeViewController {
+    private func configure() {
+        view.backgroundColor = .crayon
+        edgesForExtendedLayout = [.top, .bottom]
+        modalTransitionStyle = .coverVertical
+        modalPresentationStyle = .automatic
+        
+        addButtonTargets()
+        layoutComponents()
+        bindings()
+        setDateCalendarButtonTitle()
+    }
+    
+    private func addButtonTargets() {
+        plusRotatingButton.addTarget(self, action: #selector(plusButtonTapped), for: .touchUpInside)
+        settingsButton.addTarget(self, action: #selector(settingsButtonsTapped), for: .touchUpInside)
+        bottomDateCalendarButton.addTarget(self, action: #selector(calenderButtonsTapped), for: .touchUpInside)
+        checkButton.addTarget(self, action: #selector(checkButtonTapped), for: .touchUpInside)
+        messageBar.addTarget(self, action: #selector(messageBarTapped), for: .touchUpInside)
+
+        let cvtapGestureRecognizer = UITapGestureRecognizer()
+        cvtapGestureRecognizer.numberOfTapsRequired = 2
+        cvtapGestureRecognizer.addTarget(self, action: #selector(checkButtonTapped))
+        goalCircularCollectionView.addGestureRecognizer(cvtapGestureRecognizer)
+        
+        let lottieTapGestureRecognizer = UITapGestureRecognizer()
+        lottieTapGestureRecognizer.addTarget(self, action: #selector(lottieBlurViewTapped))
+        lottieContainingBlurView.addGestureRecognizer(lottieTapGestureRecognizer)
+    }
+    
+    private func bindings() {
+        bindCollectionView()
+        
+        bindScrollStatusRelay()
+        
+        messageBarBind()
+        pageIndicatorBind()
+    }
+    
+    fileprivate func emptySettingsIfNeeded() {
+        if homeViewModel.goalViewModelsRelay.value.isEmpty {
+            messageBar.setGoalEmptyMessage()
+            emptyLabel.isHidden = false
+            checkButton.isEnabled = false
+        } else {
+            emptyLabel.isHidden = true
+            checkButton.isEnabled = true
+        }
+    }
+    
+    private func setDateCalendarButtonTitle() {
+        let attributtedTitle = AttributedString(
+            Date().stringFormat(of: .ddMMMEEEE_Comma_Space),
+            attributes: AttributeContainer([
+                .font: UIFont.outFit(size: 13, family: .Medium),
+                .foregroundColor: UIColor.grayC
+            ])
+        )
+        bottomDateCalendarButton.configuration?.attributedTitle = attributtedTitle
+    }
+    
+    private func bindScrollStatusRelay() {
+        let scrollStatusChanged = Observable
+            .merge(
+                goalCircularCollectionView.rx.didScroll.map { ScrollStatus.isScorlling },
+                goalCircularCollectionView.rx.didEndDragging.map { _ in ScrollStatus.stopped },
+                goalCircularCollectionView.rx.didEndDecelerating.map { ScrollStatus.stopped }
+            )
+            .distinctUntilChanged()
+        
+        scrollStatusChanged
+            .withLatestFrom(goalCircularCollectionView.rx.contentOffset) {
+                CircleScroll(status: $0, y: $1.y)
+            }
+            .bind(to: circularCvScrollStautsRelay)
+            .disposed(by: disposeBag)
+        
+        circularCvScrollStautsRelay
+            .filter { $0.status == .isScorlling }
+            .map { $0.y }
+            .bind(to: scrollStartedAtRelay)
+            .disposed(by: disposeBag)
+        
+        circularCvScrollStautsRelay
+            .filter { $0.status == .stopped }
+            .map { $0.y }
+            .bind(to: scrollStoppedAtRelay)
+            .disposed(by: disposeBag)
+        
+        scrollStartedAtRelay
+            .bind(to: self.rx.circularScrollStartedAt)
+            .disposed(by: disposeBag)
+        
+        scrollStoppedAtRelay
+            .bind(to: self.rx.circularScrollStoppedAt)
+            .disposed(by: disposeBag)
+    }
+    
+    private func bindCollectionView() {
+        homeViewModel.goalViewModelsRelay
+            .bind(to: goalCircularCollectionView.rx.items) { [weak self] cv, row, viewModel in
+                let cell = cv.dequeueReusableCell(withReuseIdentifier: "GoalCircleCell", for: IndexPath(row: row, section: 0))
+                
+                guard let cell = cell as? GoalCircleCell, let self = self else { return cell }
+                
+                cell.setupCell(viewModel)
+                
+                let didScrollToXSignal = cell.didScrollToXSignal
+                    .filter { _ in self.circularCvScrollStautsRelay.value.status == .stopped }
+                
+                didScrollToXSignal
+                    .emit(to: self.rx.goalScrolledHorizontallyAt)
+                    .disposed(by: cell.disposeBag)
+                
+                didScrollToXSignal
+                    .emit(to: self.rx.buzzToScrollOffsetX)
+                    .disposed(by: cell.disposeBag)
+                
+                Observable
+                    .merge(
+                        self.scrollBackButton.rx.tap.asObservable(),
+                        self.scrollStoppedAtRelay.map { _ in }.asObservable()
+                    )
+                    .bind(to: cell.rx.setContentOffsetZero)
+                    .disposed(by: cell.disposeBag)
+                return cell
+            }
+            .disposed(by: disposeBag)
+        
+        homeViewModel.goalViewModelsRelay
+            .bind(to: self.rx.viewModelDidChange)
+            .disposed(by: disposeBag)
+    }
+    
+    private func pageIndicatorBind() {
+        homeViewModel
+            .goalViewModelsRelay
+            .flatMap { Observable.just(($0.count, self.goalCircularCollectionView.contentOffset.y)) }
+            .bind(to: pageIndicator.rx.numberOfPages)
+            .disposed(by: disposeBag)
+        
+        scrollStoppedAtRelay
+            .bind(to: pageIndicator.rx.updateIndicators)
+            .disposed(by: disposeBag)
+    }
+    
+    private func messageBarBind() {
+        scrollStoppedAtRelay
+            .bind(to: self.rx.setMessageBar)
+            .disposed(by: disposeBag)
+    }
+    
+    private func layoutComponents() {
+        [
+            goalCircularCollectionView,     pageIndicator,
+            topTransparentScreenView,       bottomTransparentScreenView,
+            topScreenView,                  bottomScreenView,
+            plusRotatingButton,
+            checkButton,                    scrollBackButton,
+            settingsButton,                 bottomDateCalendarButton,
+            lottieContainingBlurView,       emptyLabel,
+            messageBar
+        ]
+            .forEach(view.addSubview(_:))
+
+        goalCircularCollectionView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview()
+            make.centerY.equalToSuperview()
+            make.height.equalTo(K.singleRowHeight)
+        }
+
+        topTransparentScreenView.snp.makeConstraints { make in
+            make.top.leading.trailing.equalToSuperview()
+            make.bottom.equalTo(self.goalCircularCollectionView.snp.top).offset(20)
+        }
+        
+        bottomTransparentScreenView.snp.makeConstraints { make in
+            make.leading.trailing.bottom.equalToSuperview()
+            make.top.equalTo(messageBar).offset(-80)
+        }
+        
+        topScreenView.snp.makeConstraints { make in
+            make.edges.equalTo(topTransparentScreenView)
+        }
+        
+        bottomScreenView.snp.makeConstraints { make in
+            make.edges.equalTo(bottomTransparentScreenView)
+        }
+        
+        plusRotatingButton.snp.makeConstraints { make in
+            make.size.equalTo(40)
+            make.trailing.equalToSuperview().inset(18)
+            make.bottom.equalToSuperview().inset((K.hasNotch ? 120 : 86)*K.ratioFactor)
+        }
+
+        messageBar.snp.makeConstraints { make in
+            make.height.equalTo(60*K.ratioFactor)
+            make.leading.trailing.equalToSuperview().inset(18)
+            make.bottom.equalToSuperview().inset((K.hasNotch ? 30 : 20)*K.ratioFactor)
+        }
+        
+        scrollBackButton.snp.makeConstraints { make in
+            make.size.equalTo(40)
+            make.trailing.equalTo(plusRotatingButton)
+            make.bottom.equalTo(goalCircularCollectionView).inset(90)
+        }
+        
+        checkButton.snp.makeConstraints { make in
+            make.size.equalTo(40)
+            make.trailing.equalTo(plusRotatingButton)
+            make.bottom.equalTo(plusRotatingButton.snp.top).offset(-12)
+        }
+
+        pageIndicator.snp.makeConstraints { make in
+            make.centerY.equalTo(goalCircularCollectionView)
+            make.leading.equalTo(goalCircularCollectionView).inset(14)
+        }
+        
+        settingsButton.snp.makeConstraints { make in
+            make.size.equalTo(36)
+            make.trailing.equalTo(plusRotatingButton)
+            make.top.equalToSuperview().inset(70)
+        }
+        
+        bottomDateCalendarButton.snp.makeConstraints { make in
+            make.leading.equalToSuperview().inset(15)
+            make.bottom.equalTo(messageBar.snp.top).offset(-4)
+            make.height.equalTo(28)
+        }
+        
+        lottieContainingBlurView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview()
+            make.height.equalTo(lottieContainingBlurView.snp.width)
+            make.centerY.equalToSuperview()
+        }
+        
+        lottieContainingBlurView.addSubview(thumbsUpLottieView)
+        thumbsUpLottieView.snp.makeConstraints { make in
+            make.center.equalToSuperview()
+            make.size.equalTo(200)
+        }
+        
+        emptyLabel.snp.makeConstraints { make in
+            make.center.equalToSuperview()
+        }
+    }
+    
+    private func addGradient() {
+        let topLayer = CAGradientLayer()
+        topLayer.colors = [
+            UIColor.crayon.cgColor,
+            UIColor.crayon.withAlphaComponent(0).cgColor
+        ]
+        topLayer.locations = [0.0, 0.7]
+        topLayer.frame = topTransparentScreenView.bounds
+        topTransparentScreenView.layer.addSublayer(topLayer)
+        
+        
+        let bottomLayer = CAGradientLayer()
+        bottomLayer.colors = [
+            UIColor.crayon.withAlphaComponent(0).cgColor,
+            UIColor.crayon.withAlphaComponent(1).cgColor
+        ]
+        bottomLayer.locations = [0.0, 0.3]
+        bottomLayer.frame = bottomTransparentScreenView.bounds
+        bottomTransparentScreenView.layer.addSublayer(bottomLayer)
+    }
+}
+
+//MARK: - Reative Extension
+extension Reactive where Base: HomeViewController {
+    fileprivate var circularScrollStartedAt: Binder<CGFloat> {
+        Binder(base) { base, y in
+            DispatchQueue.main.async {
+                base.scrollBackButton.alpha = 0
+                base.plusRotatingButton.alpha = 1
+            }
+        }
+    }
+    
+    fileprivate var circularScrollStoppedAt: Binder<CGFloat> {
+        Binder(base) {base, y in
+            let page = Int(y/K.singleRowHeight)
+            let viewModels = base.homeViewModel.goalViewModelsRelay.value
+            
+            guard !viewModels.isEmpty else { return }
+            base.checkButton.isSelected = viewModels[page].todayChecked
+            
+            UIImpactFeedbackGenerator(style: .light).impactOccurred()
+        }
+    }
+
+    fileprivate var goalScrolledHorizontallyAt: Binder<CGFloat> {
+        Binder(base) {base, x in
+            var alpha: CGFloat = 0
+            
+            switch x {
+            case -30..<50:
+                alpha = 0
+            case 50...300:
+                alpha = (x+50)/300
+            case 300...500:
+                alpha = 1
+            default:
+                return
+            }
+            let showing = [base.topScreenView, base.bottomScreenView, base.scrollBackButton]
+            let hiding = [base.checkButton, base.plusRotatingButton]
+            let hidingFast = [base.pageIndicator]
+            
+            DispatchQueue.main.async {
+                showing.forEach { $0.alpha = alpha}
+                hiding.forEach { $0.alpha = 1 - alpha }
+                hidingFast.forEach { $0.alpha = 1 - alpha*2.5 }
+            }
+        }
+    }
+    
+    fileprivate var viewModelDidChange: Binder<[GoalViewModel]> {
+        Binder(base) { base, viewModels in
+            base.emptySettingsIfNeeded()
+        }
+    }
+    
+    fileprivate var buzzToScrollOffsetX: Binder<CGFloat> {
+        Binder(base) { base, x in
+            switch x {
+            case 0...50:
+                if base.horizontalDidStartScrollBuzzed == false {
+                    UIImpactFeedbackGenerator(style: .light).impactOccurred()
+                    base.horizontalDidStartScrollBuzzed = true
+                }
+            default:
+                base.horizontalDidStartScrollBuzzed = false
+            }
+        }
+    }
+    
+    fileprivate var scrollToAddedGoal: Binder<Void> {
+        Binder(base) {base, goal in
+            let y = base.goalCircularCollectionView.contentSize.height
+            let rect = CGRect(x: 0, y: y-K.singleRowHeight, width: 10, height: K.singleRowHeight)
+            
+            DispatchQueue.main.async {
+                base.goalCircularCollectionView.scrollRectToVisible(rect, animated: true)
+            }
+            base.pageIndicator.currentIndex = base.homeViewModel.goalViewModelsRelay.value.count-1
+        }
+    }
+    
+    fileprivate var newGoalSaved: Binder<Goal> {
+        Binder(base) { base, new in
+            base.homeViewModel.acceptNewGoal(new)
+            
+            base.messageBar.setNewGoalPlaceHolderMessage()
+            
+            DispatchQueue.global(qos: .userInteractive).async {
+                base.calendarModel?.addGoalByMonth(goal: new)
+            }
+            
+            DispatchQueue.main.async {
+                base.plusRotatingButtonInsideImageView.alpha = 1
+            }
+        }
+    }
+    
+    fileprivate var deleteGoalWithIdentifier: Binder<String> {
+        Binder(base) { base, identifier in
+            let numberOfItems = base.homeViewModel.goalViewModelsRelay.value.count
+            
+            var isFistItemDelete = false
+            
+            DispatchQueue.main.async {
+                let y = base.goalCircularCollectionView.contentOffset.y
+                let oneRowBefore = CGPoint(x: 0, y: y-K.singleRowHeight)
+                
+                if oneRowBefore.y >= 0 {
+                    base.goalCircularCollectionView.setContentOffset(oneRowBefore, animated: true)
+                    
+                } else if oneRowBefore.y < 0 {
+                    guard  numberOfItems > 1 else { return }
+                    
+                    isFistItemDelete = true
+                    
+                    let oneRowAfter = CGPoint(x: 0, y: y+K.singleRowHeight)
+                    base.goalCircularCollectionView.setContentOffset(oneRowAfter, animated: true)
+                }
+            }
+            
+            let delay = (numberOfItems==1) ? 0.0 : 0.6
+            
+            DispatchQueue.main.asyncAfter(deadline: .now()+delay) {
+                if isFistItemDelete {
+                    base.goalCircularCollectionView.setContentOffset(.zero, animated: false)
+                }
+                
+                let goalVmsFiltered = base.homeViewModel
+                    .goalViewModelsRelay.value
+                    .filter { $0.goal.identifier != identifier }
+                
+                base.homeViewModel.goalViewModelsRelay
+                    .accept(goalVmsFiltered)
+                
+                base.calendarModel?.deleteGoal(with: identifier, completion: nil)
+            }
+        }
+    }
+    
+    fileprivate var setMessageBar: Binder<CGFloat> {
+        Binder(base) {base, offsetY in
+            let page = Int(offsetY/K.singleRowHeight)
+            let id = base.homeViewModel.goalIdentifier(at: page)
+            if let userNotes = UserNoteManager.shared.userNotesDictionary[id] {
+                base.messageBar.configure(with: userNotes)
+            }
+        }
+    }
+}
+
+//MARK: -  Button Actions
+extension HomeViewController {
+    @objc private func plusButtonTapped() {
+        UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+        
+        let plusMenuViewController = PlusMenuViewController()
+        plusMenuViewController.modalPresentationStyle = .overFullScreen
+        plusMenuViewController.presentCalendarViewCompletion = { [weak self] in
+            self?.calenderButtonsTapped()
+        }
+        
+        let row = Int(goalCircularCollectionView.contentOffset.y/K.singleRowHeight)
+        let goals = self.homeViewModel.goalViewModelsRelay.value.map { $0.goal }
+        
+        if goals.count != 0 {
+            let goal = goals[row]
+            plusMenuViewController.selectedGoalIdentifier = goal.identifier
+            plusMenuViewController.selectedGoalTitle = goal.title
+        }
+        
+        plusMenuViewController.newGoalSavedSubject
+            .bind(to: self.rx.newGoalSaved)
+            .disposed(by: plusMenuViewController.disposeBag)
+        
+        plusMenuViewController.goalDeletedIdentifierSubject
+            .bind(to: self.rx.deleteGoalWithIdentifier)
+            .disposed(by: plusMenuViewController.disposeBag)
+        
+        Observable
+            .zip(
+                plusMenuViewController.newGoalSavedSubject.asObservable(),
+                plusMenuViewController.viewDismissSubject.asObservable()
+            )
+            .flatMap { _ in return Observable.just(()) }
+            .subscribe(self.rx.scrollToAddedGoal)
+            .disposed(by: plusMenuViewController.disposeBag)
+        
+        present(plusMenuViewController, animated: false) {
+            DispatchQueue.main.async {
+                self.plusRotatingButtonInsideImageView.alpha = 0
+            }
+        }
+    }
+    
+    @objc private func checkButtonTapped(_ sender: Any) {
+        if sender is UITapGestureRecognizer && checkButton.isSelected {
+            return
+        }
+        
+        guard !homeViewModel.goalViewModelsRelay.value.isEmpty else {
+            return
+        }
+        
+        let page = pageIndicator.currentIndex
+        
+        if checkButton.isSelected == false {
+            dayCheckLottieAnimation()
+            dayCheckToast()
+            homeViewModel.dayCheck(at: page)
+        } else {
+            homeViewModel.dayUncheck(at: page)
+        }
+        
+        checkButton.isSelected.toggle()
+    }
+    
+    @objc private func lottieBlurViewTapped() {
+        DispatchQueue.main.async {
+            self.lottieDismissAnimation()
+            
+            GTToast.hideAllToast()
+        }
+    }
+    
+    @objc private func messageBarTapped() {
+        let row = Int(goalCircularCollectionView.contentOffset.y/K.singleRowHeight)
+        let identifier = homeViewModel.goalIdentifier(at: row)
+        
+        let noteViewController = UserNoteViewController(goalIdentifier: identifier)
+        noteViewController.modalPresentationStyle = .custom
+        noteViewController.transitioningDelegate = self
+        noteViewController.noteViewModel.userNoteSubject
+            .subscribe(onNext: { [weak self] noteArray in
+                self?.messageBar.configure(with: noteArray)
+            })
+            .disposed(by: noteViewController.disposeBag)
+        
+        present(noteViewController, animated: true)
+    }
+}
+
+//MARK: -  Animation
+extension HomeViewController {
+    private func dayCheckLottieAnimation() {
+        lottieContainingBlurView.isHidden = false
+        
+        thumbsUpLottieView.play(completion: { _ in
+            DispatchQueue.main.asyncAfter(deadline: .now()+0.5) {
+                self.lottieDismissAnimation()
+            }
+        })
+    }
+    
+    private func lottieDismissAnimation() {
+        UIView.animate(withDuration: 0.2, delay: 0) {
+            self.lottieContainingBlurView.alpha = 0
+        } completion: { _ in
+            self.lottieContainingBlurView.isHidden = true
+            self.lottieContainingBlurView.alpha = 1
+        }
+    }
+    
+    private func dayCheckToast() {
+        GTToast
+            .make(
+                titleText: "Success +1",
+                subTitleText: "Good Job!",
+                imageName: "hands.clap",
+                position: .Bottom,
+                time: 1.3
+            )
+            .show()
+    }
+    
+    private func plusIconImageRotate180Degree() {
+        UIView.animate(withDuration: 0.3, delay: 0, options: .curveLinear) {
+            self.plusRotatingButtonInsideImageView.transform = CGAffineTransform(rotationAngle: 180.pi.cgFloat)
+        } completion: { _ in
+            self.plusRotatingButtonInsideImageView.transform = .identity
+        }
+    }
+    
+    @objc private func calenderButtonsTapped() {
+        let calendarViewController = CalendarViewController()
+        calendarViewController.calendarViewModel.calendarModel = calendarModel
+        
+        calendarViewController.goalDeletedSubject
+            .bind(to: self.rx.deleteGoalWithIdentifier)
+            .disposed(by: calendarViewController.disposeBag)
+        
+        navigationController?.pushViewController(calendarViewController, animated: true)
+        
+        scrollBackButton.sendActions(for: .touchUpInside)
+    }
+    
+    @objc private func settingsButtonsTapped(_ sender: UIButton) {
+        let settingsViewController = SettingsViewController()
+        settingsViewController.settingsDelegate = self
+        
+        navigationController?.pushViewController(settingsViewController, animated: true)
+        
+        scrollBackButton.sendActions(for: .touchUpInside)
+    }
+}
+
+extension HomeViewController: SettingsProtocol {
+    func dataHasReset() {
+        homeViewModel.goalViewModelsRelay.accept([])
+        
+        messageBar.setGoalEmptyMessage()
+        
+        checkButton.isEnabled = false
+    }
+}
+
+extension HomeViewController {
+    private func prepareCalendarViewModelData() {
+        let calendarModel = CalendarModel()
+        calendarModel.setData()
+        
+        self.calendarModel = calendarModel
+    }
+}
+
+extension HomeViewController: UIViewControllerTransitioningDelegate {
+    func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
+
+        return PresentationController(contentHeight: K.screenHeight*0.7, presentedViewController: presented, presenting: presenting)
+    }
+}

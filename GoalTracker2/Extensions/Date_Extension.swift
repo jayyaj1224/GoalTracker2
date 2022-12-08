@@ -69,11 +69,7 @@ extension Date {
 //MARK: - Date Format
 extension Date {
     enum Format: String {
-        case yyyy,          MMMM,           MM,         M,
-             dd,            d,              EEEE,
-             yyyyMMdd,      yyyy_MM_dd,     yyMMddHHmmss,
-             ddMMMM,        yyyyMM
-             
+        case yyyy, MMMM, MM, M, dd, d, EEEE, yyyyMMdd, yyyy_MM_dd, yyMMddHHmmss, yyyyMM, ddMMMM
         
         case yyyyMMdd_Slash = "yyyy/ MM/ dd"
 
