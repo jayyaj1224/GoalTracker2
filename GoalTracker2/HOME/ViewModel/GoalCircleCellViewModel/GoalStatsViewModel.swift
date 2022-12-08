@@ -11,7 +11,7 @@ class GoalStatsViewModel {
     var goal: Goal
     
     var executionRate: String
-    var maxStreak: String
+    var maxStreak: String = ""
     var daysLeft: String
     var dateRange: String
     var successCount: String
@@ -33,12 +33,37 @@ class GoalStatsViewModel {
                 Date.inAnyFormat(dateString: $0)
                     .stringFormat(of: .ddMMMyyyy)
             }
+        
         self.executionRate = "\(rateString) %"
-        self.maxStreak = "\(goal.maxStreak()) days"
         self.daysLeft = "\(daysLeft) days left"
         self.dateRange = "\(dateRangeString[0]) - \(dateRangeString[1])"
         self.successCount = "\(goal.successCount)"
         self.failCount = "\(goal.failCount)/\(goal.failCap)"
+        self.maxStreak = "\(calculateMaxStreak()) days"
+    }
+    
+    private func calculateMaxStreak() -> Int {
+        var maxStreak = 0
+        var streak = 0
+        
+        let thisMonth = Date().stringFormat(of: .yyyyMM)
+        let today = Date().stringFormat(of: .yyyyMMdd)
+        
+        goal.daysByMonth.forEach { month in
+            guard month.key <= thisMonth else { return }
+            
+            for day in month.value {
+                guard day.date <= today else { return }
+                
+                if day.status == GoalStatus.success.rawValue {
+                    streak+=1
+                } else {
+                    maxStreak = max(maxStreak, streak)
+                    streak = 0
+                }
+            }
+        }
+        return maxStreak
     }
 }
 

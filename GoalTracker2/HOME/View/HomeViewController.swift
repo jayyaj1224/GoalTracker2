@@ -11,6 +11,7 @@ import RxCocoa
 import Lottie
 
 class HomeViewController: UIViewController {
+    
     //MARK: - UI Components
     fileprivate let goalCircularCollectionView = CircularCollectionView()
     
@@ -128,21 +129,21 @@ class HomeViewController: UIViewController {
     }()
     
     //MARK: - Logics
+    fileprivate let homeViewModel = HomeViewModel()
+    
     typealias CircleScroll = (status: ScrollStatus, y: CGFloat)
     
     enum ScrollStatus {
         case  isScorlling, stopped
     }
     
-    fileprivate let homeViewModel = HomeViewModel()
-    
-    /// - .isScrolling  :     didScroll
-    /// - .stopped      :     didEndDecelerating, didEndDragging
     private let circularCvScrollStautsRelay = BehaviorRelay<CircleScroll>(value: (status: .stopped, y: 0))
     
-    fileprivate let scrollStoppedAtRelay = BehaviorRelay<CGFloat>(value: 0)
-    
+    /// - y offset only once, when the circular collectionview started to scroll
     private let scrollStartedAtRelay = BehaviorRelay<CGFloat>(value: 0)
+    
+    /// - y offset only once, when the circular collectionview stopped
+    fileprivate let scrollStoppedAtRelay = BehaviorRelay<CGFloat>(value: 0)
     
     private let newGoalSavedSubject = PublishSubject<Goal>()
     
@@ -644,8 +645,7 @@ extension HomeViewController {
         if sender is UITapGestureRecognizer && checkButton.isSelected {
             return
         }
-        
-        guard !homeViewModel.goalViewModelsRelay.value.isEmpty else {
+        if homeViewModel.goalViewModelsRelay.value.isEmpty {
             return
         }
         

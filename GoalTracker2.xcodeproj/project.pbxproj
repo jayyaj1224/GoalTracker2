@@ -88,6 +88,7 @@
 		6248936028FC154A004580CB /* SwitchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6248935F28FC154A004580CB /* SwitchController.swift */; };
 		624E91E728FD6EC400E15735 /* PeriodSettingModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 624E91E628FD6EC400E15735 /* PeriodSettingModel.swift */; };
 		626742AE2937A5860068FFE6 /* CalendarModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 626742AD2937A5860068FFE6 /* CalendarModel.swift */; };
+		626E099729424FB00035B8DF /* QA Mode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 626E099629424FB00035B8DF /* QA Mode.swift */; };
 		62767E3E2936A69B00622A4B /* ScorePannel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62767E3D2936A69B00622A4B /* ScorePannel.swift */; };
 		62A562BF2939057D00E4C695 /* thumbs-up-burst.json in Resources */ = {isa = PBXBuildFile; fileRef = 62A562BE2939057D00E4C695 /* thumbs-up-burst.json */; };
 		62B3752D293C038A000F523B /* UserNote.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62B3752C293C038A000F523B /* UserNote.swift */; };
@@ -220,6 +221,7 @@
 		6248935F28FC154A004580CB /* SwitchController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwitchController.swift; sourceTree = "<group>"; };
 		624E91E628FD6EC400E15735 /* PeriodSettingModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeriodSettingModel.swift; sourceTree = "<group>"; };
 		626742AD2937A5860068FFE6 /* CalendarModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarModel.swift; sourceTree = "<group>"; };
+		626E099629424FB00035B8DF /* QA Mode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "QA Mode.swift"; sourceTree = "<group>"; };
 		62767E3D2936A69B00622A4B /* ScorePannel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScorePannel.swift; sourceTree = "<group>"; };
 		62A562BE2939057D00E4C695 /* thumbs-up-burst.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = "thumbs-up-burst.json"; path = "Figma/thumbs-up-burst.json"; sourceTree = SOURCE_ROOT; };
 		62B3752C293C038A000F523B /* UserNote.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserNote.swift; sourceTree = "<group>"; };
@@ -532,6 +534,14 @@
 			path = GoalCircleCellViewModel;
 			sourceTree = "<group>";
 		};
+		626E099529424F9B0035B8DF /* QA */ = {
+			isa = PBXGroup;
+			children = (
+				626E099629424FB00035B8DF /* QA Mode.swift */,
+			);
+			path = QA;
+			sourceTree = "<group>";
+		};
 		62A562BB2938CFD400E4C695 /* Lottie */ = {
 			isa = PBXGroup;
 			children = (
@@ -590,6 +600,7 @@
 				62B5726A28CEE87A00015354 /* Extensions */,
 				62A562BB2938CFD400E4C695 /* Lottie */,
 				6226907528D5895900E4AA01 /* Fonts */,
+				626E099529424F9B0035B8DF /* QA */,
 				62B5724128CEE6A100015354 /* Assets.xcassets */,
 				62B5724328CEE6A100015354 /* LaunchScreen.storyboard */,
 				62B5724628CEE6A100015354 /* Info.plist */,
@@ -1004,6 +1015,7 @@
 				621AEACE28CEF66A00D53F2C /* Date_Extension.swift in Sources */,
 				62B5723928CEE6A000015354 /* AppDelegate.swift in Sources */,
 				621AEB0628CF058B00D53F2C /* UIView_Extension.swift in Sources */,
+				626E099729424FB00035B8DF /* QA Mode.swift in Sources */,
 				62B5723B28CEE6A000015354 /* SceneDelegate.swift in Sources */,
 				622F135528DCAD390072E5BF /* SettingsViewController.swift in Sources */,
 				AAAFB8A328D2E572002CE265 /* NeumorphicButton.swift in Sources */,
