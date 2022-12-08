@@ -7,7 +7,6 @@ target 'GoalTracker2' do
 
   pod 'IQKeyboardManagerSwift'
   pod 'SnapKit'
-  pod 'Kingfisher'
   pod 'RealmSwift', '~> 10.25.0'
   pod 'RxSwift'
   pod 'RxCocoa'
