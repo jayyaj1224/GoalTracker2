@@ -6,9 +6,11 @@
 //
 
 import UIKit
+import SwiftUI
 
 protocol SettingsProtocol {
     func dataHasReset()
+    func scoreBoardSet()
 }
 
 class SettingsViewController: UIViewController {
@@ -48,7 +50,12 @@ class SettingsViewController: UIViewController {
         toggleAnimationType: .withSpring,
         size: CGSize(width: 48, height: 20),
         onAction: {
+            SettingsManager.shared.vibrate = true
+            
             UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+        },
+        offAction: {
+            SettingsManager.shared.vibrate = false
         }
     )
     
@@ -86,11 +93,13 @@ class SettingsViewController: UIViewController {
     private let aboutLabel: UILabel = {
         let label = UILabel()
         label.text = "About"
-        label.font = .sfPro(size: 13, family: .Semibold)
+        label.font = .sfPro(size: 15, family: .Semibold)
         return label
     }()
     
     var settingsDelegate: SettingsProtocol?
+    
+    var prevScoreViewType: ScorePannelType = .Digital
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -128,15 +137,18 @@ class SettingsViewController: UIViewController {
     }
     
     private func saveScorePannelTypeSettings() {
+        var selectedType: ScorePannelType!
+        
         switch scoreViewTypePicker.selectedRow(inComponent: 0) {
-        case 0: SettingsManager.shared.scorePannelType = .Digital
-        case 1: SettingsManager.shared.scorePannelType = .Flap
-        default: break
+        case 0: selectedType = .Digital
+        case 1: selectedType = .Flap
+        default: return
         }
-    }
-    
-    private func saveVibrateSettings() {
-        SettingsManager.shared.vibrate = vibrateSwitch.isOn
+        
+        if selectedType != prevScoreViewType {
+            SettingsManager.shared.scorePannelType = selectedType
+            settingsDelegate?.scoreBoardSet()
+        }
     }
 }
 
@@ -189,7 +201,9 @@ extension SettingsViewController {
         
         layoutComponents()
         
-        scoreViewTypePicker.selectRow(SettingsManager.shared.scorePannelType.rawValue, inComponent: 0, animated: false)
+        let scoreViewType = SettingsManager.shared.scorePannelType
+        prevScoreViewType = scoreViewType
+        scoreViewTypePicker.selectRow(scoreViewType.rawValue, inComponent: 0, animated: false)
         
         if SettingsManager.shared.vibrate {
             vibrateSwitch.on()
@@ -205,24 +219,23 @@ extension SettingsViewController {
             return view
         }
         
-        let settingSectionStartDivider = sectionDivider()
-        let settingSectionEndDivider = sectionDivider()
+        let settingSectionDivider = sectionDivider()
+        let aboutSectionDivider = sectionDivider()
         
         [
             backButton,
             settingsLabel,
-            settingSectionStartDivider,
+            settingSectionDivider,
             
             scoreViewTypeLabel,
             scoreViewTypePicker,
             
             vibrateSettingLabel, vibrateSwitch,
             
-            settingSectionEndDivider,
-            
             resetLabel, resetButton,
             
-            aboutLabel
+            aboutLabel,
+            aboutSectionDivider
             
         ]
             .forEach(view.addSubview(_:))
@@ -239,7 +252,7 @@ extension SettingsViewController {
             make.leading.equalToSuperview().inset(30)
         }
         
-        settingSectionStartDivider.snp.makeConstraints { make in
+        settingSectionDivider.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(25)
             make.height.equalTo(1)
             make.top.equalTo(settingsLabel.snp.bottom).offset(8)
@@ -247,7 +260,7 @@ extension SettingsViewController {
         
         scoreViewTypeLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().inset(30)
-            make.top.equalTo(settingSectionStartDivider.snp.bottom).offset(15)
+            make.top.equalTo(settingSectionDivider.snp.bottom).offset(15)
         }
         
         scoreViewTypePicker.snp.makeConstraints { make in
@@ -258,29 +271,23 @@ extension SettingsViewController {
         
         vibrateSettingLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().inset(30)
-            make.top.equalTo(scoreViewTypePicker.snp.bottom).offset(20)
+            make.top.equalTo(scoreViewTypePicker.snp.bottom).offset(24)
         }
         
         vibrateSwitch.snp.makeConstraints { make in
-            make.leading.equalTo(vibrateSettingLabel.snp.trailing).offset(20)
+            make.leading.equalTo(vibrateSettingLabel.snp.trailing).offset(34)
             make.centerY.equalTo(vibrateSettingLabel).offset(2)
-        }
-        
-        settingSectionEndDivider.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview().inset(25)
-            make.height.equalTo(1)
-            make.top.equalTo(vibrateSettingLabel.snp.bottom).offset(30)
         }
         
         resetLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().inset(30)
-            make.top.equalTo(settingSectionEndDivider.snp.bottom).offset(40)
+            make.top.equalTo(vibrateSettingLabel.snp.bottom).offset(54)
         }
         
         resetButton.snp.makeConstraints { make in
             make.width.equalTo(80)
             make.height.equalTo(22)
-            make.leading.equalTo(resetLabel.snp.trailing).offset(16)
+            make.centerX.equalTo(vibrateSwitch).offset(2)
             make.centerY.equalTo(resetLabel)
         }
         
@@ -288,6 +295,29 @@ extension SettingsViewController {
             make.leading.equalToSuperview().inset(30)
             make.top.equalTo(resetLabel.snp.bottom).offset(100)
         }
+        
+        aboutSectionDivider.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview().inset(25)
+            make.height.equalTo(1)
+            make.top.equalTo(aboutLabel.snp.bottom).offset(8)
+        }
     }
 }
+
+
+struct SettingViewController_Preview: PreviewProvider {
+    static var previews: some View {
+        SettingViewControllerRepresentable().edgesIgnoringSafeArea(.all)
+    }
+    typealias UIviewControllerType = UIViewController
+}
+
+struct SettingViewControllerRepresentable: UIViewControllerRepresentable {
+    func makeUIViewController(context: Context) -> some UIViewController {
+        return SettingsViewController()
+    }
+    
+    func updateUIViewController(_ uiViewController: UIViewControllerType, context: Context) {}
+}
+
 

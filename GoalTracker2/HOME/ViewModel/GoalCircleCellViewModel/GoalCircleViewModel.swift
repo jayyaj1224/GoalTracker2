@@ -16,7 +16,7 @@ class GoalCircleViewModel {
     
     var executionRate: CGFloat {
         let startDate = Date.inAnyFormat(dateString: goal.startDate)
-        let daysCountToNow = startDate.daysCountToNow
+        let daysCountToNow = startDate.daysCountToNow+1
         var ratio = CGFloat(goal.successCount)/CGFloat(daysCountToNow)
         
         ratio = min(1, ratio)

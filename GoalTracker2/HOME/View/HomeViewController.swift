@@ -10,8 +10,12 @@ import RxSwift
 import RxCocoa
 import Lottie
 
+/*
+ 🏆 Achievement Page
+ */
+
 class HomeViewController: UIViewController {
-    
+
     //MARK: - UI Components
     fileprivate let goalCircularCollectionView = CircularCollectionView()
     
@@ -466,7 +470,9 @@ extension Reactive where Base: HomeViewController {
             guard !viewModels.isEmpty else { return }
             base.checkButton.isSelected = viewModels[page].todayChecked
             
-            UIImpactFeedbackGenerator(style: .light).impactOccurred()
+            if SettingsManager.shared.vibrate {
+                UIImpactFeedbackGenerator(style: .light).impactOccurred()
+            }
         }
     }
 
@@ -504,6 +510,9 @@ extension Reactive where Base: HomeViewController {
     
     fileprivate var buzzToScrollOffsetX: Binder<CGFloat> {
         Binder(base) { base, x in
+            guard SettingsManager.shared.vibrate else {
+                return 
+            }
             switch x {
             case 0...50:
                 if base.horizontalDidStartScrollBuzzed == false {
@@ -536,10 +545,6 @@ extension Reactive where Base: HomeViewController {
             
             DispatchQueue.global(qos: .userInteractive).async {
                 base.calendarModel?.addGoalByMonth(goal: new)
-            }
-            
-            DispatchQueue.main.async {
-                base.plusRotatingButtonInsideImageView.alpha = 1
             }
         }
     }
@@ -600,7 +605,9 @@ extension Reactive where Base: HomeViewController {
 //MARK: -  Button Actions
 extension HomeViewController {
     @objc private func plusButtonTapped() {
-        UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+        if SettingsManager.shared.vibrate {
+            UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+        }
         
         let plusMenuViewController = PlusMenuViewController()
         plusMenuViewController.modalPresentationStyle = .overFullScreen
@@ -624,6 +631,18 @@ extension HomeViewController {
         plusMenuViewController.goalDeletedIdentifierSubject
             .bind(to: self.rx.deleteGoalWithIdentifier)
             .disposed(by: plusMenuViewController.disposeBag)
+        
+        Observable
+            .merge(
+                plusMenuViewController.newGoalSavedSubject.map{_ in}.asObservable(),
+                plusMenuViewController.viewDismissSubject.asObservable()
+            )
+            .subscribe(onNext: {
+                DispatchQueue.main.async {
+                    self.plusRotatingButtonInsideImageView.alpha = 1
+                }
+            })
+            .disposed(by: disposeBag)
         
         Observable
             .zip(
@@ -758,6 +777,10 @@ extension HomeViewController: SettingsProtocol {
         messageBar.setGoalEmptyMessage()
         
         checkButton.isEnabled = false
+    }
+    
+    func scoreBoardSet() {
+        goalCircularCollectionView.reloadData()
     }
 }
 

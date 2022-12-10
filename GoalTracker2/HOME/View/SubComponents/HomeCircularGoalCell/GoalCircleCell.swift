@@ -62,8 +62,8 @@ class GoalCircleCell: UICollectionViewCell {
     override func apply(_ layoutAttributes: UICollectionViewLayoutAttributes) {
         super.apply(layoutAttributes)
         if let circleLayoutAtt = layoutAttributes as? LayoutCircularAttributes {
-            self.layer.anchorPoint = circleLayoutAtt.anchorPoint
-            self.center.x += (circleLayoutAtt.anchorPoint.x - 0.5) * self.bounds.width
+            layer.anchorPoint = circleLayoutAtt.anchorPoint
+            center.x += bounds.width*(circleLayoutAtt.anchorPoint.x - 0.5)
         }
     }
     

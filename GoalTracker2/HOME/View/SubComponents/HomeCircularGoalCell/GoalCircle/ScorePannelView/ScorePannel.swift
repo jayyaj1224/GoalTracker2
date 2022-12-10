@@ -7,4 +7,9 @@
 
 protocol ScorePannel {
     func set(success: Int, fail: Int)
+    var type: ScorePannelType { get }
+}
+
+enum ScorePannelType: Int {
+    case Digital, Flap
 }

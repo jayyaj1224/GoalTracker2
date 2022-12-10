@@ -406,7 +406,7 @@
 			path = ../Home/View/SubComponents/CircularCollectionView;
 			sourceTree = "<group>";
 		};
-		621AEAFC28CEF74D00D53F2C /* COMMON */ = {
+		621AEAFC28CEF74D00D53F2C /* Common */ = {
 			isa = PBXGroup;
 			children = (
 				621AEAEB28CEF74300D53F2C /* CircularCollectionView */,
@@ -417,7 +417,7 @@
 				AAAFB8A228D2E572002CE265 /* NeumorphicButton.swift */,
 				6248935F28FC154A004580CB /* SwitchController.swift */,
 			);
-			path = COMMON;
+			path = Common;
 			sourceTree = "<group>";
 		};
 		6226907528D5895900E4AA01 /* Fonts */ = {
@@ -596,7 +596,7 @@
 				621AEAD928CEF73200D53F2C /* ADDGOAL */,
 				AAB6BB8828D0035B00AC44E9 /* CALENDAR */,
 				AAB6BB8928D0035E00AC44E9 /* SETTINGS */,
-				621AEAFC28CEF74D00D53F2C /* COMMON */,
+				621AEAFC28CEF74D00D53F2C /* Common */,
 				62B5726A28CEE87A00015354 /* Extensions */,
 				62A562BB2938CFD400E4C695 /* Lottie */,
 				6226907528D5895900E4AA01 /* Fonts */,
@@ -1246,6 +1246,8 @@
 				DEVELOPMENT_TEAM = 6TUZG6LW7U;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = GoalTracker2/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Goal Tracker";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.lifestyle";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -1274,6 +1276,8 @@
 				DEVELOPMENT_TEAM = 6TUZG6LW7U;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = GoalTracker2/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Goal Tracker";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.lifestyle";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";

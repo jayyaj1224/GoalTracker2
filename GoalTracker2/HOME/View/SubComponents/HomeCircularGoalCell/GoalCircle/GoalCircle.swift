@@ -73,7 +73,7 @@ class GoalCircle: UIView {
     init() {
         super.init(frame: .zero)
         
-        configure()
+        configureScoreView()
         
         initLayout()
     }
@@ -89,20 +89,35 @@ class GoalCircle: UIView {
         
         goalTitleLabel.text = goal.title
         
-        processArc.fillPercentage = viewModel.executionRate
-        
-        scoreView.set(success: goal.successCount, fail: goal.failCount)
+        processArc.processPercentage = viewModel.executionRate
         
         executionRateSet(with: viewModel.executionRate)
+        
+        if scoreView.type != SettingsManager.shared.scorePannelType {
+            if let scoreUIView = scoreView as? UIView {
+                scoreUIView.removeFromSuperview()
+                
+                self.scoreView = nil
+                
+                configureScoreView { newScoreView in
+                    newScoreView.set(success: goal.successCount, fail: goal.failCount)
+                }
+            }
+        } else {
+            scoreView.set(success: goal.successCount, fail: goal.failCount)
+        }
     }
     
-    private func configure() {
+    private func configureScoreView(completion: ((ScorePannel)->Void)? = nil) {
         switch SettingsManager.shared.scorePannelType {
         case .Flap:
             scoreView = FlapScoreView()
+            completion?(scoreView)
         case .Digital:
             scoreView = DigitalScoreView()
+            completion?(scoreView)
         }
+        scoreViewLayout()
     }
     
     private func executionRateSet(with executionRate: CGFloat) {
@@ -138,7 +153,7 @@ class GoalCircle: UIView {
         [
             processArc, circleInnerShadow, circleRimImageView,
             innerCircleImageView, innerCircleContentView,
-            processArc.nowPoint, dialImageView, percentageLabel, diamondShadowImageView, yellowDiamondLottieView, blueDiamondLottieView
+            processArc.nowPointView, dialImageView, percentageLabel, diamondShadowImageView, yellowDiamondLottieView, blueDiamondLottieView
             
         ].forEach(addSubview)
         
@@ -169,7 +184,7 @@ class GoalCircle: UIView {
             make.size.equalTo(rimSize+6)
         }
         
-        processArc.nowPoint.snp.makeConstraints { make in
+        processArc.nowPointView.snp.makeConstraints { make in
             make.center.equalToSuperview()
             make.height.equalTo(circleSize+17)
             make.width.equalTo((circleSize+17)/740*25)
@@ -193,13 +208,7 @@ class GoalCircle: UIView {
             make.size.equalTo(60)
         }
         
-        innerCircleContentLayout()
-    }
-    
-    private func innerCircleContentLayout() {
-        guard let scoreView = scoreView as? UIView else { return }
-        
-        [goalTitleLabel, scoreView]
+        [goalTitleLabel]
             .forEach(innerCircleContentView.addSubview)
 
         goalTitleLabel.snp.makeConstraints { make in
@@ -207,6 +216,15 @@ class GoalCircle: UIView {
             make.centerX.equalToSuperview()
             make.width.equalToSuperview().offset(-20)
         }
+        
+        scoreViewLayout()
+    }
+    
+    private func scoreViewLayout() {
+        guard let scoreView = scoreView as? UIView else { return }
+        
+        [scoreView]
+            .forEach(innerCircleContentView.addSubview)
         
         switch SettingsManager.shared.scorePannelType {
         case .Flap:
@@ -220,6 +238,5 @@ class GoalCircle: UIView {
                 make.bottom.equalToSuperview().inset(33)
             }
         }
-
     }
 }

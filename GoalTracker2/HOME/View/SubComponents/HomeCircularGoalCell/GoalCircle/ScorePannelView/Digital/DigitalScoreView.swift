@@ -23,6 +23,8 @@ class DigitalScoreView: UIView, ScorePannel {
     
     private let backgroundView = NeumorphicView(backgroundColor: .crayon, type: .small)
     
+    var type: ScorePannelType { .Digital }
+    
     init() {
         super.init(frame: .zero)
         

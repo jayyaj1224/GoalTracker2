@@ -30,6 +30,8 @@ class FlapScoreView: UIView, ScorePannel {
         return label
     }()
     
+    var type: ScorePannelType { .Flap }
+    
     init() {
         super.init(frame: .zero)
         

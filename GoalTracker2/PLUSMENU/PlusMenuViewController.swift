@@ -198,9 +198,6 @@ class PlusMenuViewController: UIViewController {
     
     //MARK: - animations
     @objc private func cancelButtonActionWithAnimation() {
-        //let feedBackGenerator = UIImpactFeedbackGenerator(style: .medium)
-        //feedBackGenerator.impactOccurred()
-
         UIView.animate(withDuration: 0.3, delay: 0, options: .curveLinear) {
             self.cancelRotatingButtonContainingImageView.transform = CGAffineTransform(rotationAngle: -135.pi.cgFloat)
             self.buttonStackView.transform = CGAffineTransform(translationX: 0, y: 50)

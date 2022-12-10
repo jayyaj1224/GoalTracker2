@@ -8,8 +8,6 @@
 import Foundation
 
 class SettingsManager {
-    enum ScorePannelType: Int { case Digital, Flap }
-    
     static let shared = SettingsManager()
     
     var scorePannelType: ScorePannelType {
