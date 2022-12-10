@@ -66,6 +66,10 @@ class TileBoardCollectionView: UICollectionView, UICollectionViewDelegateFlowLay
         widthConstraint.constant = viewModel.boardSize.width
     }
     
+    func checkButtonTap(success: Bool) {
+        
+    }
+    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return viewModel?.itemSize(at: indexPath.row+1) ?? .zero
     }

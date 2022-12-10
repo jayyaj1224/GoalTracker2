@@ -39,7 +39,7 @@ class GoalCircleCell: UICollectionViewCell {
     /// current goal's scroll 'x' offset
     var didScrollToXSignal: Signal<CGFloat>!
     
-    let disposeBag = DisposeBag()
+    private let disposeBag = DisposeBag()
     
     var reuseBag = DisposeBag()
     
@@ -86,6 +86,12 @@ extension Reactive where Base: GoalCircleCell {
             UIView.animate(withDuration: 0.2, delay: 0.2) {
                 base.scrollView.setContentOffset(.zero, animated: false)
             }
+        }
+    }
+    
+    var checkButtonTapped: Binder<(isSelected: Bool, row: Int)> {
+        Binder(base) { base, isSelected in
+            
         }
     }
 }

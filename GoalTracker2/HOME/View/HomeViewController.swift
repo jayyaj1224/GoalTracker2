@@ -171,6 +171,8 @@ class HomeViewController: UIViewController {
     
     private let newGoalSavedSubject = PublishSubject<Goal>()
     
+    private var checkButtonSignal: Signal<(isSelected: Bool, row: Int)>!
+    
     private let disposeBag = DisposeBag()
     
     private var initialSettingDone = false
@@ -234,6 +236,14 @@ extension HomeViewController {
     }
     
     private func bindings() {
+        checkButtonSignal = checkButton.rx.tap
+            .withLatestFrom(
+                goalCircularCollectionView.rx.contentOffset,
+                resultSelector: { _, offset in
+                return (isSelected: self.checkButton.isSelected, row: Int(offset.y/K.singleRowHeight))
+            })
+            .asSignal(onErrorSignalWith: .empty())
+
         bindCollectionView()
         
         bindScrollStatusRelay()
@@ -315,11 +325,11 @@ extension HomeViewController {
                 
                 didScrollToXSignal
                     .emit(to: self.rx.goalScrolledHorizontallyAt)
-                    .disposed(by: cell.disposeBag)
+                    .disposed(by: cell.reuseBag)
                 
                 didScrollToXSignal
                     .emit(to: self.rx.buzzToScrollOffsetX)
-                    .disposed(by: cell.disposeBag)
+                    .disposed(by: cell.reuseBag)
                 
                 Observable
                     .merge(
@@ -327,7 +337,13 @@ extension HomeViewController {
                         self.scrollStoppedAtRelay.map { _ in }.asObservable()
                     )
                     .bind(to: cell.rx.setContentOffsetZero)
-                    .disposed(by: cell.disposeBag)
+                    .disposed(by: cell.reuseBag)
+                
+                self.checkButtonSignal
+                    .filter { $0.row == row }
+                    .emit(to: cell.rx.checkButtonTapped)
+                    .disposed(by: cell.reuseBag)
+                
                 return cell
             }
             .disposed(by: disposeBag)
@@ -694,23 +710,32 @@ extension HomeViewController {
     }
     
     @objc private func checkButtonTapped(_ sender: Any) {
-        if sender is UITapGestureRecognizer && checkButton.isSelected {
-            return
-        }
-        if homeViewModel.goalViewModelsRelay.value.isEmpty {
-            return
-        }
+        // UI update -> checkButtonSignal
         
-        let page = pageIndicator.currentIndex
+        // data update
         
-        if checkButton.isSelected == false {
-            dayCheckLottieAnimation()
-            dayCheckToast()
-            homeViewModel.dayCheck(at: page)
-        } else {
-            homeViewModel.dayUncheck(at: page)
-        }
         
+//        if sender is UITapGestureRecognizer && checkButton.isSelected {
+//            return
+//        }
+//        if homeViewModel.goalViewModelsRelay.value.isEmpty {
+//            return
+//        }
+//        let page = pageIndicator.currentIndex
+//
+//        if checkButton.isSelected == false {
+//
+//            self.dayCheckLottieAnimation()
+//            self.dayCheckToast()
+//
+//            DispatchQueue.global(qos: .userInitiated).async {
+//                self.homeViewModel.dayCheck(at: page)
+//            }
+//        } else {
+//            DispatchQueue.global(qos: .userInitiated).async {
+//                self.homeViewModel.dayUncheck(at: page)
+//            }
+//        }
         checkButton.isSelected.toggle()
     }
     
@@ -744,11 +769,14 @@ extension HomeViewController {
     private func dayCheckLottieAnimation() {
         lottieContainingBlurView.isHidden = false
         
-        thumbsUpLottieView.play(completion: { _ in
-            DispatchQueue.main.asyncAfter(deadline: .now()+0.5) {
-                self.lottieDismissAnimation()
-            }
-        })
+        DispatchQueue.main.async {
+            self.thumbsUpLottieView.play(completion: { _ in
+                
+                DispatchQueue.main.asyncAfter(deadline: .now()+0.5) {
+                    self.lottieDismissAnimation()
+                }
+            })
+        }
     }
     
     private func lottieDismissAnimation() {

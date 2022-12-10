@@ -52,14 +52,17 @@ extension HomeViewModel {
         let viewModels = goalViewModelsRelay.value
         viewModels[row].todayCheck(true)
         
-        goalViewModelsRelay.accept(viewModels)
+        DispatchQueue.main.async {
+            self.goalViewModelsRelay.accept(viewModels)
+        }
     }
     
     func dayUncheck(at row: Int) {
         let viewModels = goalViewModelsRelay.value
         viewModels[row].todayCheck(false)
-        
-        goalViewModelsRelay.accept(viewModels)
+        DispatchQueue.main.async {
+            self.goalViewModelsRelay.accept(viewModels)
+        }
     }
 }
 

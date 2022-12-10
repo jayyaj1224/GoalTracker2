@@ -108,6 +108,10 @@ class GoalCircle: UIView {
         }
     }
     
+    func checkButtonTap(success: Bool) {
+        
+    }
+    
     private func configureScoreView(completion: ((ScorePannel)->Void)? = nil) {
         switch SettingsManager.shared.scorePannelType {
         case .Flap:
