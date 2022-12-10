@@ -12,6 +12,8 @@ import Lottie
 
 /*
  🏆 Achievement Page
+ 
+ induction
  */
 
 class HomeViewController: UIViewController {
@@ -50,6 +52,24 @@ class HomeViewController: UIViewController {
         return button
     }()
     
+    fileprivate let magnifierButton: NeumorphicButton = {
+        let button = NeumorphicButton(color: .crayon, type: .medium)
+        button.tintColor = .clear
+        button.layer.cornerRadius = 18
+        button.configuration = UIButton.Configuration.plain()
+        button.configurationUpdateHandler = { button in
+            switch button.state {
+            case .normal:
+                button.configuration?.image = UIImage(named: "magnifier.minus")
+            case .selected:
+                button.configuration?.image = UIImage(named: "magnifier.plus")
+            default:
+                break
+            }
+        }
+        return button
+    }()
+    
     private let bottomDateCalendarButton: UIButton = {
         var configuration = UIButton.Configuration.plain()
         configuration.image = UIImage(named: "calendar.neumorphism")
@@ -69,7 +89,7 @@ class HomeViewController: UIViewController {
     fileprivate let checkButton: UIButton = {
         let button = UIButton()
         button.tintColor = .clear
-        button.configuration = UIButton.Configuration.borderless()
+        button.configuration = UIButton.Configuration.plain()
         button.configurationUpdateHandler = { button in
             switch button.state {
             case [.normal]:
@@ -198,6 +218,7 @@ extension HomeViewController {
     private func addButtonTargets() {
         plusRotatingButton.addTarget(self, action: #selector(plusButtonTapped), for: .touchUpInside)
         settingsButton.addTarget(self, action: #selector(settingsButtonsTapped), for: .touchUpInside)
+        magnifierButton.addTarget(self, action: #selector(magnifierButtonTapped), for: .touchUpInside)
         bottomDateCalendarButton.addTarget(self, action: #selector(calenderButtonsTapped), for: .touchUpInside)
         checkButton.addTarget(self, action: #selector(checkButtonTapped), for: .touchUpInside)
         messageBar.addTarget(self, action: #selector(messageBarTapped), for: .touchUpInside)
@@ -341,7 +362,8 @@ extension HomeViewController {
             topScreenView,                  bottomScreenView,
             plusRotatingButton,
             checkButton,                    scrollBackButton,
-            settingsButton,                 bottomDateCalendarButton,
+            settingsButton,                 magnifierButton,
+            bottomDateCalendarButton,
             lottieContainingBlurView,       emptyLabel,
             messageBar
         ]
@@ -355,7 +377,7 @@ extension HomeViewController {
 
         topTransparentScreenView.snp.makeConstraints { make in
             make.top.leading.trailing.equalToSuperview()
-            make.bottom.equalTo(self.goalCircularCollectionView.snp.top).offset(20)
+            make.bottom.equalTo(self.goalCircularCollectionView.snp.top).offset(40)
         }
         
         bottomTransparentScreenView.snp.makeConstraints { make in
@@ -386,7 +408,7 @@ extension HomeViewController {
         scrollBackButton.snp.makeConstraints { make in
             make.size.equalTo(40)
             make.trailing.equalTo(plusRotatingButton)
-            make.bottom.equalTo(goalCircularCollectionView).inset(90)
+            make.bottom.equalTo(goalCircularCollectionView).inset(114)
         }
         
         checkButton.snp.makeConstraints { make in
@@ -403,7 +425,13 @@ extension HomeViewController {
         settingsButton.snp.makeConstraints { make in
             make.size.equalTo(36)
             make.trailing.equalTo(plusRotatingButton)
-            make.top.equalToSuperview().inset(70)
+            make.top.equalToSuperview().inset(60)
+        }
+        
+        magnifierButton.snp.makeConstraints { make in
+            make.size.equalTo(36)
+            make.trailing.equalTo(plusRotatingButton)
+            make.top.equalTo(settingsButton.snp.bottom).offset(16)
         }
         
         bottomDateCalendarButton.snp.makeConstraints { make in
@@ -435,7 +463,7 @@ extension HomeViewController {
             UIColor.crayon.cgColor,
             UIColor.crayon.withAlphaComponent(0).cgColor
         ]
-        topLayer.locations = [0.0, 0.7]
+        topLayer.locations = [0.2, 1.0]
         topLayer.frame = topTransparentScreenView.bounds
         topTransparentScreenView.layer.addSublayer(topLayer)
         
@@ -490,7 +518,8 @@ extension Reactive where Base: HomeViewController {
             default:
                 return
             }
-            let showing = [base.topScreenView, base.bottomScreenView, base.scrollBackButton]
+            let showing = [base.scrollBackButton]
+            let showingWhenNotMagnified = [base.topScreenView, base.bottomScreenView]
             let hiding = [base.checkButton, base.plusRotatingButton]
             let hidingFast = [base.pageIndicator]
             
@@ -498,6 +527,10 @@ extension Reactive where Base: HomeViewController {
                 showing.forEach { $0.alpha = alpha}
                 hiding.forEach { $0.alpha = 1 - alpha }
                 hidingFast.forEach { $0.alpha = 1 - alpha*2.5 }
+                
+                if !base.magnifierButton.isSelected {
+                    showingWhenNotMagnified.forEach { $0.alpha = alpha}
+                }
             }
         }
     }
@@ -527,13 +560,13 @@ extension Reactive where Base: HomeViewController {
     
     fileprivate var scrollToAddedGoal: Binder<Void> {
         Binder(base) {base, goal in
-            let y = base.goalCircularCollectionView.contentSize.height
-            let rect = CGRect(x: 0, y: y-K.singleRowHeight, width: 10, height: K.singleRowHeight)
+            let offsetY = base.goalCircularCollectionView.contentSize.height-K.singleRowHeight
+            let rect = CGRect(x: 0, y: offsetY, width: 10, height: K.singleRowHeight)
             
             DispatchQueue.main.async {
                 base.goalCircularCollectionView.scrollRectToVisible(rect, animated: true)
             }
-            base.pageIndicator.currentIndex = base.homeViewModel.goalViewModelsRelay.value.count-1
+            base.pageIndicator.updateIndicators(offset: offsetY)
         }
     }
     
@@ -767,6 +800,23 @@ extension HomeViewController {
         navigationController?.pushViewController(settingsViewController, animated: true)
         
         scrollBackButton.sendActions(for: .touchUpInside)
+    }
+    
+    @objc private func magnifierButtonTapped(_ sender: UIButton) {
+        if sender.isSelected {
+            UIView.animate(withDuration: 0.3, delay: 0) {
+                self.goalCircularCollectionView.transform = .identity
+            }
+        } else {
+            [self.topScreenView, self.bottomScreenView]
+                .forEach { $0.alpha = 0 }
+            
+            UIView.animate(withDuration: 0.3, delay: 0) {
+                self.goalCircularCollectionView.transform = CGAffineTransform(scaleX: 0.6, y: 0.6)
+            }
+        }
+        //self.goalCircularCollectionView.layer.transform = CATransform3DMakeRotation(180.pi.cgFloat, 0, 0, 1)
+        sender.isSelected.toggle()
     }
 }
 

@@ -39,6 +39,26 @@ class SettingsViewController: UIViewController {
     
     private let scoreViewTypePicker = UIPickerView()
     
+    private let handSideSettingLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Using Hand"
+        label.font = .sfPro(size: 13, family: .Semibold)
+        return label
+    }()
+    
+    private lazy var handSideSwitch = NeumorphicSwitch(
+        toggleAnimationType: .withSpring,
+        size: CGSize(width: 48, height: 20),
+        onAction: {
+            self.handSideSettingLabel.text = "Right Handed"
+            SettingsManager.shared.handSide = .right
+        },
+        offAction: {
+            self.handSideSettingLabel.text = "Left Handed"
+            SettingsManager.shared.handSide = .left
+        }
+    )
+    
     private let vibrateSettingLabel: UILabel = {
         let label = UILabel()
         label.text = "Vibrate"
@@ -210,6 +230,13 @@ extension SettingsViewController {
         } else {
             vibrateSwitch.off()
         }
+        
+        switch SettingsManager.shared.handSide {
+        case .right:
+            handSideSwitch.on()
+        case .left:
+            handSideSwitch.off()
+        }
     }
     
     private func layoutComponents() {
@@ -229,6 +256,8 @@ extension SettingsViewController {
             
             scoreViewTypeLabel,
             scoreViewTypePicker,
+            
+            handSideSettingLabel, handSideSwitch,
             
             vibrateSettingLabel, vibrateSwitch,
             
@@ -269,19 +298,29 @@ extension SettingsViewController {
             make.top.equalTo(scoreViewTypeLabel).offset(5)
         }
         
+        handSideSettingLabel.snp.makeConstraints { make in
+            make.leading.equalToSuperview().inset(30)
+            make.top.equalTo(scoreViewTypePicker.snp.bottom).offset(30)
+        }
+        
+        handSideSwitch.snp.makeConstraints { make in
+            make.leading.equalToSuperview().inset(120)
+            make.centerY.equalTo(handSideSettingLabel).offset(2)
+        }
+        
         vibrateSettingLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().inset(30)
-            make.top.equalTo(scoreViewTypePicker.snp.bottom).offset(24)
+            make.top.equalTo(handSideSwitch.snp.bottom).offset(45)
         }
         
         vibrateSwitch.snp.makeConstraints { make in
-            make.leading.equalTo(vibrateSettingLabel.snp.trailing).offset(34)
+            make.leading.equalTo(handSideSwitch)
             make.centerY.equalTo(vibrateSettingLabel).offset(2)
         }
         
         resetLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().inset(30)
-            make.top.equalTo(vibrateSettingLabel.snp.bottom).offset(54)
+            make.top.equalTo(vibrateSettingLabel.snp.bottom).offset(50)
         }
         
         resetButton.snp.makeConstraints { make in
@@ -293,7 +332,7 @@ extension SettingsViewController {
         
         aboutLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().inset(30)
-            make.top.equalTo(resetLabel.snp.bottom).offset(100)
+            make.top.equalTo(resetLabel.snp.bottom).offset(70)
         }
         
         aboutSectionDivider.snp.makeConstraints { make in

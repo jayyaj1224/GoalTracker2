@@ -25,8 +25,15 @@ class CircularLayout: UICollectionViewLayout {
         return angleAtExtreme * collectionView!.contentOffset.y / height
     }
     
-    var radius: CGFloat = -820 {
-        didSet {
+    var radius: CGFloat {
+        get {
+            if SettingsManager.shared.handSide == .right {
+                return 820
+            } else {
+                return -820
+            }
+        }
+        set {
             invalidateLayout()
         }
     }

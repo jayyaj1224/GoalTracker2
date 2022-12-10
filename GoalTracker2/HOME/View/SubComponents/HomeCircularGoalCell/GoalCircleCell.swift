@@ -104,6 +104,29 @@ extension GoalCircleCell {
             .map { $0.x }
             .share()
             .asSignal(onErrorSignalWith: .empty())
+        
+        let hidingView = [GoalAnalysisLabel, tileBoard, goalStatsView]
+        hidingView.forEach { $0.alpha = 0}
+        
+        didScrollToXSignal
+            .emit(onNext: { x in
+                
+                var alpha: CGFloat = 0
+                
+                switch x {
+                case -30..<70:
+                    alpha = 0
+                case 70...250:
+                    alpha = (x-70)/250
+                default:
+                    alpha = 1
+                }
+                
+                DispatchQueue.main.async {
+                    hidingView.forEach { $0.alpha = alpha }
+                }
+            })
+            .disposed(by: disposeBag)
     }
     
     private func addTargets() {

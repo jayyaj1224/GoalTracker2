@@ -44,6 +44,7 @@ enum Keys {
     
     // Setting
     static let setting_scoreViewType: String = "UserDefaultKey_Setting_ScoreViewType"
+    static let setting_handSide: String = "UserDefaultKey_Setting_HandSide"
     static let setting_vibrate: String = "UserDefaultKey_Setting_Vibrate"
     
     static let userNote: String = "UserDefaultKey_UserNote"

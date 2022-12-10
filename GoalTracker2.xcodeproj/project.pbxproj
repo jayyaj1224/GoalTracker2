@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		2A978355B5DA0EF882D565E1 /* Pods_GoalTracker2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0B1B21EABD8BA56813343784 /* Pods_GoalTracker2.framework */; };
 		4D48197F419328D96712A530 /* Pods_GoalTracker2_GoalTracker2UITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D7F12845C4B9F031CBE5F31 /* Pods_GoalTracker2_GoalTracker2UITests.framework */; };
+		62013B9D2944EE3E007B32A6 /* trophy.json in Resources */ = {isa = PBXBuildFile; fileRef = 62013B9C2944EE3D007B32A6 /* trophy.json */; };
 		620A7C60291D19BB0091177E /* UILabel_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 620A7C5F291D19BB0091177E /* UILabel_Extension.swift */; };
 		620A808D293A51B000158850 /* GTToast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 620A808C293A51B000158850 /* GTToast.swift */; };
 		620A8090293A6A1D00158850 /* UserNoteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 620A808F293A6A1D00158850 /* UserNoteViewController.swift */; };
@@ -142,6 +143,7 @@
 		0948CCDFED13891E6FD9E00F /* Pods-GoalTracker2Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GoalTracker2Tests.debug.xcconfig"; path = "Target Support Files/Pods-GoalTracker2Tests/Pods-GoalTracker2Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		0B1B21EABD8BA56813343784 /* Pods_GoalTracker2.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_GoalTracker2.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		1D7F12845C4B9F031CBE5F31 /* Pods_GoalTracker2_GoalTracker2UITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_GoalTracker2_GoalTracker2UITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		62013B9C2944EE3D007B32A6 /* trophy.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = trophy.json; sourceTree = "<group>"; };
 		620A7C5F291D19BB0091177E /* UILabel_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UILabel_Extension.swift; sourceTree = "<group>"; };
 		620A808C293A51B000158850 /* GTToast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GTToast.swift; sourceTree = "<group>"; };
 		620A808F293A6A1D00158850 /* UserNoteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserNoteViewController.swift; sourceTree = "<group>"; };
@@ -545,6 +547,7 @@
 		62A562BB2938CFD400E4C695 /* Lottie */ = {
 			isa = PBXGroup;
 			children = (
+				62013B9C2944EE3D007B32A6 /* trophy.json */,
 				62B37534293E3E4A000F523B /* blue-diamond.json */,
 				62B37532293E3D60000F523B /* yellow-diamond2.json */,
 				62A562BE2939057D00E4C695 /* thumbs-up-burst.json */,
@@ -858,6 +861,7 @@
 				6226909B28D5896B00E4AA01 /* NotoSans-ExtraBold.ttf in Resources */,
 				622690B828D589E600E4AA01 /* Outfit-Bold.ttf in Resources */,
 				622690A228D5896B00E4AA01 /* SF-Pro-Display-Medium.otf in Resources */,
+				62013B9D2944EE3E007B32A6 /* trophy.json in Resources */,
 				6226909D28D5896B00E4AA01 /* SF-Pro-Display-SemiboldItalic.otf in Resources */,
 				6226909328D5896B00E4AA01 /* NotoSans-Regular.ttf in Resources */,
 				622690AA28D5896B00E4AA01 /* SF-Pro-Display-BlackItalic.otf in Resources */,

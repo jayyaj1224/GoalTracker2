@@ -16,6 +16,12 @@ class SettingsManager {
         }
     }
     
+    var handSide: HandSide {
+        didSet {
+            UserDefaults.standard.set(vibrate, forKey: Keys.setting_vibrate)
+        }
+    }
+    
     var vibrate: Bool {
         didSet {
             UserDefaults.standard.set(vibrate, forKey: Keys.setting_vibrate)
@@ -25,8 +31,14 @@ class SettingsManager {
     init() {
         let scorePannelTypeRaw = UserDefaults.standard.integer(forKey: Keys.setting_scoreViewType)
         scorePannelType = ScorePannelType(rawValue: scorePannelTypeRaw) ?? .Digital
+        
+        let handSideRaw = UserDefaults.standard.string(forKey: Keys.setting_handSide) ?? ""
+        handSide = HandSide(rawValue: handSideRaw) ?? .right
+        
         vibrate = UserDefaults.standard.bool(forKey: Keys.setting_vibrate)
     }
 }
 
-
+enum HandSide: String {
+    case left, right
+}
