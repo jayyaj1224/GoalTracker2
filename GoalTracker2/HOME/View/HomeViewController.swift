@@ -15,11 +15,16 @@ import Toast_Swift
  
  Achievement Page
  
- 
- 
+ Description
  Induction
- 1.
+ 1. Intro
+    Double Tap
+    HandSide
+    Check
+    KeyNote
  
+ 2. Tooltip
+    AddGoal
  */
 
 class HomeViewController: UIViewController {

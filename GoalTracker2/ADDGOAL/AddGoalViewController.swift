@@ -320,7 +320,7 @@ extension AddGoalViewController: UITextViewDelegate {
             detailInputTextView.text = text
         } else {
             let characterCount = detailInputTextView.text.count
-            descriptionInputSectorTitleLabel.text = "Description (optional) 􀁜  \(characterCount) /100"
+            descriptionInputSectorTitleLabel.text = "Description (optional)  \(characterCount) /100"
         }
     }
     
@@ -506,8 +506,8 @@ extension AddGoalViewController {
         
         daysSettingPickerView.snp.makeConstraints { make in
             make.top.equalTo(daysNumberSettingSectionDivider.snp.bottom).offset(10)
-            make.leading.trailing.equalToSuperview().inset(30)
-            make.height.equalTo(200)
+            make.leading.trailing.equalToSuperview().inset(20)
+//            make.height.equalTo(200)
         }
     }
 }
