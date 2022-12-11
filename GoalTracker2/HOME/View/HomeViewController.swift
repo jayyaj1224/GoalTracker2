@@ -9,11 +9,17 @@ import UIKit
 import RxSwift
 import RxCocoa
 import Lottie
+import Toast_Swift
 
 /*
- 🏆 Achievement Page
  
- induction
+ Achievement Page
+ 
+ 
+ 
+ Induction
+ 1.
+ 
  */
 
 class HomeViewController: UIViewController {
@@ -51,24 +57,7 @@ class HomeViewController: UIViewController {
         button.configuration = configuration
         return button
     }()
-    
-    fileprivate let magnifierButton: NeumorphicButton = {
-        let button = NeumorphicButton(color: .crayon, type: .medium)
-        button.tintColor = .clear
-        button.layer.cornerRadius = 18
-        button.configuration = UIButton.Configuration.plain()
-        button.configurationUpdateHandler = { button in
-            switch button.state {
-            case .normal:
-                button.configuration?.image = UIImage(named: "magnifier.minus")
-            case .selected:
-                button.configuration?.image = UIImage(named: "magnifier.plus")
-            default:
-                break
-            }
-        }
-        return button
-    }()
+
     
     private let bottomDateCalendarButton: UIButton = {
         var configuration = UIButton.Configuration.plain()
@@ -177,6 +166,8 @@ class HomeViewController: UIViewController {
     
     fileprivate var horizontalDidStartScrollBuzzed = false
     
+    fileprivate var isMagnified = false
+    
     // Calendar data preperation
     fileprivate var calendarModel: CalendarModel?
     
@@ -218,15 +209,14 @@ extension HomeViewController {
     private func addButtonTargets() {
         plusRotatingButton.addTarget(self, action: #selector(plusButtonTapped), for: .touchUpInside)
         settingsButton.addTarget(self, action: #selector(settingsButtonsTapped), for: .touchUpInside)
-        magnifierButton.addTarget(self, action: #selector(magnifierButtonTapped), for: .touchUpInside)
         bottomDateCalendarButton.addTarget(self, action: #selector(calenderButtonsTapped), for: .touchUpInside)
         checkButton.addTarget(self, action: #selector(checkButtonTapped), for: .touchUpInside)
         messageBar.addTarget(self, action: #selector(messageBarTapped), for: .touchUpInside)
 
-        let cvtapGestureRecognizer = UITapGestureRecognizer()
-        cvtapGestureRecognizer.numberOfTapsRequired = 2
-        cvtapGestureRecognizer.addTarget(self, action: #selector(checkButtonTapped))
-        goalCircularCollectionView.addGestureRecognizer(cvtapGestureRecognizer)
+        let cvDoubletapGestureRecognizer = UITapGestureRecognizer()
+        cvDoubletapGestureRecognizer.numberOfTapsRequired = 2
+        cvDoubletapGestureRecognizer.addTarget(self, action: #selector(collectionViewDoubleTapped))
+        goalCircularCollectionView.addGestureRecognizer(cvDoubletapGestureRecognizer)
         
         let lottieTapGestureRecognizer = UITapGestureRecognizer()
         lottieTapGestureRecognizer.addTarget(self, action: #selector(lottieBlurViewTapped))
@@ -315,11 +305,11 @@ extension HomeViewController {
                 
                 didScrollToXSignal
                     .emit(to: self.rx.goalScrolledHorizontallyAt)
-                    .disposed(by: cell.disposeBag)
+                    .disposed(by: cell.reuseBag)
                 
                 didScrollToXSignal
                     .emit(to: self.rx.buzzToScrollOffsetX)
-                    .disposed(by: cell.disposeBag)
+                    .disposed(by: cell.reuseBag)
                 
                 Observable
                     .merge(
@@ -327,7 +317,7 @@ extension HomeViewController {
                         self.scrollStoppedAtRelay.map { _ in }.asObservable()
                     )
                     .bind(to: cell.rx.setContentOffsetZero)
-                    .disposed(by: cell.disposeBag)
+                    .disposed(by: cell.reuseBag)
                 return cell
             }
             .disposed(by: disposeBag)
@@ -362,7 +352,7 @@ extension HomeViewController {
             topScreenView,                  bottomScreenView,
             plusRotatingButton,
             checkButton,                    scrollBackButton,
-            settingsButton,                 magnifierButton,
+            settingsButton,                 //magnifierButton,
             bottomDateCalendarButton,
             lottieContainingBlurView,       emptyLabel,
             messageBar
@@ -428,12 +418,6 @@ extension HomeViewController {
             make.top.equalToSuperview().inset(60)
         }
         
-        magnifierButton.snp.makeConstraints { make in
-            make.size.equalTo(36)
-            make.trailing.equalTo(plusRotatingButton)
-            make.top.equalTo(settingsButton.snp.bottom).offset(16)
-        }
-        
         bottomDateCalendarButton.snp.makeConstraints { make in
             make.leading.equalToSuperview().inset(15)
             make.bottom.equalTo(messageBar.snp.top).offset(-4)
@@ -484,6 +468,8 @@ extension Reactive where Base: HomeViewController {
     fileprivate var circularScrollStartedAt: Binder<CGFloat> {
         Binder(base) { base, y in
             DispatchQueue.main.async {
+                base.view.hideAllToasts()
+                
                 base.scrollBackButton.alpha = 0
                 base.plusRotatingButton.alpha = 1
             }
@@ -528,7 +514,7 @@ extension Reactive where Base: HomeViewController {
                 hiding.forEach { $0.alpha = 1 - alpha }
                 hidingFast.forEach { $0.alpha = 1 - alpha*2.5 }
                 
-                if !base.magnifierButton.isSelected {
+                if base.isMagnified == false {
                     showingWhenNotMagnified.forEach { $0.alpha = alpha}
                 }
             }
@@ -693,6 +679,23 @@ extension HomeViewController {
         }
     }
     
+    @objc private func collectionViewDoubleTapped(_ sender: UITapGestureRecognizer) {
+        if isMagnified {
+            UIView.animate(withDuration: 0.3, delay: 0) {
+                self.goalCircularCollectionView.transform = .identity
+            }
+        } else {
+            [self.topScreenView, self.bottomScreenView]
+                .forEach { $0.alpha = 0 }
+            
+            UIView.animate(withDuration: 0.3, delay: 0) {
+                self.goalCircularCollectionView.transform = CGAffineTransform(scaleX: 0.6, y: 0.6)
+            }
+        }
+        
+        isMagnified.toggle()
+    }
+    
     @objc private func checkButtonTapped(_ sender: Any) {
         if sender is UITapGestureRecognizer && checkButton.isSelected {
             return
@@ -700,6 +703,7 @@ extension HomeViewController {
         if homeViewModel.goalViewModelsRelay.value.isEmpty {
             return
         }
+        view.hideAllToasts()
         
         let page = pageIndicator.currentIndex
         
@@ -709,6 +713,23 @@ extension HomeViewController {
             homeViewModel.dayCheck(at: page)
         } else {
             homeViewModel.dayUncheck(at: page)
+            
+            var toastStyle = ToastStyle()
+            toastStyle.backgroundColor = .black.withAlphaComponent(0.4)
+            toastStyle.fadeDuration = 0.1
+            
+            GTToast.hideAllToast()
+            thumbsUpLottieView.stop()
+            
+            lottieDismissAnimation()
+            
+            view.makeToast(
+                "Unchecked",
+                point: CGPoint(x: K.screenWidth/2, y: messageBar.frame.minY-100),
+                title: nil, image: nil,
+                style: toastStyle,
+                completion: nil
+            )
         }
         
         checkButton.isSelected.toggle()
@@ -801,23 +822,6 @@ extension HomeViewController {
         
         scrollBackButton.sendActions(for: .touchUpInside)
     }
-    
-    @objc private func magnifierButtonTapped(_ sender: UIButton) {
-        if sender.isSelected {
-            UIView.animate(withDuration: 0.3, delay: 0) {
-                self.goalCircularCollectionView.transform = .identity
-            }
-        } else {
-            [self.topScreenView, self.bottomScreenView]
-                .forEach { $0.alpha = 0 }
-            
-            UIView.animate(withDuration: 0.3, delay: 0) {
-                self.goalCircularCollectionView.transform = CGAffineTransform(scaleX: 0.6, y: 0.6)
-            }
-        }
-        //self.goalCircularCollectionView.layer.transform = CATransform3DMakeRotation(180.pi.cgFloat, 0, 0, 1)
-        sender.isSelected.toggle()
-    }
 }
 
 extension HomeViewController: SettingsProtocol {
@@ -826,6 +830,9 @@ extension HomeViewController: SettingsProtocol {
         
         messageBar.setGoalEmptyMessage()
         
+        prepareCalendarViewModelData()
+        
+        checkButton.isSelected = false
         checkButton.isEnabled = false
     }
     

@@ -77,13 +77,4 @@ extension Reactive where Base: PeriodSettingViewModel {
             base.datasourceRelay.accept(items)
         }
     }
-    
-    var yearlyTrackChanged: Binder<Bool> {
-        Binder(base) { base, isYearlyChanged in
-            let model = base.periodModel
-            let items = model.makePickerViewItems(isYearlyTrack: isYearlyChanged, totalDays: 100)
-            
-            base.datasourceRelay.accept(items)
-        }
-    }
 }

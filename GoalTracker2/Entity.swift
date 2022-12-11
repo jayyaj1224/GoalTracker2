@@ -64,7 +64,7 @@ struct Goal: Codable {
         self.failCap = failCap
         
         Array(0...totalDays-1).forEach { i in
-            let date = today.add(i-1)
+            let date = today.add(i)
             let yyyyMM = date.stringFormat(of: .yyyyMM)
             let yyyyMMdd = date.stringFormat(of: .yyyyMMdd)
             

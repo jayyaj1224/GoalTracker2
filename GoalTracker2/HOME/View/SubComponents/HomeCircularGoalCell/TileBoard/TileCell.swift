@@ -27,7 +27,7 @@ class TileCell: UICollectionViewCell {
         }
     }
     
-    func configure(statusRaw: String, dateLabelVisible: Bool, index: Int=0) {
+    func configure(statusRaw: String, dateLabelVisible: Bool, index: Int=0, isToday: Bool) {
         let status = GoalStatus(rawValue: statusRaw) ?? .none
         
         DispatchQueue.main.async {
@@ -45,6 +45,13 @@ class TileCell: UICollectionViewCell {
             setIndexLabel(index: index+1)
         } else {
             indexLabel?.isHidden = true
+        }
+        
+        if isToday {
+            self.contentView.layer.borderWidth = 1
+            self.contentView.layer.borderColor = UIColor.black.cgColor
+        } else {
+            self.contentView.layer.borderWidth = 0
         }
     }
     

@@ -119,8 +119,6 @@ class AddGoalViewController: UIViewController {
         return label
     }()
     
-//    private let yearlyTrackSwitch = NeumorphicSwitch(toggleAnimationType: .withSpring, size: CGSize(width: 48, height: 20))
-    
     private let daysSettingPickerView = UIPickerView()
     
     //MARK: - Logics
@@ -220,14 +218,6 @@ class AddGoalViewController: UIViewController {
         }
     }
     
-    private func changeTrackTypeLabel(_ trackAnually: Bool) {
-        if trackAnually {
-            self.aimedPeriodSectionLabel.text = "Track Annually"
-        } else {
-            self.aimedPeriodSectionLabel.text = "Aimed Period"
-        }
-    }
-    
     private func checkAbleToSave() {
         let goalTitleText = (goalTitleInputTextView.text ?? "")
             .trimmingCharacters(in: .whitespacesAndNewlines)
@@ -287,23 +277,6 @@ extension AddGoalViewController {
                 self?.daysSettingPickerView.reloadComponent(1)
             })
             .disposed(by: disposeBag)
-        
-//        let yearlyTrackSwitchSubjectShare = yearlyTrackSwitch.isOnSubject.share()
-//
-//        yearlyTrackSwitchSubjectShare
-//            .bind(to: vm.rx.yearlyTrackChanged)
-//            .disposed(by: disposeBag)
-//
-//        yearlyTrackSwitchSubjectShare
-//            .subscribe(onNext: { [weak self] isYearlyTrack in
-//
-//                self?.changeTrackTypeLabel(isYearlyTrack)
-//
-//                if isYearlyTrack == false {
-//                    self?.periedPickerViewinitialSetting()
-//                }
-//            })
-//            .disposed(by: disposeBag)
     }
 }
 

@@ -30,7 +30,7 @@ extension Goal {
             
             var day = Day(date: yyyyMMdd,index: i, status: "none")
             
-            if day.date <= Date().stringFormat(of: .yyyyMMdd) {
+            if day.date < Date().stringFormat(of: .yyyyMMdd) {
                 switch i {
                 case 100,102,103,105:
                     day.status = GoalStatus.fail.rawValue
@@ -76,7 +76,7 @@ extension Goal {
             
             var day = Day(date: yyyyMMdd,index: i, status: "none")
             
-            if day.date <= Date().stringFormat(of: .yyyyMMdd) {
+            if day.date < Date().stringFormat(of: .yyyyMMdd) {
                 switch i {
                 case 100,102,103,105:
                     day.status = GoalStatus.fail.rawValue
@@ -104,14 +104,14 @@ extension Goal {
         self.title = "30 minutes of meditation and self affirmation."
         self.detail = "aaaa"
         self.identifier = Date().stringFormat(of: .goalIdentifier)
-        self.status = GoalStatus.none
-        self.totalDays = 1000
+        self.status = GoalStatus.success
+        self.totalDays = 999
         
         let today = Date.inAnyFormat(dateString: "20200101")
         self.startDate = today.stringFormat(of: .yyyyMMdd)
         self.endDate = today.add(totalDays-1).stringFormat(of: .yyyyMMdd)
         self.failCap = 10
-        self.successCount = Date.inAnyFormat(dateString: startDate).daysCountToNow-4
+        self.successCount = 999-4
         self.failCount = 4
         
         for i in 1...totalDays {
@@ -121,7 +121,7 @@ extension Goal {
             
             var day = Day(date: yyyyMMdd,index: i, status: "none")
             
-            if day.date <= Date().stringFormat(of: .yyyyMMdd) {
+            if day.date < Date().stringFormat(of: .yyyyMMdd) {
                 switch i {
                 case 100,102,103,105:
                     day.status = GoalStatus.fail.rawValue

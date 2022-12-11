@@ -39,7 +39,9 @@ class GoalCircleCell: UICollectionViewCell {
     /// current goal's scroll 'x' offset
     var didScrollToXSignal: Signal<CGFloat>!
     
-    let disposeBag = DisposeBag()
+    fileprivate var backButtonTapScrolling = true
+    
+    private let disposeBag = DisposeBag()
     
     var reuseBag = DisposeBag()
     
@@ -83,8 +85,13 @@ class GoalCircleCell: UICollectionViewCell {
 extension Reactive where Base: GoalCircleCell {
     var setContentOffsetZero: Binder<Void> {
         Binder(base) { base, _ in
+            base.backButtonTapScrolling = true
+            
             UIView.animate(withDuration: 0.2, delay: 0.2) {
                 base.scrollView.setContentOffset(.zero, animated: false)
+                
+            } completion: { _ in
+                base.backButtonTapScrolling = false
             }
         }
     }
@@ -109,6 +116,7 @@ extension GoalCircleCell {
         hidingView.forEach { $0.alpha = 0}
         
         didScrollToXSignal
+            .filter { _ in self.backButtonTapScrolling == false }
             .emit(onNext: { x in
                 
                 var alpha: CGFloat = 0
@@ -171,12 +179,13 @@ extension GoalCircleCell {
         tileBoard.snp.makeConstraints { make in
             make.leading.equalTo(goalCircle.snp.trailing).offset(70)
             make.centerY.equalToSuperview().offset(36)
-            make.trailing.equalToSuperview().offset(-80)
+            make.trailing.lessThanOrEqualToSuperview().offset(-60)
         }
         
         goalStatsView.snp.makeConstraints { make in
             make.bottom.equalTo(tileBoard.snp.top).offset(-12)
             make.leading.equalTo(tileBoard).inset(3)
+            make.trailing.lessThanOrEqualToSuperview().offset(-20)
         }
         
         GoalAnalysisLabel.snp.makeConstraints { make in

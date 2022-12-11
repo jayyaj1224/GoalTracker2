@@ -90,6 +90,7 @@ class GoalCircle: UIView {
         goalTitleLabel.text = goal.title
         
         processArc.processPercentage = viewModel.executionRate
+        processArc.setNeedsDisplay()
         
         executionRateSet(with: viewModel.executionRate)
         
@@ -122,23 +123,24 @@ class GoalCircle: UIView {
     
     private func executionRateSet(with executionRate: CGFloat) {
         percentageLabel.text = "\(Int(executionRate))"
-        diamondShadowImageView.isHidden = false
+        diamondShadowImageView.isHidden = true
         
-        switch executionRate {
+        switch Int(executionRate) {
         case 98...:
             yellowDiamondLottieView.isHidden = false
+            diamondShadowImageView.isHidden = false
             yellowDiamondLottieView.play()
             
             blueDiamondLottieView.isHidden = true
             blueDiamondLottieView.stop()
-            percentageLabel.font = .outFit(size: 11, family: .Black)
+            percentageLabel.font = .outFit(size: 12, family: .Semibold)
         case 91...97:
             blueDiamondLottieView.isHidden = false
             blueDiamondLottieView.play()
             
             yellowDiamondLottieView.isHidden = true
             yellowDiamondLottieView.stop()
-            percentageLabel.font = .outFit(size: 11, family: .Semibold)
+            percentageLabel.font = .outFit(size: 11, family: .Medium)
         default:
             diamondShadowImageView.isHidden = true
             [blueDiamondLottieView, yellowDiamondLottieView]
@@ -146,6 +148,7 @@ class GoalCircle: UIView {
                     lottie.isHidden = true
                     lottie.stop()
                 }
+            percentageLabel.font = .outFit(size: 11, family: .Regular)
         }
     }
     
@@ -153,7 +156,8 @@ class GoalCircle: UIView {
         [
             processArc, circleInnerShadow, circleRimImageView,
             innerCircleImageView, innerCircleContentView,
-            processArc.nowPointView, dialImageView, percentageLabel, diamondShadowImageView, yellowDiamondLottieView, blueDiamondLottieView
+            processArc.nowPointView, dialImageView, percentageLabel,
+            diamondShadowImageView, yellowDiamondLottieView, blueDiamondLottieView
             
         ].forEach(addSubview)
         
@@ -192,8 +196,8 @@ class GoalCircle: UIView {
         
         blueDiamondLottieView.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
-            make.top.equalToSuperview().inset(2)
-            make.size.equalTo(60)
+            make.top.equalToSuperview().inset(10)
+            make.size.equalTo(40)
         }
         
         yellowDiamondLottieView.snp.makeConstraints { make in

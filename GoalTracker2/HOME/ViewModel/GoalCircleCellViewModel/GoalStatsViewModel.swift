@@ -21,7 +21,7 @@ class GoalStatsViewModel {
     init(goal: Goal) {
         self.goal = goal
         
-        let daysCountToNow = Date.inAnyFormat(dateString: goal.startDate).daysCountToNow
+        let daysCountToNow = Date.inAnyFormat(dateString: goal.startDate).daysCountToNow+1
         let rate = CGFloat(goal.successCount)/CGFloat(daysCountToNow)*100
         let rateString = String(format: "%.2f", rate)
         
@@ -39,7 +39,9 @@ class GoalStatsViewModel {
         self.dateRange = "\(dateRangeString[0]) - \(dateRangeString[1])"
         self.successCount = "\(goal.successCount)"
         self.failCount = "\(goal.failCount)/\(goal.failCap)"
-        self.maxStreak = "\(calculateMaxStreak()) days"
+        
+        let maxStreak = calculateMaxStreak()
+        self.maxStreak = (maxStreak == 1) ? "\(maxStreak) day" : "\(maxStreak) days"
     }
     
     private func calculateMaxStreak() -> Int {
@@ -49,18 +51,18 @@ class GoalStatsViewModel {
         let thisMonth = Date().stringFormat(of: .yyyyMM)
         let today = Date().stringFormat(of: .yyyyMMdd)
         
-        goal.daysByMonth.forEach { month in
-            guard month.key <= thisMonth else { return }
+        goal.monthsArray.forEach { monthString in
+            guard monthString <= thisMonth else { return }
             
-            for day in month.value {
+            for day in goal.daysByMonth[monthString] ?? [] {
                 guard day.date <= today else { return }
                 
                 if day.status == GoalStatus.success.rawValue {
                     streak+=1
                 } else {
-                    maxStreak = max(maxStreak, streak)
                     streak = 0
                 }
+                maxStreak = max(maxStreak, streak)
             }
         }
         return maxStreak

@@ -31,4 +31,17 @@ class CircularCollectionView: UICollectionView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
+        if let result = super.hitTest(point, with:event) {
+            return result
+        }
+        for sub in self.subviews.reversed() {
+            let pt = self.convert(point, to:sub)
+            if let result = sub.hitTest(pt, with:event) {
+                return result
+            }
+        }
+        return nil
+    }
 }
