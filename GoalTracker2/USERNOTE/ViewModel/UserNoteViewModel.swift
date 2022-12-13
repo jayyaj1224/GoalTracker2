@@ -16,12 +16,18 @@ class UserNoteViewModel {
     
     let userNoteSubject = PublishSubject<[UserNote]>()
     
+    var isGoalEmpty = false
+    
     init(goalIdentifier: String) {
         self.goalIdentifier = goalIdentifier
         
-        let userNotes = UserNoteManager.shared.userNotesDictionary[goalIdentifier]
-
-        tableViewDatasourceRelay.accept(userNotes ?? [])
+        let userNotesDictionary = UserNoteManager.shared.userNotesDictionary
+        
+        let userNotes = userNotesDictionary[goalIdentifier] ?? []
+        
+        isGoalEmpty = userNotesDictionary.isEmpty
+        
+        tableViewDatasourceRelay.accept(userNotes)
     }
     
     func addNewNote(_ note: String) {

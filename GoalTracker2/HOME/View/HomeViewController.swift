@@ -403,7 +403,7 @@ extension HomeViewController {
         scrollBackButton.snp.makeConstraints { make in
             make.size.equalTo(40)
             make.trailing.equalTo(plusRotatingButton)
-            make.bottom.equalTo(goalCircularCollectionView).inset(114)
+            make.bottom.equalTo(goalCircularCollectionView).inset(100)
         }
         
         checkButton.snp.makeConstraints { make in

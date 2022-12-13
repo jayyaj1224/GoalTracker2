@@ -297,7 +297,7 @@ extension UserNoteViewController {
         if noteViewModel.tableViewDatasourceRelay.value.isEmpty {
             messageBar.setGoalEmptyMessage()
             emptyLabel.isHidden = false
-            noteTypeTextField.isEnabled = false
+//            noteTypeTextField.isEnabled = false
         }
     }
     

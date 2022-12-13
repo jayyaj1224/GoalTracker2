@@ -10,7 +10,7 @@ import UIKit
 
 extension Goal {
     mutating func qaInit_1() {
-        self.title = "2 hours workout every day. \n(no carbs & sugar) 49"
+        self.title = "2 hours workout every day."
         self.detail = "aaaa"
         self.identifier = Date().stringFormat(of: .goalIdentifier)
         self.status = GoalStatus.none
@@ -19,9 +19,14 @@ extension Goal {
         let today = Date.inAnyFormat(dateString: "20220413")
         self.startDate = today.stringFormat(of: .yyyyMMdd)
         self.endDate = today.add(totalDays-1).stringFormat(of: .yyyyMMdd)
-        self.failCap = 10
-        self.successCount = Date.inAnyFormat(dateString: startDate).daysCountToNow-4
-        self.failCount = 4
+        self.failCap = 30
+        self.failCount = 29
+        self.successCount = Date.inAnyFormat(dateString: startDate).daysCountToNow-failCount
+        
+        
+        let randomFailed = Array(0...today.daysCountToNow)
+            .shuffled()[0...self.failCount]
+            .map { Int($0) }
         
         for i in 1...totalDays {
             let date = today.add(i-1)
@@ -30,11 +35,11 @@ extension Goal {
             
             var day = Day(date: yyyyMMdd,index: i, status: "none")
             
+            
             if day.date < Date().stringFormat(of: .yyyyMMdd) {
-                switch i {
-                case 100,102,103,105:
+                if randomFailed.contains(i) {
                     day.status = GoalStatus.fail.rawValue
-                default:
+                } else {
                     day.status = GoalStatus.success.rawValue
                 }
             } else {
@@ -53,21 +58,23 @@ extension Goal {
     
     
     mutating func qaInit_2() {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyyMMdd"
-
-        self.title = "1 hour reading every day. Self Reliance by R.W. Emerson. 60."
+        self.title = "1 hour reading every day.\nSelf Reliance-R.W.Emerson."
         self.detail = "aaaa"
         self.identifier = Date().stringFormat(of: .goalIdentifier)
         self.status = GoalStatus.none
         self.totalDays = 700
         
-        let today = Date.inAnyFormat(dateString: "20220413")
+        let today = Date.inAnyFormat(dateString: "20221113")
         self.startDate = today.stringFormat(of: .yyyyMMdd)
         self.endDate = today.add(totalDays-1).stringFormat(of: .yyyyMMdd)
-        self.failCap = 10
-        self.successCount = Date.inAnyFormat(dateString: startDate).daysCountToNow-4
-        self.failCount = 4
+        self.failCap = 30
+        self.failCount = 24
+        self.successCount = Date.inAnyFormat(dateString: startDate).daysCountToNow-failCount
+        
+        
+        let randomFailed = Array(0...today.daysCountToNow)
+            .shuffled()[0...self.failCount]
+            .map { Int($0) }
         
         for i in 1...totalDays {
             let date = today.add(i-1)
@@ -76,11 +83,11 @@ extension Goal {
             
             var day = Day(date: yyyyMMdd,index: i, status: "none")
             
+            
             if day.date < Date().stringFormat(of: .yyyyMMdd) {
-                switch i {
-                case 100,102,103,105:
+                if randomFailed.contains(i) {
                     day.status = GoalStatus.fail.rawValue
-                default:
+                } else {
                     day.status = GoalStatus.success.rawValue
                 }
             } else {
@@ -98,21 +105,23 @@ extension Goal {
     }
 
     mutating func qaInit_3() {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyyMMdd"
-
         self.title = "30 minutes of meditation and self affirmation."
         self.detail = "aaaa"
         self.identifier = Date().stringFormat(of: .goalIdentifier)
-        self.status = GoalStatus.success
-        self.totalDays = 999
+        self.status = GoalStatus.none
+        self.totalDays = 700
         
-        let today = Date.inAnyFormat(dateString: "20200101")
+        let today = Date.inAnyFormat(dateString: "20220413")
         self.startDate = today.stringFormat(of: .yyyyMMdd)
         self.endDate = today.add(totalDays-1).stringFormat(of: .yyyyMMdd)
-        self.failCap = 10
-        self.successCount = 999-4
-        self.failCount = 4
+        self.failCap = 30
+        self.failCount = 0
+        self.successCount = Date.inAnyFormat(dateString: startDate).daysCountToNow-failCount
+        
+        
+        let randomFailed = Array(0...today.daysCountToNow)
+            .shuffled()[0...self.failCount]
+            .map { Int($0) }
         
         for i in 1...totalDays {
             let date = today.add(i-1)
@@ -121,11 +130,105 @@ extension Goal {
             
             var day = Day(date: yyyyMMdd,index: i, status: "none")
             
+            
             if day.date < Date().stringFormat(of: .yyyyMMdd) {
-                switch i {
-                case 100,102,103,105:
+                if randomFailed.contains(i) {
                     day.status = GoalStatus.fail.rawValue
-                default:
+                } else {
+                    day.status = GoalStatus.success.rawValue
+                }
+            } else {
+                day.status = GoalStatus.none.rawValue
+            }
+            
+            var temp = daysByMonth[yyyyMM] ?? []
+            temp.append(day)
+            daysByMonth[yyyyMM] = temp
+            
+            if (i == 0) || (date.stringFormat(of: .dd) == "01") {
+                monthsArray.append(yyyyMM)
+            }
+        }
+    }
+    
+    mutating func qaInit_4() {
+        self.title = "30 minutes of meditation and self affirmation."
+        self.detail = "aaaa"
+        self.identifier = Date().stringFormat(of: .goalIdentifier)
+        self.status = GoalStatus.none
+        self.totalDays = 700
+        
+        let today = Date.inAnyFormat(dateString: "20220813")
+        self.startDate = today.stringFormat(of: .yyyyMMdd)
+        self.endDate = today.add(totalDays-1).stringFormat(of: .yyyyMMdd)
+        self.failCap = 30
+        self.failCount = 8
+        self.successCount = Date.inAnyFormat(dateString: startDate).daysCountToNow-failCount
+        
+        
+        let randomFailed = Array(0...today.daysCountToNow)
+            .shuffled()[0...self.failCount]
+            .map { Int($0) }
+        
+        for i in 1...totalDays {
+            let date = today.add(i-1)
+            let yyyyMM = date.stringFormat(of: .yyyyMM)
+            let yyyyMMdd = date.stringFormat(of: .yyyyMMdd)
+            
+            var day = Day(date: yyyyMMdd,index: i, status: "none")
+            
+            
+            if day.date < Date().stringFormat(of: .yyyyMMdd) {
+                if randomFailed.contains(i) {
+                    day.status = GoalStatus.fail.rawValue
+                } else {
+                    day.status = GoalStatus.success.rawValue
+                }
+            } else {
+                day.status = GoalStatus.none.rawValue
+            }
+            
+            var temp = daysByMonth[yyyyMM] ?? []
+            temp.append(day)
+            daysByMonth[yyyyMM] = temp
+            
+            if (i == 0) || (date.stringFormat(of: .dd) == "01") {
+                monthsArray.append(yyyyMM)
+            }
+        }
+    }
+    
+    mutating func qaInit_5() {
+        self.title = "2 hour algorithm per day"
+        self.detail = "aaaa"
+        self.identifier = Date().stringFormat(of: .goalIdentifier)
+        self.status = GoalStatus.none
+        self.totalDays = 700
+        
+        let today = Date.inAnyFormat(dateString: "20220413")
+        self.startDate = today.stringFormat(of: .yyyyMMdd)
+        self.endDate = today.add(totalDays-1).stringFormat(of: .yyyyMMdd)
+        self.failCap = 30
+        self.failCount = 29
+        self.successCount = Date.inAnyFormat(dateString: startDate).daysCountToNow-failCount
+        
+        
+        let randomFailed = Array(0...today.daysCountToNow)
+            .shuffled()[0...self.failCount]
+            .map { Int($0) }
+        
+        for i in 1...totalDays {
+            let date = today.add(i-1)
+            let yyyyMM = date.stringFormat(of: .yyyyMM)
+            let yyyyMMdd = date.stringFormat(of: .yyyyMMdd)
+            
+            var day = Day(date: yyyyMMdd,index: i, status: "none")
+            
+            
+            if day.date < Date().stringFormat(of: .yyyyMMdd) {
+                if randomFailed.contains(i) {
+                    day.status = GoalStatus.fail.rawValue
+                } else {
                     day.status = GoalStatus.success.rawValue
                 }
             } else {

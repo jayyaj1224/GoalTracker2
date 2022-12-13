@@ -50,6 +50,12 @@ struct Goal: Codable {
         case "3":
             qaInit_3()
             return
+        case "4":
+            qaInit_4()
+            return
+        case "5":
+            qaInit_5()
+            return
         default:
             break
         }
