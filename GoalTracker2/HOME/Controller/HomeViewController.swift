@@ -28,7 +28,6 @@ import Toast_Swift
  */
 
 class HomeViewController: UIViewController {
-
     //MARK: - UI Components
     fileprivate let goalCircularCollectionView = CircularCollectionView()
     

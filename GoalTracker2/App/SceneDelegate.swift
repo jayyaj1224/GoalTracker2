@@ -20,15 +20,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let navC = UINavigationController(rootViewController: HomeViewController())
         navC.isNavigationBarHidden = true
         self.window?.rootViewController = navC
-        let navC = UINavigationController(rootViewController: HomeViewController())
-        navC.isNavigationBarHidden = true
-        self.window?.rootViewController = navC
-        let navC = UINavigationController(rootViewController: HomeViewController())
-        navC.isNavigationBarHidden = true
-        self.window?.rootViewController = navC
-        let navC = UINavigationController(rootViewController: HomeViewController())
-        navC.isNavigationBarHidden = true
-        self.window?.rootViewController = navC
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {

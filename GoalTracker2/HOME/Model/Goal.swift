@@ -40,26 +40,6 @@ struct Goal: Codable {
     init(title: String, detail: String, totalDays: Int, failCap: Int) {
         let today = Date()
         
-        switch title {
-        case "1":
-            qaInit_1()
-            return
-        case "2":
-            qaInit_2()
-            return
-        case "3":
-            qaInit_3()
-            return
-        case "4":
-            qaInit_4()
-            return
-        case "5":
-            qaInit_5()
-            return
-        default:
-            break
-        }
-        
         self.title = title
         self.detail = detail
         self.identifier = today.stringFormat(of: .goalIdentifier)
