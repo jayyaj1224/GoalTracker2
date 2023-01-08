@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		2A978355B5DA0EF882D565E1 /* Pods_GoalTracker2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0B1B21EABD8BA56813343784 /* Pods_GoalTracker2.framework */; };
 		4D48197F419328D96712A530 /* Pods_GoalTracker2_GoalTracker2UITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D7F12845C4B9F031CBE5F31 /* Pods_GoalTracker2_GoalTracker2UITests.framework */; };
-		62013BA229464F4B007B32A6 /* TutorialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62013BA129464F4B007B32A6 /* TutorialViewController.swift */; };
+		62013BA229464F4B007B32A6 /* TutorialScrollViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62013BA129464F4B007B32A6 /* TutorialScrollViewController.swift */; };
 		620A7C60291D19BB0091177E /* UILabel_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 620A7C5F291D19BB0091177E /* UILabel_Extension.swift */; };
 		620A808D293A51B000158850 /* GTToast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 620A808C293A51B000158850 /* GTToast.swift */; };
 		620A8090293A6A1D00158850 /* UserNoteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 620A808F293A6A1D00158850 /* UserNoteViewController.swift */; };
@@ -28,7 +28,7 @@
 		621AEAF228CEF74300D53F2C /* ArcProcessBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 621AEAE228CEF74300D53F2C /* ArcProcessBar.swift */; };
 		621AEAF328CEF74300D53F2C /* GoalCircle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 621AEAE328CEF74300D53F2C /* GoalCircle.swift */; };
 		621AEAF428CEF74300D53F2C /* GTAlertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 621AEAE528CEF74300D53F2C /* GTAlertViewController.swift */; };
-		621AEAF728CEF74300D53F2C /* DotPageIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 621AEAE828CEF74300D53F2C /* DotPageIndicator.swift */; };
+		621AEAF728CEF74300D53F2C /* NeumorphicPageControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 621AEAE828CEF74300D53F2C /* NeumorphicPageControl.swift */; };
 		621AEAF928CEF74300D53F2C /* MessageBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 621AEAEA28CEF74300D53F2C /* MessageBar.swift */; };
 		621AEAFA28CEF74300D53F2C /* CircularCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 621AEAEC28CEF74300D53F2C /* CircularCollectionView.swift */; };
 		621AEAFB28CEF74300D53F2C /* CollectionViewCircularLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 621AEAED28CEF74300D53F2C /* CollectionViewCircularLayout.swift */; };
@@ -87,6 +87,12 @@
 		626768D92967094100666C8A /* NotoSans-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 626768B52967094100666C8A /* NotoSans-Light.ttf */; };
 		626768DA2967094100666C8A /* NotoSans-ExtraLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 626768B62967094100666C8A /* NotoSans-ExtraLight.ttf */; };
 		626768DB2967094100666C8A /* NotoSans-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 626768B72967094100666C8A /* NotoSans-ExtraBold.ttf */; };
+		6274AE31296958DF004C6D72 /* thumbs-up-burst.json in Resources */ = {isa = PBXBuildFile; fileRef = 626768852967022400666C8A /* thumbs-up-burst.json */; };
+		6274AE32296958FB004C6D72 /* finger.json in Resources */ = {isa = PBXBuildFile; fileRef = 62013B9E29464F1B007B32A6 /* finger.json */; };
+		6274AE33296958FD004C6D72 /* trophy.json in Resources */ = {isa = PBXBuildFile; fileRef = 62013B9C2944EE3D007B32A6 /* trophy.json */; };
+		6274AE3429695902004C6D72 /* blue-diamond.json in Resources */ = {isa = PBXBuildFile; fileRef = 62B37534293E3E4A000F523B /* blue-diamond.json */; };
+		6274AE3529695904004C6D72 /* yellow-diamond2.json in Resources */ = {isa = PBXBuildFile; fileRef = 62B37532293E3D60000F523B /* yellow-diamond2.json */; };
+		6274AE37296984B9004C6D72 /* UIDevice_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6274AE36296984B9004C6D72 /* UIDevice_Extension.swift */; };
 		62767E3E2936A69B00622A4B /* ScorePannel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62767E3D2936A69B00622A4B /* ScorePannel.swift */; };
 		62B3752D293C038A000F523B /* UserNote.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62B3752C293C038A000F523B /* UserNote.swift */; };
 		62B3752F293C0692000F523B /* UserNoteManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62B3752E293C0692000F523B /* UserNoteManager.swift */; };
@@ -139,7 +145,7 @@
 		1D7F12845C4B9F031CBE5F31 /* Pods_GoalTracker2_GoalTracker2UITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_GoalTracker2_GoalTracker2UITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		62013B9C2944EE3D007B32A6 /* trophy.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = trophy.json; sourceTree = "<group>"; };
 		62013B9E29464F1B007B32A6 /* finger.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = finger.json; sourceTree = "<group>"; };
-		62013BA129464F4B007B32A6 /* TutorialViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialViewController.swift; sourceTree = "<group>"; };
+		62013BA129464F4B007B32A6 /* TutorialScrollViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialScrollViewController.swift; sourceTree = "<group>"; };
 		620A7C5F291D19BB0091177E /* UILabel_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UILabel_Extension.swift; sourceTree = "<group>"; };
 		620A808C293A51B000158850 /* GTToast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GTToast.swift; sourceTree = "<group>"; };
 		620A808F293A6A1D00158850 /* UserNoteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserNoteViewController.swift; sourceTree = "<group>"; };
@@ -158,7 +164,7 @@
 		621AEAE228CEF74300D53F2C /* ArcProcessBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArcProcessBar.swift; sourceTree = "<group>"; };
 		621AEAE328CEF74300D53F2C /* GoalCircle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoalCircle.swift; sourceTree = "<group>"; usesTabs = 0; };
 		621AEAE528CEF74300D53F2C /* GTAlertViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GTAlertViewController.swift; sourceTree = "<group>"; };
-		621AEAE828CEF74300D53F2C /* DotPageIndicator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DotPageIndicator.swift; sourceTree = "<group>"; };
+		621AEAE828CEF74300D53F2C /* NeumorphicPageControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NeumorphicPageControl.swift; sourceTree = "<group>"; };
 		621AEAEA28CEF74300D53F2C /* MessageBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageBar.swift; sourceTree = "<group>"; };
 		621AEAEC28CEF74300D53F2C /* CircularCollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircularCollectionView.swift; sourceTree = "<group>"; };
 		621AEAED28CEF74300D53F2C /* CollectionViewCircularLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionViewCircularLayout.swift; sourceTree = "<group>"; };
@@ -218,6 +224,7 @@
 		626768B52967094100666C8A /* NotoSans-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NotoSans-Light.ttf"; sourceTree = "<group>"; };
 		626768B62967094100666C8A /* NotoSans-ExtraLight.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NotoSans-ExtraLight.ttf"; sourceTree = "<group>"; };
 		626768B72967094100666C8A /* NotoSans-ExtraBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NotoSans-ExtraBold.ttf"; sourceTree = "<group>"; };
+		6274AE36296984B9004C6D72 /* UIDevice_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIDevice_Extension.swift; sourceTree = "<group>"; };
 		62767E3D2936A69B00622A4B /* ScorePannel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScorePannel.swift; sourceTree = "<group>"; };
 		62B3752C293C038A000F523B /* UserNote.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserNote.swift; sourceTree = "<group>"; };
 		62B3752E293C0692000F523B /* UserNoteManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserNoteManager.swift; sourceTree = "<group>"; };
@@ -286,12 +293,12 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		62013BA029464F26007B32A6 /* Tutorial */ = {
+		62013BA029464F26007B32A6 /* Intro */ = {
 			isa = PBXGroup;
 			children = (
-				62013BA129464F4B007B32A6 /* TutorialViewController.swift */,
+				62013BA129464F4B007B32A6 /* TutorialScrollViewController.swift */,
 			);
-			path = Tutorial;
+			path = Intro;
 			sourceTree = "<group>";
 		};
 		620A808E293A6A0F00158850 /* USERNOTE */ = {
@@ -334,7 +341,6 @@
 		6210B98529423EA700CDA87B /* SubComponents */ = {
 			isa = PBXGroup;
 			children = (
-				621AEAE828CEF74300D53F2C /* DotPageIndicator.swift */,
 				621AEAEA28CEF74300D53F2C /* MessageBar.swift */,
 			);
 			path = SubComponents;
@@ -384,6 +390,7 @@
 		621AEAFC28CEF74D00D53F2C /* CustomComponents */ = {
 			isa = PBXGroup;
 			children = (
+				621AEAE828CEF74300D53F2C /* NeumorphicPageControl.swift */,
 				620A808C293A51B000158850 /* GTToast.swift */,
 				621AEAE528CEF74300D53F2C /* GTAlertViewController.swift */,
 				621AEAFD28CEF74D00D53F2C /* PresentationController.swift */,
@@ -686,6 +693,7 @@
 			children = (
 				626768812966FFD100666C8A /* App */,
 				626768832967003400666C8A /* SupportingFiles */,
+				62676884296700DF00666C8A /* Assets */,
 				6210B98629423FB300CDA87B /* Singleton */,
 				621AEACA28CEF5DE00D53F2C /* HOME */,
 				620A808E293A6A0F00158850 /* USERNOTE */,
@@ -693,8 +701,7 @@
 				621AEAD928CEF73200D53F2C /* ADDGOAL */,
 				AAB6BB8828D0035B00AC44E9 /* CALENDAR */,
 				AAB6BB8928D0035E00AC44E9 /* SETTINGS */,
-				62013BA029464F26007B32A6 /* Tutorial */,
-				62676884296700DF00666C8A /* Assets */,
+				62013BA029464F26007B32A6 /* Intro */,
 				621AEAFC28CEF74D00D53F2C /* CustomComponents */,
 				62B5726A28CEE87A00015354 /* Extensions */,
 			);
@@ -731,6 +738,7 @@
 				622697ED290E9E05007754CA /* UIImageView_Extension.swift */,
 				620A7C5F291D19BB0091177E /* UILabel_Extension.swift */,
 				620A8091293A703000158850 /* TextField_Extension.swift */,
+				6274AE36296984B9004C6D72 /* UIDevice_Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -925,11 +933,13 @@
 			files = (
 				626768BB2967094100666C8A /* Outfit-Thin.ttf in Resources */,
 				626768CC2967094100666C8A /* SF-Pro-Display-Ultralight.otf in Resources */,
+				6274AE31296958DF004C6D72 /* thumbs-up-burst.json in Resources */,
 				626768D22967094100666C8A /* SF-Pro-Display-BoldItalic.otf in Resources */,
 				626768D62967094100666C8A /* NotoSans-Bold.ttf in Resources */,
 				626768D02967094100666C8A /* SF-Pro-Display-Black.otf in Resources */,
 				626768C42967094100666C8A /* SF-Pro-Display-Light.otf in Resources */,
 				626768BC2967094100666C8A /* Outfit-SemiBold.ttf in Resources */,
+				6274AE3529695904004C6D72 /* yellow-diamond2.json in Resources */,
 				626768C82967094100666C8A /* SF-Pro-Display-Heavy.otf in Resources */,
 				626768CA2967094100666C8A /* SF-Pro-Display-MediumItalic.otf in Resources */,
 				626768C32967094100666C8A /* SF-Pro-Display-RegularItalic.otf in Resources */,
@@ -938,12 +948,14 @@
 				626768B82967094100666C8A /* Outfit-Bold.ttf in Resources */,
 				626768D32967094100666C8A /* NotoSans-Regular.ttf in Resources */,
 				626768D52967094100666C8A /* NotoSans-Black.ttf in Resources */,
+				6274AE33296958FD004C6D72 /* trophy.json in Resources */,
 				626768C72967094100666C8A /* SF-Pro-Display-Medium.otf in Resources */,
 				626768D82967094100666C8A /* NotoSans-SemiBold.ttf in Resources */,
 				626768C22967094100666C8A /* SF-Pro-Display-SemiboldItalic.otf in Resources */,
 				62B5724528CEE6A100015354 /* LaunchScreen.storyboard in Resources */,
 				626768CF2967094100666C8A /* SF-Pro-Display-BlackItalic.otf in Resources */,
 				626768C02967094100666C8A /* Outfit-Light.ttf in Resources */,
+				6274AE32296958FB004C6D72 /* finger.json in Resources */,
 				626768BD2967094100666C8A /* Outfit-ExtraLight.ttf in Resources */,
 				626768DA2967094100666C8A /* NotoSans-ExtraLight.ttf in Resources */,
 				626768C92967094100666C8A /* SF-Pro-Display-Semibold.otf in Resources */,
@@ -954,6 +966,7 @@
 				626768C12967094100666C8A /* SF-Pro-Display-Thin.otf in Resources */,
 				62B5724228CEE6A100015354 /* Assets.xcassets in Resources */,
 				626768D72967094100666C8A /* NotoSans-Thin.ttf in Resources */,
+				6274AE3429695902004C6D72 /* blue-diamond.json in Resources */,
 				626768DB2967094100666C8A /* NotoSans-ExtraBold.ttf in Resources */,
 				626768D12967094100666C8A /* SF-Pro-Display-ThinItalic.otf in Resources */,
 				626768C62967094100666C8A /* SF-Pro-Display-Bold.otf in Resources */,
@@ -1098,7 +1111,7 @@
 				622F135528DCAD390072E5BF /* SettingsViewController.swift in Sources */,
 				AAAFB8A328D2E572002CE265 /* NeumorphicButton.swift in Sources */,
 				62B5726928CEE84000015354 /* HomeViewController.swift in Sources */,
-				621AEAF728CEF74300D53F2C /* DotPageIndicator.swift in Sources */,
+				621AEAF728CEF74300D53F2C /* NeumorphicPageControl.swift in Sources */,
 				62CE1ED728D6F62C00F08EF0 /* AddGoalViewController.swift in Sources */,
 				62B5726C28CEE88500015354 /* UIColor_Extensions.swift in Sources */,
 				621AEAC528CEF58800D53F2C /* UIFont_Extension.swift in Sources */,
@@ -1149,7 +1162,8 @@
 				62D5D2AE28FDF81E003E222F /* UIPicker + Rx.swift in Sources */,
 				622690CD28D59DFE00E4AA01 /* PlusMenuViewController.swift in Sources */,
 				62B37538293E6897000F523B /* GoalStatsStackView.swift in Sources */,
-				62013BA229464F4B007B32A6 /* TutorialViewController.swift in Sources */,
+				6274AE37296984B9004C6D72 /* UIDevice_Extension.swift in Sources */,
+				62013BA229464F4B007B32A6 /* TutorialScrollViewController.swift in Sources */,
 				620A7C60291D19BB0091177E /* UILabel_Extension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1248,7 +1262,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -1302,7 +1316,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;

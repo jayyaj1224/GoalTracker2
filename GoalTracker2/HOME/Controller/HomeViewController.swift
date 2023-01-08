@@ -77,7 +77,7 @@ class HomeViewController: UIViewController {
         return button
     }()
     
-    fileprivate let pageIndicator = DotPageIndicator(pageSize: K.singleRowHeight)
+    fileprivate let pageIndicator = NeumorphicPageControl(pageSize: K.singleRowHeight, axis: .vertical)
     
     fileprivate let checkButton: UIButton = {
         let button = UIButton()
@@ -182,6 +182,12 @@ class HomeViewController: UIViewController {
         prepareCalendarViewModelData()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        showIntroViewController()
+    }
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
@@ -193,6 +199,13 @@ class HomeViewController: UIViewController {
             
             initialSettingDone = true
         }
+    }
+    
+    private func showIntroViewController() {
+        let intro = TutorialScrollViewController(tutorialType: "intro", numberOfImages: 5)
+        intro.modalPresentationStyle = .overFullScreen
+        
+        present(intro, animated: false)
     }
 }
 
@@ -339,7 +352,7 @@ extension HomeViewController {
             .disposed(by: disposeBag)
         
         scrollStoppedAtRelay
-            .bind(to: pageIndicator.rx.updateIndicators)
+            .bind(to: pageIndicator.rx.currentOffset)
             .disposed(by: disposeBag)
     }
     
@@ -390,13 +403,13 @@ extension HomeViewController {
         plusRotatingButton.snp.makeConstraints { make in
             make.size.equalTo(40)
             make.trailing.equalToSuperview().inset(18)
-            make.bottom.equalToSuperview().inset((K.hasNotch ? 120 : 86)*K.ratioFactor)
+            make.bottom.equalToSuperview().inset((DeviceInfo.current.hasNotch ? 114 : 94)*K.ratioFactor)
         }
 
         messageBar.snp.makeConstraints { make in
-            make.height.equalTo(60*K.ratioFactor)
+            make.height.equalTo(54*K.ratioFactor)
             make.leading.trailing.equalToSuperview().inset(18)
-            make.bottom.equalToSuperview().inset((K.hasNotch ? 30 : 20)*K.ratioFactor)
+            make.bottom.equalToSuperview().inset((DeviceInfo().hasNotch ? 30 : 20)*K.ratioFactor)
         }
         
         scrollBackButton.snp.makeConstraints { make in
@@ -429,8 +442,7 @@ extension HomeViewController {
         }
         
         lottieContainingBlurView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview()
-            make.height.equalTo(lottieContainingBlurView.snp.width)
+            make.leading.height.trailing.equalToSuperview()
             make.centerY.equalToSuperview()
         }
         

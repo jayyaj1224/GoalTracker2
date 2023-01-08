@@ -270,7 +270,7 @@ class PlusMenuViewController: UIViewController {
         cancelRotatingButton.snp.makeConstraints { make in
             make.size.equalTo(40)
             make.trailing.equalToSuperview().inset(18)
-            make.bottom.equalToSuperview().inset((K.hasNotch ? 120 : 86)*K.ratioFactor)
+            make.bottom.equalToSuperview().inset((DeviceInfo.current.hasNotch ? 114 : 94)*K.ratioFactor)
         }
 
         plusIconImageView.snp.makeConstraints { make in

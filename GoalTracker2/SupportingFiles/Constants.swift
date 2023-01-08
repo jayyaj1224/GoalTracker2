@@ -8,22 +8,6 @@
 import UIKit
 
 enum K {
-    /// Returns `true` if the device has a notch
-    static var hasNotch: Bool {
-        guard let window = UIApplication.shared.windows.filter({$0.isKeyWindow}).first else {
-            return false
-        }
-        return window.safeAreaInsets.top >= 44
-    }
-    
-    static var isLarge: Bool {
-        if screenWidth < 375 {
-            return false
-        } else {
-            return true
-        }
-    }
-    
     static let ratioFactor: CGFloat = UIScreen.main.bounds.width/375
     
     static var singleRowHeight: CGFloat {

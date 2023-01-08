@@ -159,14 +159,11 @@ class AddGoalViewController: UIViewController {
     }
     
     @objc private func saveButtonTapped(_ sender: UIButton) {
-        //let goalType: GoalTrackType = yearlyTrackSwitch.isOn ? .Yearly : .Period
-
         let goal = Goal(
             title: goalTitleInputTextView.text ?? "",
             detail: detailInputTextView.text ?? "",
             totalDays: daysSettingPickerView.selectedRow(inComponent: 0),
             failCap: daysSettingPickerView.selectedRow(inComponent: 1)-1
-            //setType: goalType
         )
 
         GoalManager.shared.realmWriteGoal(goal)

@@ -13,6 +13,7 @@ class UserNoteViewController: UIViewController {
     private let userNoteContentView: NeumorphicView = {
         let view = NeumorphicView(backgroundColor: .crayon, type: .mediumShadow)
         view.layer.cornerRadius = 22
+        view.clipsToBounds = true
         return view
     }()
     

@@ -1,5 +1,5 @@
 //
-//  VerticalPageIndicator.swift
+//  NeumorphicPageControl.swift
 //  GoalTracker
 //
 //  Created by Jay Lee on 2022/03/06.
@@ -8,8 +8,7 @@
 import UIKit
 import RxSwift
 
-class DotPageIndicator: UIView {
-    
+class NeumorphicPageControl: UIView {
     var indicatorStackView: UIStackView!
     
     var indicators: [UIImageView] = []
@@ -18,25 +17,27 @@ class DotPageIndicator: UIView {
     
     private let dotSize: CGFloat = 12
     
-    var numberOfPages: Int = 0
+    var numberOfPages: Int = 0 {
+        didSet {
+            setIndicators(numberOfPages)
+        }
+    }
     
     var currentIndex: Int = 0
     
-    convenience init(pageSize: CGFloat) {
+    convenience init(pageSize: CGFloat, axis: NSLayoutConstraint.Axis) {
         self.init(frame: .zero)
         
         self.pageSize = pageSize
         
         indicatorStackView = UIStackView()
-        indicatorStackView.axis = .vertical
+        indicatorStackView.axis = axis
         indicatorStackView.spacing = 6
         indicatorStackView.distribution = .equalSpacing
     }
     
-    func setDots(_ numberOfPages: Int) {
+    fileprivate func setIndicators(_ numberOfPages: Int) {
         removeAllDots()
-        
-        self.numberOfPages = numberOfPages
         
         if numberOfPages < 2 {
             indicatorStackView.isHidden = true
@@ -51,14 +52,18 @@ class DotPageIndicator: UIView {
             
             addSubview(indicatorStackView)
             indicatorStackView.snp.makeConstraints { make in
-                make.width.equalTo(dotSize)
+                if indicatorStackView.axis == .horizontal {
+                    make.height.equalTo(dotSize)
+                } else {
+                    make.width.equalTo(dotSize)
+                }
                 make.center.equalToSuperview()
             }
         }
     }
     
     func updateIndicators(offset: CGFloat) {
-        currentIndex = Int((offset)/K.singleRowHeight)
+        currentIndex = Int((offset)/pageSize)
         
         guard currentIndex >= 0, currentIndex < numberOfPages else {
             return
@@ -90,8 +95,8 @@ class DotPageIndicator: UIView {
     }
 }
 
-extension Reactive where Base: DotPageIndicator {
-    var updateIndicators: Binder<CGFloat> {
+extension Reactive where Base: NeumorphicPageControl {
+    var currentOffset: Binder<CGFloat> {
         Binder(base) { base, offset in
             base.updateIndicators(offset: offset)
         }
@@ -99,8 +104,9 @@ extension Reactive where Base: DotPageIndicator {
     
     var numberOfPages: Binder<(numberOfPages: Int, offsetY: CGFloat)> {
         Binder(base) { base, data in
-            base.setDots(data.numberOfPages)
-            
+            if data.numberOfPages != base.numberOfPages {
+                base.setIndicators(data.numberOfPages)
+            }
             base.updateIndicators(offset: data.offsetY)
         }
     }
