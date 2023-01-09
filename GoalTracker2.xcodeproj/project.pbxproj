@@ -295,13 +295,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		62013BA029464F26007B32A6 /* Intro */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Intro;
-			sourceTree = "<group>";
-		};
 		620A808E293A6A0F00158850 /* USERNOTE */ = {
 			isa = PBXGroup;
 			children = (
@@ -704,7 +697,6 @@
 				621AEAD928CEF73200D53F2C /* ADDGOAL */,
 				AAB6BB8828D0035B00AC44E9 /* CALENDAR */,
 				AAB6BB8928D0035E00AC44E9 /* SETTINGS */,
-				62013BA029464F26007B32A6 /* Intro */,
 				621AEAFC28CEF74D00D53F2C /* Custom&Common */,
 				62B5726A28CEE87A00015354 /* Extensions */,
 			);

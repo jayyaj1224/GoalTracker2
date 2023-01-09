@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 class GoalStatsViewModel {
     var goal: Goal
@@ -17,6 +18,7 @@ class GoalStatsViewModel {
     var successCount: String
     var failCount: String
     
+    var failCountLabelColor: UIColor = .black
     
     init(goal: Goal) {
         self.goal = goal
@@ -42,6 +44,8 @@ class GoalStatsViewModel {
         
         let maxStreak = calculateMaxStreak()
         self.maxStreak = (maxStreak == 1) ? "\(maxStreak) day" : "\(maxStreak) days"
+        
+        failCountLabelColor = (goal.failCount > goal.failCap) ? .red : .black
     }
     
     private func calculateMaxStreak() -> Int {

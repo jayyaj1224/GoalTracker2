@@ -187,6 +187,7 @@ class HomeViewController: UIViewController {
         super.viewWillAppear(animated)
         
         showIntroTutorialViewController(dismissCompletion: { [weak self] in
+            UserDefaults.standard.set(true, forKey: Keys.tutorial_intro)
             
             DispatchQueue.main.asyncAfter(deadline: .now()+0.3) {
                 self?.showAddGoalTutorialBalloonIfNeeded()
@@ -890,8 +891,6 @@ extension HomeViewController: UIViewControllerTransitioningDelegate {
 extension HomeViewController {
     private func showIntroTutorialViewController(dismissCompletion: (()->Void)?=nil) {
         guard !UserDefaults.standard.bool(forKey: Keys.tutorial_intro) else { return }
-        
-        UserDefaults.standard.set(true, forKey: Keys.tutorial_intro)
         
         let tutorialVc = TutorialViewController(tutorialName: "intro", numberOfPages: 5, swipeDismiss: true)
         tutorialVc.modalPresentationStyle = .overFullScreen
