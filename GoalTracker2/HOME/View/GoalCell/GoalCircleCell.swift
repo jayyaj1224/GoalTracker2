@@ -137,6 +137,8 @@ class GoalCircleCell: UICollectionViewCell {
                     """
         UIPasteboard.general.string = stats
         
+    }
+    
     private func showCopyCompletedToast() {
         let keyWindow = UIApplication.shared.windows.filter {$0.isKeyWindow}.first
         
