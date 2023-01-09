@@ -145,7 +145,7 @@ class HomeViewController: UIViewController {
         return label
     }()
     
-    //MARK: - Logics
+    //MARK: - Properties
     fileprivate let homeViewModel = HomeViewModel()
     
     typealias CircleScroll = (status: ScrollStatus, y: CGFloat)
@@ -175,6 +175,7 @@ class HomeViewController: UIViewController {
     // Calendar data preperation
     fileprivate var calendarModel: CalendarModel?
     
+    //MARK: - ViewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
         configure()
@@ -185,7 +186,12 @@ class HomeViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        showIntroViewController()
+        showIntroTutorialViewController(dismissCompletion: { [weak self] in
+            
+            DispatchQueue.main.asyncAfter(deadline: .now()+0.3) {
+                self?.showAddGoalTutorialBalloonIfNeeded()
+            }
+        })
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -199,13 +205,6 @@ class HomeViewController: UIViewController {
             
             initialSettingDone = true
         }
-    }
-    
-    private func showIntroViewController() {
-        let intro = TutorialScrollViewController(tutorialType: "intro", numberOfImages: 5)
-        intro.modalPresentationStyle = .overFullScreen
-        
-        present(intro, animated: false)
     }
 }
 
@@ -426,7 +425,7 @@ extension HomeViewController {
 
         pageIndicator.snp.makeConstraints { make in
             make.centerY.equalTo(goalCircularCollectionView)
-            make.leading.equalTo(goalCircularCollectionView).inset(14)
+            make.leading.equalTo(goalCircularCollectionView)
         }
         
         settingsButton.snp.makeConstraints { make in
@@ -561,7 +560,7 @@ extension Reactive where Base: HomeViewController {
     }
     
     fileprivate var scrollToAddedGoal: Binder<Void> {
-        Binder(base) {base, goal in
+        Binder(base) {base, _ in
             let offsetY = base.goalCircularCollectionView.contentSize.height-K.singleRowHeight
             let rect = CGRect(x: 0, y: offsetY, width: 10, height: K.singleRowHeight)
             
@@ -569,6 +568,12 @@ extension Reactive where Base: HomeViewController {
                 base.goalCircularCollectionView.scrollRectToVisible(rect, animated: true)
             }
             base.pageIndicator.updateIndicators(offset: offsetY)
+        }
+    }
+    
+    fileprivate var showGoalTutorialIfNeeded: Binder<Void> {
+        Binder(base) {base, _ in
+            base.showNewGoalTutorialIfNeeded()
         }
     }
     
@@ -679,12 +684,20 @@ extension HomeViewController {
             })
             .disposed(by: disposeBag)
         
-        Observable
+        let newGoalSavedAndDismissed = Observable
             .zip(
                 plusMenuViewController.newGoalSavedSubject.asObservable(),
                 plusMenuViewController.viewDismissSubject.asObservable()
             )
             .flatMap { _ in return Observable.just(()) }
+            .share()
+        
+        newGoalSavedAndDismissed
+            .map { _ in }
+            .subscribe(self.rx.showGoalTutorialIfNeeded)
+            .disposed(by: plusMenuViewController.disposeBag)
+        
+        newGoalSavedAndDismissed
             .subscribe(self.rx.scrollToAddedGoal)
             .disposed(by: plusMenuViewController.disposeBag)
         
@@ -870,5 +883,52 @@ extension HomeViewController: UIViewControllerTransitioningDelegate {
     func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
 
         return PresentationController(contentHeight: K.screenHeight*0.7, presentedViewController: presented, presenting: presenting)
+    }
+}
+
+//MARK: Tutorials
+extension HomeViewController {
+    private func showIntroTutorialViewController(dismissCompletion: (()->Void)?=nil) {
+        guard !UserDefaults.standard.bool(forKey: Keys.tutorial_intro) else { return }
+        
+        UserDefaults.standard.set(true, forKey: Keys.tutorial_intro)
+        
+        let tutorialVc = TutorialViewController(tutorialName: "intro", numberOfPages: 5, swipeDismiss: true)
+        tutorialVc.modalPresentationStyle = .overFullScreen
+        tutorialVc.dismissCompletion = dismissCompletion
+        
+        present(tutorialVc, animated: false)
+    }
+    
+    private func showAddGoalTutorialBalloonIfNeeded() {
+        guard !UserDefaults.standard.bool(forKey: Keys.toolTip_AddGoal) else { return }
+        
+        UserDefaults.standard.set(true, forKey: Keys.toolTip_AddGoal)
+        
+        TutorialBalloon
+            .make(
+                message: "Start a new goal",
+                tailPosition: .right,
+                locate: {[weak self] balloon in
+                    
+                    self?.view.addSubview(balloon)
+                    
+                    balloon.snp.makeConstraints { make in
+                        make.bottom.equalTo(plusRotatingButton)
+                        make.trailing.equalTo(plusRotatingButton.snp.leading).offset(-19)
+                    }
+                }
+            )
+            .show()
+    }
+    
+    fileprivate func showNewGoalTutorialIfNeeded() {
+        guard !UserDefaults.standard.bool(forKey: Keys.tutorial_goal) else { return }
+        
+        UserDefaults.standard.set(true, forKey: Keys.tutorial_goal)
+        
+        let tutorial = TutorialViewController(tutorialName: "new-goal-tutorial", numberOfPages: 1)
+        tutorial.modalPresentationStyle = .overFullScreen
+        self.present(tutorial, animated: true)
     }
 }

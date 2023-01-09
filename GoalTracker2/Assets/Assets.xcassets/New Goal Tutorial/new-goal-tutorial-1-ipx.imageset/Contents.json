@@ -1,0 +1,23 @@
+{
+  "images" : [
+    {
+      "filename" : "first-goal-tutorial-ipx.png",
+      "idiom" : "universal",
+      "scale" : "1x"
+    },
+    {
+      "filename" : "first-goal-tutorial-ipx@2x.png",
+      "idiom" : "universal",
+      "scale" : "2x"
+    },
+    {
+      "filename" : "first-goal-tutorial-ipx@3x.png",
+      "idiom" : "universal",
+      "scale" : "3x"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

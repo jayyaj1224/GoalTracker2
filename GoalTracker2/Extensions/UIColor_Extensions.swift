@@ -43,6 +43,7 @@ extension UIColor {
     
     static let blueA = UIColor(hex: "C7D2DE")
     static let blueB = UIColor(hex: "6E8EB7")
+    static let blueC = UIColor(hex: "2FA6EA")
     
     static let grayA = UIColor(hex: "D9D9D9")
     static let grayB = UIColor(hex: "909090")

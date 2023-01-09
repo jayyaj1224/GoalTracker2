@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		2A978355B5DA0EF882D565E1 /* Pods_GoalTracker2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0B1B21EABD8BA56813343784 /* Pods_GoalTracker2.framework */; };
 		4D48197F419328D96712A530 /* Pods_GoalTracker2_GoalTracker2UITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D7F12845C4B9F031CBE5F31 /* Pods_GoalTracker2_GoalTracker2UITests.framework */; };
-		62013BA229464F4B007B32A6 /* TutorialScrollViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62013BA129464F4B007B32A6 /* TutorialScrollViewController.swift */; };
+		62013BA229464F4B007B32A6 /* TutorialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62013BA129464F4B007B32A6 /* TutorialViewController.swift */; };
 		620A7C60291D19BB0091177E /* UILabel_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 620A7C5F291D19BB0091177E /* UILabel_Extension.swift */; };
 		620A808D293A51B000158850 /* GTToast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 620A808C293A51B000158850 /* GTToast.swift */; };
 		620A8090293A6A1D00158850 /* UserNoteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 620A808F293A6A1D00158850 /* UserNoteViewController.swift */; };
@@ -50,6 +50,7 @@
 		624453E828FD3D0F003A9117 /* PeriodSettingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 624453E728FD3D0F003A9117 /* PeriodSettingViewModel.swift */; };
 		6248936028FC154A004580CB /* SwitchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6248935F28FC154A004580CB /* SwitchController.swift */; };
 		624E91E728FD6EC400E15735 /* PeriodSettingModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 624E91E628FD6EC400E15735 /* PeriodSettingModel.swift */; };
+		6265948C296B199600F5A606 /* TutorialBalloon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6265948B296B199600F5A606 /* TutorialBalloon.swift */; };
 		626742AE2937A5860068FFE6 /* CalendarModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 626742AD2937A5860068FFE6 /* CalendarModel.swift */; };
 		626768B82967094100666C8A /* Outfit-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 626768922967094100666C8A /* Outfit-Bold.ttf */; };
 		626768B92967094100666C8A /* Outfit-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 626768932967094100666C8A /* Outfit-Regular.ttf */; };
@@ -145,7 +146,7 @@
 		1D7F12845C4B9F031CBE5F31 /* Pods_GoalTracker2_GoalTracker2UITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_GoalTracker2_GoalTracker2UITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		62013B9C2944EE3D007B32A6 /* trophy.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = trophy.json; sourceTree = "<group>"; };
 		62013B9E29464F1B007B32A6 /* finger.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = finger.json; sourceTree = "<group>"; };
-		62013BA129464F4B007B32A6 /* TutorialScrollViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialScrollViewController.swift; sourceTree = "<group>"; };
+		62013BA129464F4B007B32A6 /* TutorialViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialViewController.swift; sourceTree = "<group>"; };
 		620A7C5F291D19BB0091177E /* UILabel_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UILabel_Extension.swift; sourceTree = "<group>"; };
 		620A808C293A51B000158850 /* GTToast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GTToast.swift; sourceTree = "<group>"; };
 		620A808F293A6A1D00158850 /* UserNoteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserNoteViewController.swift; sourceTree = "<group>"; };
@@ -186,6 +187,7 @@
 		624453E728FD3D0F003A9117 /* PeriodSettingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeriodSettingViewModel.swift; sourceTree = "<group>"; };
 		6248935F28FC154A004580CB /* SwitchController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwitchController.swift; sourceTree = "<group>"; };
 		624E91E628FD6EC400E15735 /* PeriodSettingModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeriodSettingModel.swift; sourceTree = "<group>"; };
+		6265948B296B199600F5A606 /* TutorialBalloon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialBalloon.swift; sourceTree = "<group>"; };
 		626742AD2937A5860068FFE6 /* CalendarModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarModel.swift; sourceTree = "<group>"; };
 		626768852967022400666C8A /* thumbs-up-burst.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "thumbs-up-burst.json"; sourceTree = "<group>"; };
 		626768922967094100666C8A /* Outfit-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Outfit-Bold.ttf"; sourceTree = "<group>"; };
@@ -296,7 +298,6 @@
 		62013BA029464F26007B32A6 /* Intro */ = {
 			isa = PBXGroup;
 			children = (
-				62013BA129464F4B007B32A6 /* TutorialScrollViewController.swift */,
 			);
 			path = Intro;
 			sourceTree = "<group>";
@@ -387,9 +388,10 @@
 			path = TileBoard;
 			sourceTree = "<group>";
 		};
-		621AEAFC28CEF74D00D53F2C /* CustomComponents */ = {
+		621AEAFC28CEF74D00D53F2C /* Custom&Common */ = {
 			isa = PBXGroup;
 			children = (
+				62013BA129464F4B007B32A6 /* TutorialViewController.swift */,
 				621AEAE828CEF74300D53F2C /* NeumorphicPageControl.swift */,
 				620A808C293A51B000158850 /* GTToast.swift */,
 				621AEAE528CEF74300D53F2C /* GTAlertViewController.swift */,
@@ -397,8 +399,9 @@
 				AA9990CE28D1A1C800FE4A26 /* NeumorphicView.swift */,
 				AAAFB8A228D2E572002CE265 /* NeumorphicButton.swift */,
 				6248935F28FC154A004580CB /* SwitchController.swift */,
+				6265948B296B199600F5A606 /* TutorialBalloon.swift */,
 			);
-			path = CustomComponents;
+			path = "Custom&Common";
 			sourceTree = "<group>";
 		};
 		622690C328D58B3C00E4AA01 /* GoalCircle */ = {
@@ -702,7 +705,7 @@
 				AAB6BB8828D0035B00AC44E9 /* CALENDAR */,
 				AAB6BB8928D0035E00AC44E9 /* SETTINGS */,
 				62013BA029464F26007B32A6 /* Intro */,
-				621AEAFC28CEF74D00D53F2C /* CustomComponents */,
+				621AEAFC28CEF74D00D53F2C /* Custom&Common */,
 				62B5726A28CEE87A00015354 /* Extensions */,
 			);
 			path = GoalTracker2;
@@ -1107,6 +1110,7 @@
 				621AEACE28CEF66A00D53F2C /* Date_Extension.swift in Sources */,
 				62B5723928CEE6A000015354 /* AppDelegate.swift in Sources */,
 				621AEB0628CF058B00D53F2C /* UIView_Extension.swift in Sources */,
+				6265948C296B199600F5A606 /* TutorialBalloon.swift in Sources */,
 				62B5723B28CEE6A000015354 /* SceneDelegate.swift in Sources */,
 				622F135528DCAD390072E5BF /* SettingsViewController.swift in Sources */,
 				AAAFB8A328D2E572002CE265 /* NeumorphicButton.swift in Sources */,
@@ -1163,7 +1167,7 @@
 				622690CD28D59DFE00E4AA01 /* PlusMenuViewController.swift in Sources */,
 				62B37538293E6897000F523B /* GoalStatsStackView.swift in Sources */,
 				6274AE37296984B9004C6D72 /* UIDevice_Extension.swift in Sources */,
-				62013BA229464F4B007B32A6 /* TutorialScrollViewController.swift in Sources */,
+				62013BA229464F4B007B32A6 /* TutorialViewController.swift in Sources */,
 				620A7C60291D19BB0091177E /* UILabel_Extension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -34,7 +34,11 @@ enum Keys {
     static let userNote: String = "UserDefaultKey_UserNote"
     
     
-    
+    // Tutorial
+    static let tutorial_goal = "Tutorial_goal"
+    static let tutorial_intro = "Tutorial_intro"
+    static let toolTip_AddGoal = "toolTip_AddGoal"
+//    static let tutorial_intro = "Tutorial_intro"
     
     // Goal
 //    static let Profile: String = "UserDefaultKey_Profile"
