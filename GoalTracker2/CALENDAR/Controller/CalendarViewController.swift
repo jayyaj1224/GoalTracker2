@@ -234,15 +234,16 @@ extension Reactive where Base: CalendarViewController {
                     subTitleFont: .sfPro(size: 14, family: .Light),
                     text: "** Current status: \(day.status)",
                     textFont: .sfPro(size: 12, family: .Light),
-                    buttonText: "Success",
-                    cancelButtonText: "Fail",
+                    buttonText: "Fail",
+                    cancelButtonText: "Success",
+                    buttonTextColor: .redA,
                     backgroundDismiss: true
                 )
                 .addAction {
-                    selected = .success
+                    selected = .fail
                 }
                 .addCancelAction {
-                    selected = .fail
+                    selected = .success
                 }
                 .onCompletion {
                     base.calendarViewModel.fixGoal(
