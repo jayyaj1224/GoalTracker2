@@ -24,7 +24,7 @@ class GoalCircleCell: UICollectionViewCell {
     
     private let tileBoard = TileBoardCollectionView()
     
-    private let GoalAnalysisLabel: UILabel = {
+    private let goalAnalysisLabel: UILabel = {
         let label = UILabel()
         label.text = "Analysis"
         label.font = .outFit(size: 19, family: .Thin)
@@ -35,6 +35,15 @@ class GoalCircleCell: UICollectionViewCell {
     private let goalStatsView = GoalStatsStackView()
     
     private let doubleTapView = UIView()
+    
+    private let copyButton: UIButton = {
+        let button = UIButton()
+        button.configuration = UIButton.Configuration.plain()
+        button.configuration?.image = UIImage(named: "copy.neumorphism")
+        return button
+    }()
+    
+    var viewModel: GoalViewModel!
     
     /// current goal's scroll 'x' offset
     var didScrollToXSignal: Signal<CGFloat>!
@@ -70,6 +79,8 @@ class GoalCircleCell: UICollectionViewCell {
     }
     
     func setupCell(_ viewModel: GoalViewModel) {
+        self.viewModel = viewModel
+        
         goalCircle.setup(with: viewModel.goalCircleViewModel)
         
         tileBoard.setup(with: viewModel.tileBoardViewModel)
@@ -79,6 +90,32 @@ class GoalCircleCell: UICollectionViewCell {
 
     @objc private func doubleTap() {
         scrollView.setContentOffset(.zero, animated: true)
+    }
+    
+    @objc private func copyButtonTapped() {
+        let vm = viewModel.goalStatsViewModel!
+        let stats = """
+                    < \(vm.goal.title) >
+                    • Execution rate: \(vm.executionRate) %
+                    • Max streak: \(vm.maxStreak)
+                    • Success count: \(vm.successCount)
+                    • Fail count/cap: \(vm.failCount)
+                    • Days left: \(vm.daysLeft)
+                    • Date: \(vm.dateRange)
+                    
+                    **copied @(\(Date().stringFormat(of: .ddMMMEEEE_Comma_Space)))
+                    """
+        UIPasteboard.general.string = stats
+        
+        let keyWindow = UIApplication.shared.windows.filter {$0.isKeyWindow}.first
+        
+        if var topController = keyWindow?.rootViewController {
+            while let presentedViewController = topController.presentedViewController {
+                topController = presentedViewController
+            }
+            topController.view.hideAllToasts()
+            topController.view.makeToast("Copied", position: .bottom)
+        }
     }
 }
 
@@ -112,7 +149,7 @@ extension GoalCircleCell {
             .share()
             .asSignal(onErrorSignalWith: .empty())
         
-        let hidingView = [GoalAnalysisLabel, tileBoard, goalStatsView]
+        let hidingView = [goalAnalysisLabel, tileBoard, goalStatsView]
         hidingView.forEach { $0.alpha = 0}
         
         didScrollToXSignal
@@ -141,13 +178,15 @@ extension GoalCircleCell {
         let gestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(doubleTap))
         gestureRecognizer.numberOfTapsRequired = 2
         doubleTapView.addGestureRecognizer(gestureRecognizer)
+        
+        copyButton.addTarget(self, action: #selector(copyButtonTapped), for: .touchUpInside)
     }
     
     private func layout() {
         contentView.addSubview(scrollView)
         scrollView.addSubview(scrollContentView)
         
-        [goalCircle, GoalAnalysisLabel, tileBoard, goalStatsView, doubleTapView]
+        [goalCircle, goalAnalysisLabel, tileBoard, goalStatsView, doubleTapView, copyButton]
             .forEach(scrollContentView.addSubview(_:))
         
         // - frames
@@ -188,7 +227,13 @@ extension GoalCircleCell {
             make.trailing.lessThanOrEqualToSuperview().offset(-20)
         }
         
-        GoalAnalysisLabel.snp.makeConstraints { make in
+        copyButton.snp.makeConstraints { make in
+            make.leading.equalTo(goalAnalysisLabel.snp.trailing).offset(-10)
+            make.centerY.equalTo(goalAnalysisLabel)
+            make.size.equalTo(60)
+        }
+        
+        goalAnalysisLabel.snp.makeConstraints { make in
             make.leading.equalTo(tileBoard).inset(1)
             make.bottom.equalTo(goalStatsView.snp.top).offset(-8)
         }
