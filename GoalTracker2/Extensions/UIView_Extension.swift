@@ -39,3 +39,25 @@ extension UIView {
         }
     }
 }
+
+extension UIView {
+    func capture() -> UIImage? {
+        UIGraphicsBeginImageContextWithOptions(bounds.size, true, 0)
+        drawHierarchy(in: bounds, afterScreenUpdates: true)
+        let image = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return image
+    }
+    
+    func capture(bounds: CGRect) -> UIImage? {
+        UIGraphicsBeginImageContextWithOptions(bounds.size, false, 0)
+        guard let context = UIGraphicsGetCurrentContext() else { return
+            nil
+        }
+        context.translateBy(x: -bounds.origin.x, y: -bounds.origin.y)
+        layer.render(in: context)
+        let image = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return image
+    }
+}

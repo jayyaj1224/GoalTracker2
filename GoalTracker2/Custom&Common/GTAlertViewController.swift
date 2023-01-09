@@ -232,12 +232,12 @@ class GTAlertViewController: UIViewController {
             }
             
             // set button fonts
-            if self.buttonLabel != nil {
-                buttonLabel.font = .sfPro(size: 16, family: .Thin)
-            }
-            if self.cancelButtonLabel != nil {
-                cancelButtonLabel.font = .sfPro(size: 16, family: .Regular)
-            }
+//            if self.buttonLabel != nil {
+//                buttonLabel.font = .sfPro(size: 16, family: .Thin)
+//            }
+//            if self.cancelButtonLabel != nil {
+//                cancelButtonLabel.font = .sfPro(size: 16, family: .Regular)
+//            }
             yPos += self.buttonHeight
         }else{
             yPos += self.padding
@@ -252,19 +252,20 @@ class GTAlertViewController: UIViewController {
     }
     
     open func make(
-        title: String?=nil,     titleFont: UIFont = .sfPro(size: 14, family: .Regular),
-        subTitle: String?=nil,  subTitleFont: UIFont = .sfPro(size: 10, family: .Medium),
-        text: String?=nil,      textFont: UIFont = .sfPro(size: 9, family: .Light),
+        title: String?=nil,     titleFont: UIFont = .sfPro(size: 16, family: .Medium),
+        subTitle: String?=nil,  subTitleFont: UIFont = .sfPro(size: 14, family: .Regular),
+        text: String?=nil,      textFont: UIFont = .sfPro(size: 16, family: .Light),
         
         attributedString: NSAttributedString?=nil,
         noButtons: Bool?=false,
         buttonText: String?=nil,
-        buttonFont: UIFont = .sfPro(size: 15, family: .Bold),
+        buttonFont: UIFont = .sfPro(size: 15, family: .Light),
         cancelButtonText: String?=nil,
+        cancelButtonFont: UIFont = .sfPro(size: 15, family: .Medium),
         color: UIColor?=nil,
         buttonTextColor: UIColor = .black,
         cancelButtonTextColor: UIColor = .black,
-        backgroundDismiss: Bool = false) -> GlowAlertViewResponder {
+        backgroundDismiss: Bool = true) -> GlowAlertViewResponder {
             
             self.view.backgroundColor = backGroundColor
             
@@ -374,6 +375,7 @@ class GTAlertViewController: UIViewController {
                     cancelButtonLabel.numberOfLines = 1
                     cancelButtonLabel.textAlignment = .center
                     cancelButtonLabel.text = cancelButtonText
+                    cancelButtonLabel.font = cancelButtonFont
                     buttonLabel.setDropShadow(width: 1, height: 1, spread: 1, opacity: 0.5)
                     
                     cancelButton.addSubview(cancelButtonLabel)

@@ -93,6 +93,36 @@ class GoalCircleCell: UICollectionViewCell {
     }
     
     @objc private func copyButtonTapped() {
+        GTAlertViewController()
+            .make(
+                title: "Copy",
+                subTitle: "Which data would you like to copy?",
+                buttonText: "Tile Board",
+                buttonFont: .sfPro(size: 15, family: .Medium),
+                cancelButtonText: "Analysis Stats",
+                cancelButtonFont: .sfPro(size: 15, family: .Medium),
+                buttonTextColor: .black,
+                cancelButtonTextColor: .black
+            )
+            .addAction {
+                self.copyTileBoard()
+            }
+            .addCancelAction {
+                self.copyGoalStats()
+            }
+            .onCompletion {
+                self.showCopyCompletedToast()
+            }
+            .show()
+    }
+    
+    private func copyTileBoard() {
+        let image = tileBoard.capture()
+        
+        UIPasteboard.general.image = image
+    }
+    
+    private func copyGoalStats() {
         let vm = viewModel.goalStatsViewModel!
         let stats = """
                     < \(vm.goal.title) >
@@ -107,6 +137,7 @@ class GoalCircleCell: UICollectionViewCell {
                     """
         UIPasteboard.general.string = stats
         
+    private func showCopyCompletedToast() {
         let keyWindow = UIApplication.shared.windows.filter {$0.isKeyWindow}.first
         
         if var topController = keyWindow?.rootViewController {
