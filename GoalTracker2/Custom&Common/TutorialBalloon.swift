@@ -11,6 +11,7 @@ import UIKit
 class TutorialBalloon: NeumorphicView {
     private let messageLabel: UILabel = {
         let label = UILabel()
+        label.numberOfLines = 0
         label.font = .noto(size: 15, family: .Semibold)
         label.textColor = .white
         return label

@@ -38,7 +38,9 @@ enum Keys {
     static let tutorial_goal = "Tutorial_goal"
     static let tutorial_intro = "Tutorial_intro"
     static let toolTip_AddGoal = "toolTip_AddGoal"
-//    static let tutorial_intro = "Tutorial_intro"
+    static let toolTip_HomeCalendarButton = "toolTip_HomeCalendarButton"
+    static let toolTip_Calendar = "toolTip_Calendar"
+    static let toolTip_Usernote = "toolTip_Usernote"
     
     // Goal
 //    static let Profile: String = "UserDefaultKey_Profile"

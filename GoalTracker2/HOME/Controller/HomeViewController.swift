@@ -197,7 +197,7 @@ class HomeViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
+        showCalendarTutorialBalloonIfNeeded()
         plusIconImageRotate180Degree()
         
         if initialSettingDone == false {
@@ -762,6 +762,8 @@ extension HomeViewController {
             )
         }
         
+        showCalendarTutorialBalloonIfNeeded()
+        
         checkButton.isSelected.toggle()
     }
     
@@ -929,5 +931,28 @@ extension HomeViewController {
         let tutorial = TutorialViewController(tutorialName: "new-goal-tutorial", numberOfPages: 1)
         tutorial.modalPresentationStyle = .overFullScreen
         self.present(tutorial, animated: true)
+    }
+    
+    private func showCalendarTutorialBalloonIfNeeded() {
+        guard !UserDefaults.standard.bool(forKey: Keys.toolTip_HomeCalendarButton) else { return }
+        
+        UserDefaults.standard.set(true, forKey: Keys.toolTip_HomeCalendarButton)
+        
+        TutorialBalloon
+            .make(
+                message: "Check out calendar",
+                tailPosition: .bottom,
+                locate: {[weak self] balloon in
+                    guard let self = self else { return }
+                    
+                    self.view.addSubview(balloon)
+                    
+                    balloon.snp.makeConstraints { make in
+                        make.bottom.equalTo(self.bottomDateCalendarButton.snp.top).offset(-14)
+                        make.leading.equalToSuperview().inset(20)
+                    }
+                }
+            )
+            .show()
     }
 }

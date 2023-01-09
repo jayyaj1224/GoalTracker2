@@ -99,6 +99,12 @@ class CalendarViewController: UIViewController {
         calendarViewModel.displaySelected()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        
+        showCalendarTutorialIfNeeded()
+    }
+    
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
@@ -161,6 +167,35 @@ class CalendarViewController: UIViewController {
         setYear(selectedYear)
         
         monthsMenuCollectionView.selectItem(at: indexPath, animated: false, scrollPosition: .centeredHorizontally)
+    }
+    
+    private func showCalendarTutorialIfNeeded() {
+        let shownNumber = UserDefaults.standard.integer(forKey: Keys.toolTip_Calendar)
+        
+        guard shownNumber < 2, !calendarViewModel.isEmpty else { return }
+        
+//        UserDefaults.standard.set(shownNumber+1, forKey: Keys.toolTip_Calendar)
+        
+        TutorialBalloon
+            .make(
+                message: """
+                👉 Swipe right to delete goal
+                👆 Tap each ⬜️ Tile to toggle
+                """,
+                tailPosition: .top,
+                time: 4,
+                locate: {[weak self] balloon in
+                    guard let self = self else { return }
+                    
+                    self.view.addSubview(balloon)
+                    
+                    balloon.snp.makeConstraints { make in
+                        make.top.equalTo(self.goalTableView).offset(100)
+                        make.leading.equalToSuperview().inset(50)
+                    }
+                }
+            )
+            .show()
     }
 }
 

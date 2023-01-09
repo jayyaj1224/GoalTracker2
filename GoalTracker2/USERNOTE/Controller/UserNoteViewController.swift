@@ -28,7 +28,7 @@ class UserNoteViewController: UIViewController {
         return label
     }()
     
-    private let noteTypeTextField: UITextField = {
+    private let noteTextField: UITextField = {
         let textField = UITextField()
         textField.layer.cornerRadius = 8
         textField.layer.borderWidth = 0.5
@@ -118,6 +118,8 @@ class UserNoteViewController: UIViewController {
         super.viewDidAppear(animated)
         
         DispatchQueue.main.async {
+            self.showTutorialBalloonIfNeeded()
+            
             UIView.animate(withDuration: 0.2) { self.closeButton.alpha = 1 }
         }
     }
@@ -130,7 +132,7 @@ class UserNoteViewController: UIViewController {
 //MARK: UITextField Delgate
 extension UserNoteViewController: UITextFieldDelegate {
     private func bindTextField() {
-        noteTypeTextField.rx.text
+        noteTextField.rx.text
             .subscribe(onNext: { text in
                 var text = text ?? ""
                 let textCount = text.count
@@ -138,7 +140,7 @@ extension UserNoteViewController: UITextFieldDelegate {
                 if textCount > 100 {
                     let endIndex = text.index(text.startIndex, offsetBy: 100)
                     text = String(text[..<endIndex])
-                    self.noteTypeTextField.text = text
+                    self.noteTextField.text = text
                 } else {
                     self.wordCountLabel.text = "(\(textCount) /100)"
                 }
@@ -161,7 +163,7 @@ extension UserNoteViewController: UITextFieldDelegate {
         let note = textField.text ?? ""
         let filtered = note.filter { !$0.isWhitespace }
         
-        noteTypeTextField.text = ""
+        noteTextField.text = ""
         
         guard !filtered.isEmpty else {
             return false
@@ -286,7 +288,7 @@ extension UserNoteViewController {
     private func configure() {
         view.backgroundColor = .clear
         
-        noteTypeTextField.delegate = self
+        noteTextField.delegate = self
         
         let panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handleDismiss))
         closePanGestureView.addGestureRecognizer(panGestureRecognizer)
@@ -299,6 +301,43 @@ extension UserNoteViewController {
             messageBar.setGoalEmptyMessage()
             emptyLabel.isHidden = false
 //            noteTypeTextField.isEnabled = false
+        }
+    }
+    
+    private func showTutorialBalloonIfNeeded() {
+        let shownNumber = UserDefaults.standard.integer(forKey: Keys.toolTip_Usernote)
+        
+        guard shownNumber < 3, !noteViewModel.isGoalEmpty else {
+            return
+        }
+        
+        UserDefaults.standard.set(shownNumber+1, forKey: Keys.toolTip_Usernote)
+        
+        TutorialBalloon
+            .make(
+                message: "Add note here !",
+                tailPosition: .bottom,
+                locate: {[weak self] balloon in
+                    guard let self = self else { return }
+                    
+                    self.view.addSubview(balloon)
+                    
+                    balloon.snp.makeConstraints { make in
+                        make.bottom.equalTo(self.noteTextField.snp.top).offset(-20)
+                        make.centerX.equalToSuperview()
+                    }
+                }
+            )
+            .show()
+        
+        DispatchQueue.main.asyncAfter(deadline: .now()+0.5) {
+            self.view.makeToast(
+                "← Swipe left or right to pin and delete →",
+                point: CGPoint(x: K.screenWidth/2, y: 320),
+                title: nil,
+                image: nil,
+                completion: nil
+            )
         }
     }
     
@@ -330,7 +369,7 @@ extension UserNoteViewController {
             make.width.equalTo(60)
         }
         
-        [noteTitleLabel, noteTypeTextField, wordCountLabel, noteTableView, emptyLabel]
+        [noteTitleLabel, noteTextField, wordCountLabel, noteTableView, emptyLabel]
             .forEach(userNoteContentView.addSubview)
 
         noteTitleLabel.snp.makeConstraints { make in
@@ -338,20 +377,20 @@ extension UserNoteViewController {
             make.top.equalToSuperview().inset(10)
         }
 
-        noteTypeTextField.snp.makeConstraints { make in
+        noteTextField.snp.makeConstraints { make in
             make.height.equalTo(40)
             make.top.equalToSuperview().inset(38)
             make.leading.trailing.equalToSuperview().inset(25)
         }
 
         wordCountLabel.snp.makeConstraints { make in
-            make.trailing.equalTo(noteTypeTextField)
-            make.top.equalTo(noteTypeTextField.snp.bottom).offset(2)
+            make.trailing.equalTo(noteTextField)
+            make.top.equalTo(noteTextField.snp.bottom).offset(2)
         }
 
         noteTableView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
-            make.top.equalTo(noteTypeTextField.snp.bottom).offset(20)
+            make.top.equalTo(noteTextField.snp.bottom).offset(20)
             make.bottom.equalToSuperview()
         }
         

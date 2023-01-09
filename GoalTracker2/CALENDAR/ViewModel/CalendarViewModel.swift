@@ -34,6 +34,10 @@ class CalendarViewModel {
         Array(calendarModel.minYear...calendarModel.maxYear)
             .map(String.init)
     }
+    
+    var isEmpty: Bool {
+        tableViewDatasourceRelay.value.isEmpty
+    }
 }
 
 extension CalendarViewModel {
