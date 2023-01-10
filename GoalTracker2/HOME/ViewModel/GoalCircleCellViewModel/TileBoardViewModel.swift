@@ -19,6 +19,8 @@ class TileBoardViewModel {
     
     var spacing: CGFloat = 8
     
+    var numberOfRows: Int = 10
+    
     var daysObservable: Observable<[Day]> {
         let days = goal.monthsArray
             .map { goal.daysByMonth[$0] ?? [] }
@@ -28,7 +30,7 @@ class TileBoardViewModel {
     }
     
     func needDateLabelVisible(at index: Int) -> Bool {
-        if (index+1)%100 == 0 {
+        if (index+1)%(10*numberOfRows) == 0 {
             return true
             
         } else if (index+1) == goal.totalDays {
@@ -39,22 +41,37 @@ class TileBoardViewModel {
         }
     }
     
-    var boardSize: CGSize {
-        let daysCount = goal.totalDays
-        let widthHundred = (daysCount/100)*Int(tileSize*10 + spacing)
-        let widthLeftOvers = (daysCount%100)/10*Int(tileSize)
+    func getBoardSize(numberOfRows: Int=10) -> CGSize {
+        self.numberOfRows = numberOfRows
         
-        let width = widthHundred + widthLeftOvers
-        let height = Int(tileSize*10)
+        let daysCount = CGFloat(goal.totalDays)
         
-        return CGSize(width: width, height: height)
+        var width: CGFloat = 0
+        let numberOfColumns = ceil(daysCount/CGFloat(numberOfRows))
+        
+        width += tileSize*numberOfColumns
+        width += spacing*(numberOfColumns/10)
+        
+        if width > K.screenWidth || numberOfRows == 1 {
+            return CGSize(width: ceil(width), height: tileSize*CGFloat(numberOfRows))
+        } else {
+            return getBoardSize(numberOfRows: numberOfRows-1)
+        }
     }
     
     func itemSize(at index: Int) -> CGSize {
-        switch index%100 {
-        case 91...99, 0:
+        var isLastColumnOfBlock = false
+        
+        let maxTilesPerBlock = numberOfRows*10
+        let indexInBlock = index % maxTilesPerBlock
+        
+        if (indexInBlock > maxTilesPerBlock-numberOfRows) || (indexInBlock == 0) {
+            isLastColumnOfBlock = true
+        }
+        
+        if isLastColumnOfBlock {
             return CGSize(width: tileSize+spacing, height: tileSize)
-        default:
+        } else {
             return CGSize(width: tileSize, height: tileSize)
         }
     }

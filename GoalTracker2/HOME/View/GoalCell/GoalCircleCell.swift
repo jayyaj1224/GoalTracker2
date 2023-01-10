@@ -24,9 +24,8 @@ class GoalCircleCell: UICollectionViewCell {
     
     private let tileBoard = TileBoardCollectionView()
     
-    private let goalAnalysisLabel: UILabel = {
+    private let statsTitleLabel: UILabel = {
         let label = UILabel()
-        label.text = "Analysis"
         label.font = .outFit(size: 19, family: .Thin)
         label.textColor = .grayC
         return label
@@ -41,6 +40,14 @@ class GoalCircleCell: UICollectionViewCell {
         button.configuration = UIButton.Configuration.plain()
         button.configuration?.image = UIImage(named: "copy.neumorphism")
         return button
+    }()
+    
+    private let descriptionLabel: UILabel = {
+        let label = UILabel()
+        label.font = .sfPro(size: 14, family: .Regular)
+        label.textColor = .grayC
+        label.numberOfLines = 0
+        return label
     }()
     
     var viewModel: GoalViewModel!
@@ -86,6 +93,21 @@ class GoalCircleCell: UICollectionViewCell {
         tileBoard.setup(with: viewModel.tileBoardViewModel)
         
         goalStatsView.setStat(with: viewModel.goalStatsViewModel)
+        
+        setTitleDescription(with: viewModel.goal)
+    }
+    
+    private func setTitleDescription(with goal: Goal) {
+        let dayOrDays = (goal.totalDays>1) ? "Days" : "Day"
+        let attrString = NSMutableAttributedString(string: "\(goal.totalDays) \(dayOrDays) of Challenge")
+        let style = NSMutableParagraphStyle()
+
+        attrString.addAttribute(NSAttributedString.Key.font, value: UIFont.outFit(size: 19, family: .Regular), range: NSRange(location: 0, length: String(goal.totalDays).count))
+        attrString.addAttribute(NSAttributedString.Key.paragraphStyle, value: style, range: NSRange(location: 0, length: attrString.length))
+
+        statsTitleLabel.attributedText = attrString
+        
+        descriptionLabel.text = goal.description
     }
 
     @objc private func doubleTap() {
@@ -182,7 +204,7 @@ extension GoalCircleCell {
             .share()
             .asSignal(onErrorSignalWith: .empty())
         
-        let hidingView = [goalAnalysisLabel, tileBoard, goalStatsView]
+        let hidingView = [statsTitleLabel, tileBoard, goalStatsView]
         hidingView.forEach { $0.alpha = 0}
         
         didScrollToXSignal
@@ -219,8 +241,8 @@ extension GoalCircleCell {
         contentView.addSubview(scrollView)
         scrollView.addSubview(scrollContentView)
         
-        [goalCircle, goalAnalysisLabel, tileBoard, goalStatsView, doubleTapView, copyButton]
-            .forEach(scrollContentView.addSubview(_:))
+        [goalCircle, statsTitleLabel, tileBoard, goalStatsView, descriptionLabel, doubleTapView, copyButton]
+            .forEach(scrollContentView.addSubview)
         
         // - frames
         scrollView.snp.makeConstraints { make in
@@ -239,6 +261,12 @@ extension GoalCircleCell {
             make.size.equalTo(K.circleRadius)
             make.centerY.equalToSuperview()
             make.leading.equalToSuperview().offset((K.screenWidth-K.circleRadius)/2)
+        }
+        
+        descriptionLabel.snp.makeConstraints { make in
+            make.top.equalTo(tileBoard.snp.bottom).offset(10)
+            make.leading.equalTo(tileBoard).inset(3)
+            make.width.equalTo(300)
         }
         
         doubleTapView.snp.makeConstraints { make in
@@ -261,12 +289,12 @@ extension GoalCircleCell {
         }
         
         copyButton.snp.makeConstraints { make in
-            make.leading.equalTo(goalAnalysisLabel.snp.trailing).offset(-10)
-            make.centerY.equalTo(goalAnalysisLabel)
+            make.leading.equalTo(statsTitleLabel.snp.trailing).offset(-10)
+            make.centerY.equalTo(statsTitleLabel)
             make.size.equalTo(60)
         }
         
-        goalAnalysisLabel.snp.makeConstraints { make in
+        statsTitleLabel.snp.makeConstraints { make in
             make.leading.equalTo(tileBoard).inset(1)
             make.bottom.equalTo(goalStatsView.snp.top).offset(-8)
         }

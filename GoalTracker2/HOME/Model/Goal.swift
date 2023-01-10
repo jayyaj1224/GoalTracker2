@@ -20,7 +20,7 @@ struct Day: Codable {
 struct Goal: Codable {
     var identifier: String = ""
     var title: String = ""
-    var detail: String = ""
+    var description: String = ""
     
     var totalDays: Int = 0
     var startDate: String = ""
@@ -41,7 +41,7 @@ struct Goal: Codable {
         let today = Date()
         
         self.title = title
-        self.detail = detail
+        self.description = detail
         self.identifier = today.stringFormat(of: .goalIdentifier)
         self.status = GoalStatus.none
         self.totalDays = totalDays
@@ -98,7 +98,7 @@ extension Goal {
     }
     mutating func qaInit_1() {
         self.title = "2 hours workout every day."
-        self.detail = "aaaa"
+        self.description = "aaaa"
         self.identifier = Date().stringFormat(of: .goalIdentifier)
         self.status = GoalStatus.none
         self.totalDays = 700
@@ -146,7 +146,7 @@ extension Goal {
     
     mutating func qaInit_2() {
         self.title = "1 hour reading every day.\nSelf Reliance-R.W.Emerson."
-        self.detail = "aaaa"
+        self.description = "aaaa"
         self.identifier = Date().stringFormat(of: .goalIdentifier)
         self.status = GoalStatus.none
         self.totalDays = 700
@@ -193,7 +193,7 @@ extension Goal {
 
     mutating func qaInit_3() {
         self.title = "30 minutes of meditation and self affirmation."
-        self.detail = "aaaa"
+        self.description = "aaaa"
         self.identifier = Date().stringFormat(of: .goalIdentifier)
         self.status = GoalStatus.none
         self.totalDays = 700
@@ -240,7 +240,7 @@ extension Goal {
     
     mutating func qaInit_4() {
         self.title = "30 minutes of meditation and self affirmation."
-        self.detail = "aaaa"
+        self.description = "aaaa"
         self.identifier = Date().stringFormat(of: .goalIdentifier)
         self.status = GoalStatus.none
         self.totalDays = 700
@@ -287,7 +287,7 @@ extension Goal {
     
     mutating func qaInit_5() {
         self.title = "2 hour algorithm per day"
-        self.detail = "aaaa"
+        self.description = "aaaa"
         self.identifier = Date().stringFormat(of: .goalIdentifier)
         self.status = GoalStatus.none
         self.totalDays = 700

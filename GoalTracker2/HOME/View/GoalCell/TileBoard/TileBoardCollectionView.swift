@@ -44,6 +44,12 @@ class TileBoardCollectionView: UICollectionView, UICollectionViewDelegateFlowLay
     func setup(with viewModel: TileBoardViewModel) {
         disposeBag = DisposeBag()
         
+        let boardSize = viewModel.getBoardSize()
+        heightConstraint.constant = boardSize.height
+        widthConstraint.constant = boardSize.width
+        
+        self.viewModel = viewModel
+        
         let today = Date().stringFormat(of: .yyyyMMdd)
         
         viewModel.daysObservable
@@ -52,19 +58,11 @@ class TileBoardCollectionView: UICollectionView, UICollectionViewDelegateFlowLay
                 tileCell.imageWidth = viewModel.tileSize
                 
                 let isToday = (day.date == today)
+                let dateLabelVisible = viewModel.needDateLabelVisible(at: index)
                 
-                if viewModel.needDateLabelVisible(at: index) {
-                    tileCell.configure(statusRaw: day.status, dateLabelVisible: true, index: index, isToday: isToday)
-                } else {
-                    tileCell.configure(statusRaw: day.status, dateLabelVisible: false, isToday: isToday)
-                }
+                tileCell.configure(statusRaw: day.status, dateLabelVisible: dateLabelVisible, index: index, isToday: isToday)
             }
             .disposed(by: disposeBag)
-        
-        heightConstraint.constant = viewModel.boardSize.height
-        widthConstraint.constant = viewModel.boardSize.width
-        
-        self.viewModel = viewModel
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {

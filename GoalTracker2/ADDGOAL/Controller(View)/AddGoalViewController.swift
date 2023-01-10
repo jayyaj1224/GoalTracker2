@@ -324,14 +324,14 @@ extension AddGoalViewController: UITextViewDelegate {
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         var maximumTextLength = 0
         
-        if textView === goalTitleInputTextView {
-            maximumTextLength = 60
-        }
-        if textView === detailInputTextView {
-            maximumTextLength = 100
-        }
+        if textView === goalTitleInputTextView { maximumTextLength = 60 }
+        if textView === detailInputTextView { maximumTextLength = 100 }
         
         guard let textViewText = textView.text else { return false }
+        
+        if textViewText.filter({ $0 == "\n" }).count >= 2 && text == "\n" {
+            return false
+        }
         
         let newLength = textViewText.count + text.count - range.length
         if newLength > maximumTextLength && range.location < maximumTextLength {

@@ -11,22 +11,6 @@ import RxCocoa
 import Lottie
 import Toast_Swift
 
-/*
- 
- Achievement Page
- 
- Description
- Induction
- 1. Intro
-    Double Tap
-    HandSide
-    Check
-    KeyNote
- 
- 2. Tooltip
-    AddGoal
- */
-
 class HomeViewController: UIViewController {
     //MARK: - UI Components
     fileprivate let goalCircularCollectionView = CircularCollectionView()
@@ -197,7 +181,6 @@ class HomeViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        showCalendarTutorialBalloonIfNeeded()
         plusIconImageRotate180Degree()
         
         if initialSettingDone == false {
@@ -415,7 +398,7 @@ extension HomeViewController {
         scrollBackButton.snp.makeConstraints { make in
             make.size.equalTo(40)
             make.trailing.equalTo(plusRotatingButton)
-            make.bottom.equalTo(goalCircularCollectionView).inset(100)
+            make.bottom.equalTo(checkButton.snp.top).offset(-30)
         }
         
         checkButton.snp.makeConstraints { make in
