@@ -30,7 +30,7 @@ class SettingsManager {
     
     init() {
         let scorePannelTypeRaw = UserDefaults.standard.integer(forKey: Keys.setting_scoreViewType)
-        scorePannelType = ScorePannelType(rawValue: scorePannelTypeRaw) ?? .Digital
+        scorePannelType = ScorePannelType(rawValue: scorePannelTypeRaw) ?? .Flap
         
         let handSideRaw = UserDefaults.standard.string(forKey: Keys.setting_handSide) ?? ""
         handSide = HandSide(rawValue: handSideRaw) ?? .right
