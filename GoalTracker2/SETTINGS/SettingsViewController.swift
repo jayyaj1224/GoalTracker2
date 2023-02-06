@@ -160,8 +160,8 @@ class SettingsViewController: UIViewController {
         var selectedType: ScorePannelType!
         
         switch scoreViewTypePicker.selectedRow(inComponent: 0) {
-        case 0: selectedType = .Digital
-        case 1: selectedType = .Flap
+        case 0: selectedType = .Flap
+        case 1: selectedType = .Digital
         default: return
         }
         
@@ -186,9 +186,9 @@ extension SettingsViewController: UIPickerViewDataSource, UIPickerViewDelegate {
     }
     
     func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
-        if row == 0 { return pickerComponentView("digital") }
+        if row == 0 { return pickerComponentView("Flap") }
         
-        if row == 1 { return pickerComponentView("flap") }
+        if row == 1 { return pickerComponentView("Digital") }
         
         return UIView()
     }
