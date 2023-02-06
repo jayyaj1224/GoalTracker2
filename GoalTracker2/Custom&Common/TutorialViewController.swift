@@ -26,13 +26,17 @@ class TutorialViewController: UIViewController {
     
     private var contentImageViews: [UIImageView] = []
     
-    private let pageControl = NeumorphicPageControl(pageSize: K.screenWidth, axis: .horizontal, backgroundColor: .crayon.withAlphaComponent(0.9))
+    private let pageControl = NeumorphicPageControl(
+        pageSize: K.screenWidth,
+        axis: .horizontal,
+        backgroundColor: .crayon.withAlphaComponent(0.9)
+    )
     
     private let swipeIndicatorLabel: UILabel = {
         let label = UILabel()
         label.text = "􀄫"
         label.font = .sfPro(size: 17, family: .Semibold)
-        label.textColor = .white
+        label.textColor = .lightGray
         return label
     }()
     
@@ -50,7 +54,7 @@ class TutorialViewController: UIViewController {
         return button
     }()
     
-    private let bottomScreenView = UIView()
+//    private let bottomScreenView = UIView()
     
     //MARK: - Logic
     var dismissCompletion: (()->Void)?
@@ -93,7 +97,7 @@ class TutorialViewController: UIViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
-        addGradient()
+//        addGradient()
     }
     
     private func bindViewComponents() {
@@ -116,16 +120,16 @@ class TutorialViewController: UIViewController {
         dismiss(animated: false, completion: dismissCompletion)
     }
     
-    private func addGradient() {
-        let gradientLayer = CAGradientLayer()
-        gradientLayer.colors = [
-            UIColor.clear.cgColor,
-            UIColor.black.withAlphaComponent(0.6).cgColor
-        ]
-        gradientLayer.locations = [0.0, 1.0]
-        gradientLayer.frame = bottomScreenView.bounds
-        bottomScreenView.layer.addSublayer(gradientLayer)
-    }
+//    private func addGradient() {
+//        let gradientLayer = CAGradientLayer()
+//        gradientLayer.colors = [
+//            UIColor.clear.cgColor,
+//            UIColor.black.withAlphaComponent(0.6).cgColor
+//        ]
+//        gradientLayer.locations = [0.0, 1.0]
+//        gradientLayer.frame = bottomScreenView.bounds
+//        bottomScreenView.layer.addSublayer(gradientLayer)
+//    }
 }
 
 extension Reactive where Base: TutorialViewController {
@@ -165,7 +169,8 @@ extension TutorialViewController {
     }
     
     private func layout() {
-        [tutorialScrollView, bottomScreenView, pageControl]
+//        [tutorialScrollView, bottomScreenView, pageControl]
+        [tutorialScrollView, pageControl]
             .forEach(self.view.addSubview)
         
         tutorialScrollView.snp.makeConstraints { make in
@@ -190,10 +195,10 @@ extension TutorialViewController {
             }
         }
         
-        bottomScreenView.snp.makeConstraints { make in
-            make.leading.trailing.bottom.equalToSuperview()
-            make.height.equalTo(150)
-        }
+//        bottomScreenView.snp.makeConstraints { make in
+//            make.leading.trailing.bottom.equalToSuperview()
+//            make.height.equalTo(150)
+//        }
         
         if isSwipeDismiss {
             let dummyView = UIView()
