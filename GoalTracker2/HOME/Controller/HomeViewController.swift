@@ -551,7 +551,10 @@ extension Reactive where Base: HomeViewController {
             DispatchQueue.main.async {
                 base.goalCircularCollectionView.scrollRectToVisible(rect, animated: true)
             }
+            
             base.pageIndicator.updateIndicators(offset: offsetY)
+            
+            base.checkButton.isSelected = false
         }
     }
     

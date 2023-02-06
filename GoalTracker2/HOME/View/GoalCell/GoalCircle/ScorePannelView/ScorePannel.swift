@@ -11,5 +11,5 @@ protocol ScorePannel {
 }
 
 enum ScorePannelType: Int {
-    case Digital, Flap
+    case Flap, Digital
 }
