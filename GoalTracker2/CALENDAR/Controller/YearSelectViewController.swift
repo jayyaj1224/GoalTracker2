@@ -119,7 +119,7 @@ extension YearSelectViewController: UICollectionViewDataSource, UICollectionView
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "YearSelectCell", for: indexPath) as? YearSelectCell else {
             return UICollectionViewCell()
         }
-        cell.configure(year: years[indexPath.row])
+        cell.configure(year: years[indexPath.row], selectedYear: selectedYear)
         
         return cell
     }
@@ -155,10 +155,10 @@ class YearSelectCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configure(year: String) {
+    func configure(year: String, selectedYear: String) {
         yearLabel.text = year
         
-        if year == Date().stringFormat(of: .yyyy) {
+        if year == selectedYear {
             yearLabel.font = .outFit(size: 14, family: .Semibold)
         } else {
             yearLabel.font = .outFit(size: 14, family: .Light)
