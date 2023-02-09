@@ -19,23 +19,20 @@ struct Day: Codable {
 
 struct Goal: Codable {
     var identifier: String = ""
+    var status: GoalStatus = .none
+    
     var title: String = ""
     var description: String = ""
-    
     var totalDays: Int = 0
+    
     var startDate: String = ""
     var endDate: String = ""
-    
-    var status: GoalStatus = .none
     
     var successCount: Int = 0
     var failCount: Int = 0
     var failCap: Int = 0
     
-    var daysByMonth: [String: [Day]] = [:]
-    var monthsArray: [String] = []
-    
-    var isPlaceHolder: Bool = false
+    var days: [Day]
     
     init(title: String, detail: String, totalDays: Int, failCap: Int) {
         let today = Date()
@@ -50,25 +47,20 @@ struct Goal: Codable {
         self.failCap = failCap
         
         if title.hasPrefix("Qqq") {
+            self.days = []
+            
             qaInit()
             return
         }
         
-        Array(0...totalDays-1).forEach { i in
-            let date = today.add(i)
-            let yyyyMM = date.stringFormat(of: .yyyyMM)
-            let yyyyMMdd = date.stringFormat(of: .yyyyMMdd)
-            
-            let day = Day(date: yyyyMMdd,index: i, status: "none")
-            
-            var temp = daysByMonth[yyyyMM] ?? []
-            temp.append(day)
-            daysByMonth[yyyyMM] = temp
-            
-            if (i == 0) || (date.stringFormat(of: .dd) == "01") {
-                monthsArray.append(yyyyMM)
+        self.days = Array(0...totalDays-1)
+            .map { i in
+                let date = today.add(i)
+                let yyyyMM = date.stringFormat(of: .yyyyMM)
+                let yyyyMMdd = date.stringFormat(of: .yyyyMMdd)
+                
+                return Day(date: yyyyMMdd,index: i, status: "none")
             }
-        }
     }
 }
 
@@ -115,32 +107,25 @@ extension Goal {
             .shuffled()[0...self.failCount]
             .map { Int($0) }
         
-        for i in 1...totalDays {
-            let date = today.add(i-1)
-            let yyyyMM = date.stringFormat(of: .yyyyMM)
-            let yyyyMMdd = date.stringFormat(of: .yyyyMMdd)
-            
-            var day = Day(date: yyyyMMdd,index: i, status: "none")
-            
-            
-            if day.date < Date().stringFormat(of: .yyyyMMdd) {
-                if randomFailed.contains(i) {
-                    day.status = GoalStatus.fail.rawValue
+        self.days = Array(0...totalDays-1)
+            .map { i in
+                let date = today.add(i)
+                let yyyyMM = date.stringFormat(of: .yyyyMM)
+                let yyyyMMdd = date.stringFormat(of: .yyyyMMdd)
+                
+                var day = Day(date: yyyyMMdd,index: i, status: "none")
+                
+                if day.date < Date().stringFormat(of: .yyyyMMdd) {
+                    if randomFailed.contains(i) {
+                        day.status = GoalStatus.fail.rawValue
+                    } else {
+                        day.status = GoalStatus.success.rawValue
+                    }
                 } else {
-                    day.status = GoalStatus.success.rawValue
+                    day.status = GoalStatus.none.rawValue
                 }
-            } else {
-                day.status = GoalStatus.none.rawValue
+                return day
             }
-            
-            var temp = daysByMonth[yyyyMM] ?? []
-            temp.append(day)
-            daysByMonth[yyyyMM] = temp
-            
-            if (i == 0) || (date.stringFormat(of: .dd) == "01") {
-                monthsArray.append(yyyyMM)
-            }
-        }
     }
     
     
@@ -163,32 +148,28 @@ extension Goal {
             .shuffled()[0...self.failCount]
             .map { Int($0) }
         
-        for i in 1...totalDays {
-            let date = today.add(i-1)
-            let yyyyMM = date.stringFormat(of: .yyyyMM)
-            let yyyyMMdd = date.stringFormat(of: .yyyyMMdd)
-            
-            var day = Day(date: yyyyMMdd,index: i, status: "none")
-            
-            
-            if day.date < Date().stringFormat(of: .yyyyMMdd) {
-                if randomFailed.contains(i) {
-                    day.status = GoalStatus.fail.rawValue
+        self.days = Array(0...totalDays-1)
+            .map { i in
+                let date = today.add(i-1)
+                let yyyyMM = date.stringFormat(of: .yyyyMM)
+                let yyyyMMdd = date.stringFormat(of: .yyyyMMdd)
+                
+                var day = Day(date: yyyyMMdd,index: i, status: "none")
+                
+                
+                if day.date < Date().stringFormat(of: .yyyyMMdd) {
+                    if randomFailed.contains(i) {
+                        day.status = GoalStatus.fail.rawValue
+                    } else {
+                        day.status = GoalStatus.success.rawValue
+                    }
                 } else {
-                    day.status = GoalStatus.success.rawValue
+                    day.status = GoalStatus.none.rawValue
                 }
-            } else {
-                day.status = GoalStatus.none.rawValue
+                
+                return day
+                
             }
-            
-            var temp = daysByMonth[yyyyMM] ?? []
-            temp.append(day)
-            daysByMonth[yyyyMM] = temp
-            
-            if (i == 0) || (date.stringFormat(of: .dd) == "01") {
-                monthsArray.append(yyyyMM)
-            }
-        }
     }
 
     mutating func qaInit_3() {
@@ -210,32 +191,26 @@ extension Goal {
             .shuffled()[0...self.failCount]
             .map { Int($0) }
         
-        for i in 1...totalDays {
-            let date = today.add(i-1)
-            let yyyyMM = date.stringFormat(of: .yyyyMM)
-            let yyyyMMdd = date.stringFormat(of: .yyyyMMdd)
-            
-            var day = Day(date: yyyyMMdd,index: i, status: "none")
-            
-            
-            if day.date < Date().stringFormat(of: .yyyyMMdd) {
-                if randomFailed.contains(i) {
-                    day.status = GoalStatus.fail.rawValue
+        self.days = Array(0...totalDays-1)
+            .map { i in
+                let date = today.add(i-1)
+                let yyyyMM = date.stringFormat(of: .yyyyMM)
+                let yyyyMMdd = date.stringFormat(of: .yyyyMMdd)
+                
+                var day = Day(date: yyyyMMdd,index: i, status: "none")
+                
+                
+                if day.date < Date().stringFormat(of: .yyyyMMdd) {
+                    if randomFailed.contains(i) {
+                        day.status = GoalStatus.fail.rawValue
+                    } else {
+                        day.status = GoalStatus.success.rawValue
+                    }
                 } else {
-                    day.status = GoalStatus.success.rawValue
+                    day.status = GoalStatus.none.rawValue
                 }
-            } else {
-                day.status = GoalStatus.none.rawValue
+                return day
             }
-            
-            var temp = daysByMonth[yyyyMM] ?? []
-            temp.append(day)
-            daysByMonth[yyyyMM] = temp
-            
-            if (i == 0) || (date.stringFormat(of: .dd) == "01") {
-                monthsArray.append(yyyyMM)
-            }
-        }
     }
     
     mutating func qaInit_4() {
@@ -257,32 +232,27 @@ extension Goal {
             .shuffled()[0...self.failCount]
             .map { Int($0) }
         
-        for i in 1...totalDays {
-            let date = today.add(i-1)
-            let yyyyMM = date.stringFormat(of: .yyyyMM)
-            let yyyyMMdd = date.stringFormat(of: .yyyyMMdd)
-            
-            var day = Day(date: yyyyMMdd,index: i, status: "none")
-            
-            
-            if day.date < Date().stringFormat(of: .yyyyMMdd) {
-                if randomFailed.contains(i) {
-                    day.status = GoalStatus.fail.rawValue
+        self.days = Array(0...totalDays-1)
+            .map { i in
+                let date = today.add(i-1)
+                let yyyyMM = date.stringFormat(of: .yyyyMM)
+                let yyyyMMdd = date.stringFormat(of: .yyyyMMdd)
+                
+                var day = Day(date: yyyyMMdd,index: i, status: "none")
+                
+                
+                if day.date < Date().stringFormat(of: .yyyyMMdd) {
+                    if randomFailed.contains(i) {
+                        day.status = GoalStatus.fail.rawValue
+                    } else {
+                        day.status = GoalStatus.success.rawValue
+                    }
                 } else {
-                    day.status = GoalStatus.success.rawValue
+                    day.status = GoalStatus.none.rawValue
                 }
-            } else {
-                day.status = GoalStatus.none.rawValue
+                
+                return day
             }
-            
-            var temp = daysByMonth[yyyyMM] ?? []
-            temp.append(day)
-            daysByMonth[yyyyMM] = temp
-            
-            if (i == 0) || (date.stringFormat(of: .dd) == "01") {
-                monthsArray.append(yyyyMM)
-            }
-        }
     }
     
     mutating func qaInit_5() {
@@ -304,31 +274,26 @@ extension Goal {
             .shuffled()[0...self.failCount]
             .map { Int($0) }
         
-        for i in 1...totalDays {
-            let date = today.add(i-1)
-            let yyyyMM = date.stringFormat(of: .yyyyMM)
-            let yyyyMMdd = date.stringFormat(of: .yyyyMMdd)
-            
-            var day = Day(date: yyyyMMdd,index: i, status: "none")
-            
-            
-            if day.date < Date().stringFormat(of: .yyyyMMdd) {
-                if randomFailed.contains(i) {
-                    day.status = GoalStatus.fail.rawValue
+        self.days = Array(0...totalDays-1)
+            .map { i in
+                let date = today.add(i-1)
+                let yyyyMM = date.stringFormat(of: .yyyyMM)
+                let yyyyMMdd = date.stringFormat(of: .yyyyMMdd)
+                
+                var day = Day(date: yyyyMMdd,index: i, status: "none")
+                
+                
+                if day.date < Date().stringFormat(of: .yyyyMMdd) {
+                    if randomFailed.contains(i) {
+                        day.status = GoalStatus.fail.rawValue
+                    } else {
+                        day.status = GoalStatus.success.rawValue
+                    }
                 } else {
-                    day.status = GoalStatus.success.rawValue
+                    day.status = GoalStatus.none.rawValue
                 }
-            } else {
-                day.status = GoalStatus.none.rawValue
+                
+                return day
             }
-            
-            var temp = daysByMonth[yyyyMM] ?? []
-            temp.append(day)
-            daysByMonth[yyyyMM] = temp
-            
-            if (i == 0) || (date.stringFormat(of: .dd) == "01") {
-                monthsArray.append(yyyyMM)
-            }
-        }
     }
 }

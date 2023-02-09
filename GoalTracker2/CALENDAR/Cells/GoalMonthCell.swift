@@ -49,7 +49,7 @@ class GoalMonthCell: UITableViewCell {
     
     private let daysInMonthRelay: BehaviorRelay<[Day]> = BehaviorRelay(value: [])
     
-    var dayInGoalMonthSelectedSignal: Signal<(goalAt: Int, dayAt: Int, goalMonth: GoalMonth)>!
+//    var dayInGoalMonthSelectedSignal: Signal<(goalAt: Int, dayAt: Int, goalMonth: GoalMonth)>!
     
     let disposeBag = DisposeBag()
     var reuseBag = DisposeBag()
@@ -83,19 +83,23 @@ class GoalMonthCell: UITableViewCell {
         }
     }
     
-    func configure(with goalMonth: GoalMonth, tableViewRow: Int) {
-        daysInMonthRelay.accept(goalMonth.days)
+    func configure(with datasource: CalendarViewModel.CalendarDatasource, tableViewRow: Int) {
+        let range = datasource.range
+        let goal = datasource.goal
+        let days = (range==nil) ? [] : Array(goal.days[range!])
         
-        let title = goalMonth.title.filter { !$0.isNewline }
+        daysInMonthRelay.accept(days)
+        
+        let title = goal.title.filter { !$0.isNewline }
         goalTitleLabel.text = title
         goalTitleSubLabel.text = title
         
-        dayInGoalMonthSelectedSignal = daysCollectionView.rx
-            .itemSelected
-            .withLatestFrom(Observable.just(goalMonth)) {
-                (goalAt: tableViewRow, dayAt: $0.row, goalMonth: $1)
-            }
-            .asSignal(onErrorSignalWith: .empty())
+//        dayInGoalMonthSelectedSignal = daysCollectionView.rx
+//            .itemSelected
+//            .withLatestFrom(Observable.just(goalMonth)) {
+//                (goalAt: tableViewRow, dayAt: $0.row, goalMonth: $1)
+//            }
+//            .asSignal(onErrorSignalWith: .empty())
     }
     
     private func bind()  {

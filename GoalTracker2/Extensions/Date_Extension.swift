@@ -9,10 +9,6 @@ import Foundation
 
 //MARK: - Date Calculate
 extension Date {
-    var pastCount: Int {
-        return Calendar.current.dateComponents([.day], from: self, to: Date()).day ?? 0
-    }
-    
     var futureCount: Int {
         return Calendar.current.dateComponents([.day], from: Date(), to: self).day ?? 0
     }

@@ -21,20 +21,6 @@ class GoalManager {
         configureRealm()
     }
     
-    var goals: [Goal] {
-        var goalsTemp = [Goal]()
-        self.realm.objects(GoalEncodedObject.self)
-            .sorted { $0.identifier < $1.identifier }
-            .map(\.goalEncoded)
-            .forEach { data in
-                if let goal = try? PropertyListDecoder().decode(Goal.self, from: data) {
-                    goalsTemp.append(goal)
-                }
-            }
-        
-        return goalsTemp
-    }
-    
     private func configureRealm() {
         do {
             let customMigration = Realm.Configuration(
@@ -51,6 +37,19 @@ class GoalManager {
             let resetConfiguration = Realm.Configuration(deleteRealmIfMigrationNeeded: true)
             self.realm = try! Realm(configuration: resetConfiguration)
         }
+    }
+    
+    func getGoals() -> [Goal] {
+        var goalsTemp = [Goal]()
+        self.realm.objects(GoalEncodedObject.self)
+            .sorted { $0.identifier < $1.identifier }
+            .map(\.goalEncoded)
+            .forEach { data in
+                if let goal = try? PropertyListDecoder().decode(Goal.self, from: data) {
+                    goalsTemp.append(goal)
+                }
+            }
+        return goalsTemp
     }
 }
 

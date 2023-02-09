@@ -88,16 +88,13 @@ class GoalCircleCell: UICollectionViewCell {
     func setupCell(_ viewModel: GoalViewModel) {
         self.viewModel = viewModel
         
-        goalCircle.setup(with: viewModel.goalCircleViewModel)
+        goalCircle.setup(with: viewModel)
         
-        tileBoard.setup(with: viewModel.tileBoardViewModel)
+        tileBoard.setup(with: viewModel)
         
-        goalStatsView.setStat(with: viewModel.goalStatsViewModel)
+        goalStatsView.setStat(with: viewModel)
         
-        setTitleDescription(with: viewModel.goal)
-    }
-    
-    private func setTitleDescription(with goal: Goal) {
+        let goal = viewModel.goal
         let dayOrDays = (goal.totalDays>1) ? "Days" : "Day"
         let attrString = NSMutableAttributedString(string: "\(goal.totalDays) \(dayOrDays) of Challenge")
         let style = NSMutableParagraphStyle()
@@ -145,20 +142,7 @@ class GoalCircleCell: UICollectionViewCell {
     }
     
     private func copyGoalStats() {
-        let vm = viewModel.goalStatsViewModel!
-        let stats = """
-                    < \(vm.goal.title) >
-                    • Execution rate: \(vm.executionRate) %
-                    • Max streak: \(vm.maxStreak)
-                    • Success count: \(vm.successCount)
-                    • Fail count/cap: \(vm.failCount)
-                    • Days left: \(vm.daysLeft)
-                    • Date: \(vm.dateRange)
-                    
-                    **copied @(\(Date().stringFormat(of: .ddMMMEEEE_Comma_Space)))
-                    """
-        UIPasteboard.general.string = stats
-        
+        UIPasteboard.general.string = viewModel.getGoalCopyStrings()
     }
     
     private func showCopyCompletedToast() {

@@ -42,9 +42,6 @@
 		622697EE290E9E05007754CA /* UIImageView_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 622697ED290E9E05007754CA /* UIImageView_Extension.swift */; };
 		622697F1290E9FC2007754CA /* DigitalScoreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 622697F0290E9FC2007754CA /* DigitalScoreView.swift */; };
 		622697F3290EA00A007754CA /* DigitalNumber.swift in Sources */ = {isa = PBXBuildFile; fileRef = 622697F2290EA00A007754CA /* DigitalNumber.swift */; };
-		622697F6290EC7F1007754CA /* TileBoardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 622697F5290EC7F1007754CA /* TileBoardViewModel.swift */; };
-		622697F8290EC804007754CA /* GoalCircleViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 622697F7290EC804007754CA /* GoalCircleViewModel.swift */; };
-		622697FA290EC894007754CA /* GoalStatsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 622697F9290EC894007754CA /* GoalStatsViewModel.swift */; };
 		622F135228DCAD2A0072E5BF /* CalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 622F135128DCAD2A0072E5BF /* CalendarViewController.swift */; };
 		622F135528DCAD390072E5BF /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 622F135428DCAD390072E5BF /* SettingsViewController.swift */; };
 		624453E828FD3D0F003A9117 /* PeriodSettingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 624453E728FD3D0F003A9117 /* PeriodSettingViewModel.swift */; };
@@ -179,9 +176,6 @@
 		622697ED290E9E05007754CA /* UIImageView_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageView_Extension.swift; sourceTree = "<group>"; };
 		622697F0290E9FC2007754CA /* DigitalScoreView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DigitalScoreView.swift; sourceTree = "<group>"; };
 		622697F2290EA00A007754CA /* DigitalNumber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DigitalNumber.swift; sourceTree = "<group>"; };
-		622697F5290EC7F1007754CA /* TileBoardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TileBoardViewModel.swift; sourceTree = "<group>"; };
-		622697F7290EC804007754CA /* GoalCircleViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalCircleViewModel.swift; sourceTree = "<group>"; };
-		622697F9290EC894007754CA /* GoalStatsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalStatsViewModel.swift; sourceTree = "<group>"; };
 		622F135128DCAD2A0072E5BF /* CalendarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewController.swift; sourceTree = "<group>"; };
 		622F135428DCAD390072E5BF /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		624453E728FD3D0F003A9117 /* PeriodSettingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeriodSettingViewModel.swift; sourceTree = "<group>"; };
@@ -429,19 +423,8 @@
 			isa = PBXGroup;
 			children = (
 				621AEB0928CF089400D53F2C /* HomeViewModel.swift */,
-				622697FB290EC89D007754CA /* GoalCircleCellViewModel */,
 			);
 			path = ViewModel;
-			sourceTree = "<group>";
-		};
-		622697FB290EC89D007754CA /* GoalCircleCellViewModel */ = {
-			isa = PBXGroup;
-			children = (
-				622697F7290EC804007754CA /* GoalCircleViewModel.swift */,
-				622697F5290EC7F1007754CA /* TileBoardViewModel.swift */,
-				622697F9290EC894007754CA /* GoalStatsViewModel.swift */,
-			);
-			path = GoalCircleCellViewModel;
 			sourceTree = "<group>";
 		};
 		6267687E2966FFB000666C8A /* Controller */ = {
@@ -1117,7 +1100,6 @@
 				621AEAF228CEF74300D53F2C /* ArcProcessBar.swift in Sources */,
 				62F249932936A3820017530F /* SettingsManager.swift in Sources */,
 				626742AE2937A5860068FFE6 /* CalendarModel.swift in Sources */,
-				622697F8290EC804007754CA /* GoalCircleViewModel.swift in Sources */,
 				62CA1867293270AD006F046D /* YearSelectViewController.swift in Sources */,
 				62767E3E2936A69B00622A4B /* ScorePannel.swift in Sources */,
 				621AEB0A28CF089400D53F2C /* HomeViewModel.swift in Sources */,
@@ -1127,7 +1109,6 @@
 				62CA1865293215A1006F046D /* CalendarViewModel.swift in Sources */,
 				62B3752D293C038A000F523B /* UserNote.swift in Sources */,
 				620A8090293A6A1D00158850 /* UserNoteViewController.swift in Sources */,
-				622697FA290EC894007754CA /* GoalStatsViewModel.swift in Sources */,
 				621AEAF328CEF74300D53F2C /* GoalCircle.swift in Sources */,
 				621AEB0828CF05A000D53F2C /* UIButton_Extension.swift in Sources */,
 				622F135228DCAD2A0072E5BF /* CalendarViewController.swift in Sources */,
@@ -1144,7 +1125,6 @@
 				621AEAFB28CEF74300D53F2C /* CollectionViewCircularLayout.swift in Sources */,
 				624E91E728FD6EC400E15735 /* PeriodSettingModel.swift in Sources */,
 				624453E828FD3D0F003A9117 /* PeriodSettingViewModel.swift in Sources */,
-				622697F6290EC7F1007754CA /* TileBoardViewModel.swift in Sources */,
 				621FEA97291A687A00AC6DDC /* FlapScoreView.swift in Sources */,
 				621AEAEE28CEF74300D53F2C /* TileCell.swift in Sources */,
 				AA9990CF28D1A1C800FE4A26 /* NeumorphicView.swift in Sources */,

@@ -84,7 +84,7 @@ class GoalCircle: UIView {
     
     private let disposebag = DisposeBag()
     
-    func setup(with viewModel: GoalCircleViewModel) {
+    func setup(with viewModel: GoalViewModel) {
         let goal = viewModel.goal
         
         goalTitleLabel.text = goal.title

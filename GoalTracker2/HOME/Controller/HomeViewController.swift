@@ -157,14 +157,14 @@ class HomeViewController: UIViewController {
     fileprivate var isMagnified = false
     
     // Calendar data preperation
-    fileprivate var calendarModel: CalendarModel?
+//    fileprivate var calendarModel: CalendarModel?
     
     //MARK: - ViewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
         configure()
         
-        prepareCalendarViewModelData()
+//        prepareCalendarViewModelData()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -477,11 +477,13 @@ extension Reactive where Base: HomeViewController {
     
     fileprivate var circularScrollStoppedAt: Binder<CGFloat> {
         Binder(base) {base, y in
-            let page = Int(y/K.singleRowHeight)
+            let row = Int(y/K.singleRowHeight)
             let viewModels = base.homeViewModel.goalViewModelsRelay.value
             
             guard !viewModels.isEmpty else { return }
-            base.checkButton.isSelected = viewModels[page].todayChecked
+            let goal = viewModels[row].goal
+            
+            base.checkButton.isSelected = (goal.status == .success)
             
             if SettingsManager.shared.vibrate {
                 UIImpactFeedbackGenerator(style: .light).impactOccurred()
@@ -571,50 +573,50 @@ extension Reactive where Base: HomeViewController {
             base.messageBar.setNewGoalPlaceHolderMessage()
             
             DispatchQueue.global(qos: .userInteractive).async {
-                base.calendarModel?.addGoalByMonth(goal: new)
+//                base.calendarModel?.addGoalByMonth(goal: new)
             }
         }
     }
     
     fileprivate var deleteGoalWithIdentifier: Binder<String> {
         Binder(base) { base, identifier in
-            let numberOfItems = base.homeViewModel.goalViewModelsRelay.value.count
+            let numberOfItems = 0 //base.homeViewModel.goalViewModelsRelay.value.count
             
             var isFistItemDelete = false
             
-            DispatchQueue.main.async {
-                let y = base.goalCircularCollectionView.contentOffset.y
-                let oneRowBefore = CGPoint(x: 0, y: y-K.singleRowHeight)
-                
-                if oneRowBefore.y >= 0 {
-                    base.goalCircularCollectionView.setContentOffset(oneRowBefore, animated: true)
-                    
-                } else if oneRowBefore.y < 0 {
-                    guard  numberOfItems > 1 else { return }
-                    
-                    isFistItemDelete = true
-                    
-                    let oneRowAfter = CGPoint(x: 0, y: y+K.singleRowHeight)
-                    base.goalCircularCollectionView.setContentOffset(oneRowAfter, animated: true)
-                }
-            }
+//            DispatchQueue.main.async {
+//                let y = base.goalCircularCollectionView.contentOffset.y
+//                let oneRowBefore = CGPoint(x: 0, y: y-K.singleRowHeight)
+//
+//                if oneRowBefore.y >= 0 {
+//                    base.goalCircularCollectionView.setContentOffset(oneRowBefore, animated: true)
+//
+//                } else if oneRowBefore.y < 0 {
+//                    guard  numberOfItems > 1 else { return }
+//
+//                    isFistItemDelete = true
+//
+//                    let oneRowAfter = CGPoint(x: 0, y: y+K.singleRowHeight)
+//                    base.goalCircularCollectionView.setContentOffset(oneRowAfter, animated: true)
+//                }
+//            }
             
             let delay = (numberOfItems==1) ? 0.0 : 0.6
             
-            DispatchQueue.main.asyncAfter(deadline: .now()+delay) {
-                if isFistItemDelete {
-                    base.goalCircularCollectionView.setContentOffset(.zero, animated: false)
-                }
-                
-                let goalVmsFiltered = base.homeViewModel
-                    .goalViewModelsRelay.value
-                    .filter { $0.goal.identifier != identifier }
-                
-                base.homeViewModel.goalViewModelsRelay
-                    .accept(goalVmsFiltered)
-                
-                base.calendarModel?.deleteGoal(with: identifier, completion: nil)
-            }
+//            DispatchQueue.main.asyncAfter(deadline: .now()+delay) {
+//                if isFistItemDelete {
+//                    base.goalCircularCollectionView.setContentOffset(.zero, animated: false)
+//                }
+//
+//                let goalVmsFiltered = base.homeViewModel
+//                    .goalViewModelsRelay.value
+//                    .filter { $0.goal.identifier != identifier }
+//
+//                base.homeViewModel.goalViewModelsRelay
+//                    .accept(goalVmsFiltered)
+//
+//                base.calendarModel?.deleteGoal(with: identifier, completion: nil)
+//            }
         }
     }
     
@@ -726,9 +728,9 @@ extension HomeViewController {
         if checkButton.isSelected == false {
             dayCheckLottieAnimation()
             dayCheckToast()
-            homeViewModel.dayCheck(at: page)
+            homeViewModel.dayCheck(at: page, status: .success)
         } else {
-            homeViewModel.dayUncheck(at: page)
+            homeViewModel.dayCheck(at: page, status: .fail)
             
             var toastStyle = ToastStyle()
             toastStyle.backgroundColor = .black.withAlphaComponent(0.4)
@@ -820,8 +822,17 @@ extension HomeViewController {
     }
     
     @objc private func calenderButtonsTapped() {
-        let calendarViewController = CalendarViewController()
-        calendarViewController.calendarViewModel.calendarModel = calendarModel
+        let goals = homeViewModel
+            .goalViewModelsRelay.value
+            .map(\.goal)
+        
+        let calendarViewController = CalendarViewController(goals: goals)
+
+        calendarViewController
+            .calendarViewModel.goalsEditedSubject
+            .map { $0.compactMap(GoalViewModel.init) }
+            .bind(to: homeViewModel.goalViewModelsRelay)
+            .disposed(by: calendarViewController.disposeBag)
         
         calendarViewController.goalDeletedSubject
             .bind(to: self.rx.deleteGoalWithIdentifier)
@@ -848,23 +859,12 @@ extension HomeViewController: SettingsProtocol {
         
         messageBar.setGoalEmptyMessage()
         
-        prepareCalendarViewModelData()
-        
         checkButton.isSelected = false
         checkButton.isEnabled = false
     }
     
     func scoreBoardSet() {
         goalCircularCollectionView.reloadData()
-    }
-}
-
-extension HomeViewController {
-    private func prepareCalendarViewModelData() {
-        let calendarModel = CalendarModel()
-        calendarModel.setData()
-        
-        self.calendarModel = calendarModel
     }
 }
 

@@ -73,8 +73,8 @@ class GoalStatsStackView: UIView {
         layout()
     }
     
-    func setStat(with viewModel: GoalStatsViewModel) {
-        executionRate.setStat(text: viewModel.executionRate)
+    func setStat(with viewModel: GoalViewModel) {
+        executionRate.setStat(text: viewModel.executionRateStat)
         maxStreak.setStat(text: viewModel.maxStreak)
         daysLeft.setStat(text: viewModel.daysLeft)
         dateRange.setStat(text: viewModel.dateRange)

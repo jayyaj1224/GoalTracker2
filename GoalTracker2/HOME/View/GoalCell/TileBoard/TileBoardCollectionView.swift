@@ -10,15 +10,12 @@ import RxSwift
 import RxCocoa
 
 class TileBoardCollectionView: UICollectionView, UICollectionViewDelegateFlowLayout {
-
-    var viewModel: TileBoardViewModel?
-    
-    var disposeBag = DisposeBag()
-    
     var heightConstraint: NSLayoutConstraint!
     var widthConstraint: NSLayoutConstraint!
     
-    private var tileSize: CGSize = .zero
+    private var itemSizes: [CGSize] = []
+    
+    private var disposeBag = DisposeBag()
     
     convenience init() {
         let layout = UICollectionViewFlowLayout()
@@ -41,14 +38,14 @@ class TileBoardCollectionView: UICollectionView, UICollectionViewDelegateFlowLay
         widthConstraint.isActive = true
     }
 
-    func setup(with viewModel: TileBoardViewModel) {
+    func setup(with viewModel: GoalViewModel) {
+        itemSizes = viewModel.getItemSizes()
+        
         disposeBag = DisposeBag()
         
         let boardSize = viewModel.getBoardSize()
         heightConstraint.constant = boardSize.height
         widthConstraint.constant = boardSize.width
-        
-        self.viewModel = viewModel
         
         let today = Date().stringFormat(of: .yyyyMMdd)
         
@@ -66,6 +63,6 @@ class TileBoardCollectionView: UICollectionView, UICollectionViewDelegateFlowLay
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return viewModel?.itemSize(at: indexPath.row+1) ?? .zero
+        return itemSizes[indexPath.row]
     }
 }
