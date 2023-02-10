@@ -79,6 +79,8 @@ class CalendarViewController: UIViewController {
     /// - PublishSubject<String> goal identifier
     let goalDeletedSubject = PublishSubject<String>()
     
+    let goalsEditedSubject = PublishSubject<[Goal]>()
+    
     let disposeBag = DisposeBag()
     
     private let thisMonth: Int = {
@@ -133,6 +135,10 @@ class CalendarViewController: UIViewController {
     }
     
     @objc private func backButtonTapped(_ sender: UIButton) {
+        if calendarViewModel.hasEdited {
+            let goals = calendarViewModel.goals
+            goalsEditedSubject.onNext(goals)
+        }
         navigationController?.popViewController(animated: true)
     }
     
@@ -148,6 +154,40 @@ class CalendarViewController: UIViewController {
             .disposed(by: disposeBag)
 
         present(yearSelectViewController, animated: false)
+    }
+    
+    fileprivate func tileSelectedPresentAlert(goal: Goal, dayIndex: Int) {
+        let day = goal.days[dayIndex]
+        
+        let dateString = Date
+            .inAnyFormat(dateString: day.date)
+            .stringFormat(of: .ddMMMEEEE_Comma_Space)
+        
+        var status: GoalStatus!
+        
+        GTAlertViewController()
+            .make(
+                title: "\(dateString)",
+                titleFont: .sfPro(size: 14, family: .Medium),
+                subTitle: "\(goal.title)",
+                subTitleFont: .sfPro(size: 14, family: .Light),
+                text: "** Current status: \(day.status)",
+                textFont: .sfPro(size: 12, family: .Light),
+                buttonText: "Fail",
+                cancelButtonText: "Success",
+                buttonTextColor: .redA,
+                backgroundDismiss: true
+            )
+            .addAction {
+                status = .fail
+            }
+            .addCancelAction {
+                status = .success
+            }
+            .onCompletion { [weak self] in
+                self?.calendarViewModel.fixGoal(identifier: goal.identifier, dayIndex: dayIndex, status: status)
+            }
+            .show()
     }
     
     private func yearSelected(_ selectedYear: String) {
@@ -171,7 +211,6 @@ class CalendarViewController: UIViewController {
         
         calendarViewModel.selectedMonth = String(format: "%02d", selectedMonth)
         calendarViewModel.selectedYear = selectedYear
-//        calendarViewModel.displaySelected()
         
         setYear(selectedYear)
         
@@ -183,7 +222,7 @@ class CalendarViewController: UIViewController {
         
         guard shownNumber < 2, !calendarViewModel.goals.isEmpty else { return }
         
-//        UserDefaults.standard.set(shownNumber+1, forKey: Keys.toolTip_Calendar)
+        UserDefaults.standard.set(shownNumber+1, forKey: Keys.toolTip_Calendar)
         
         TutorialBalloon
             .make(
@@ -233,73 +272,37 @@ extension CalendarViewController: UITableViewDelegate {
     }
     
     private func swipeDeleteAction(at row: Int) {
-//        let id = calendarViewModel.goalIdentifier(at: row)
-//        let title = calendarViewModel.goalTitle(at: row)
-//
-//        GTAlertViewController()
-//            .make(
-//                title: "Delete Goal",
-//                titleFont: .sfPro(size: 14, family: .Medium),
-//                subTitle: "\(title.filter({ !$0.isNewline }))",
-//                subTitleFont: .sfPro(size: 14, family: .Light),
-//                text: "** Deleted goals can not be recovered.",
-//                textFont: .sfPro(size: 12, family: .Light),
-//                buttonText: "Delete",
-//                cancelButtonText: "Cancel",
-//                buttonTextColor: .redA
-//            )
-//            .addAction {
-//                self.goalDeletedSubject.onNext(id)
-//
-//                self.calendarViewModel.deleteGoal(with: id)
-//            }
-//            .show()
+        let goal = calendarViewModel.goals[row]
+        let identifier = goal.identifier
+
+        GTAlertViewController()
+            .make(
+                title: "Delete Goal",
+                titleFont: .sfPro(size: 14, family: .Medium),
+                subTitle: "\(goal.title.filter({ !$0.isNewline }))",
+                subTitleFont: .sfPro(size: 14, family: .Light),
+                text: "** Deleted goals can not be recovered.",
+                textFont: .sfPro(size: 12, family: .Light),
+                buttonText: "Delete",
+                cancelButtonText: "Cancel",
+                buttonTextColor: .redA
+            )
+            .addAction {
+                self.goalDeletedSubject.onNext(identifier)
+
+                self.calendarViewModel.deleteGoal(with: identifier)
+            }
+            .show()
     }
 }
 
 //MARK: RxExtensions
 extension Reactive where Base: CalendarViewController {
-//    var tileCellSelected: Binder<(goalAt: Int, dayAt: Int, goalMonth: GoalMonth)> {
-//        Binder(base) { base, binder in
-//            let goalMonth = binder.goalMonth
-//            let day = goalMonth.days[binder.dayAt]
-//
-//            let dateString = Date
-//                .inAnyFormat(dateString: day.date)
-//                .stringFormat(of: .ddMMMEEEE_Comma_Space)
-//
-//            var selected: GoalStatus!
-//
-//            GTAlertViewController()
-//                .make(
-//                    title: "\(dateString)",
-//                    titleFont: .sfPro(size: 14, family: .Medium),
-//                    subTitle: "\(binder.goalMonth.title)",
-//                    subTitleFont: .sfPro(size: 14, family: .Light),
-//                    text: "** Current status: \(day.status)",
-//                    textFont: .sfPro(size: 12, family: .Light),
-//                    buttonText: "Fail",
-//                    cancelButtonText: "Success",
-//                    buttonTextColor: .redA,
-//                    backgroundDismiss: true
-//                )
-//                .addAction {
-//                    selected = .fail
-//                }
-//                .addCancelAction {
-//                    selected = .success
-//                }
-//                .onCompletion {
-//                    base.calendarViewModel.fixGoal(
-//                        goalAt: binder.goalAt,
-//                        dayAt: binder.dayAt,
-//                        status: selected,
-//                        goalMonth: goalMonth
-//                    )
-//                }
-//                .show()
-//        }
-//    }
+    var tileCellSelected: Binder<(goal: Goal, dayIndex: Int)> {
+        Binder(base) { base, binder in
+            base.tileSelectedPresentAlert(goal: binder.goal, dayIndex: binder.dayIndex)
+        }
+    }
 }
 
 //MARK: - Initial UI Setting
@@ -334,9 +337,9 @@ extension CalendarViewController{
                 
                 cell.configure(with: dataSource, tableViewRow: row)
                 
-//                cell.dayInGoalMonthSelectedSignal
-//                    .emit(to: self.rx.tileCellSelected)
-//                    .disposed(by: cell.reuseBag)
+                cell.dayInGoalMonthSelectedSignal
+                    .emit(to: self.rx.tileCellSelected)
+                    .disposed(by: cell.reuseBag)
                 
                 return cell
             }
@@ -347,8 +350,7 @@ extension CalendarViewController{
         
         monthsMenuCollectionView.itemSelectedSignal
             .emit { [weak self] indexPath in
-                self?.calendarViewModel.selectedMonth = String(format: "%02d", indexPath.row+1)
-                self?.calendarViewModel.setDatasourceFromGoals()
+                self?.calendarViewModel.monthSelected(indexPath.row+1)
             }
             .disposed(by: disposeBag)
         

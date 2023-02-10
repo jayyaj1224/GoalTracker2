@@ -156,15 +156,10 @@ class HomeViewController: UIViewController {
     
     fileprivate var isMagnified = false
     
-    // Calendar data preperation
-//    fileprivate var calendarModel: CalendarModel?
-    
     //MARK: - ViewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
         configure()
-        
-//        prepareCalendarViewModelData()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -490,7 +485,7 @@ extension Reactive where Base: HomeViewController {
             }
         }
     }
-
+    
     fileprivate var goalScrolledHorizontallyAt: Binder<CGFloat> {
         Binder(base) {base, x in
             var alpha: CGFloat = 0
@@ -531,7 +526,7 @@ extension Reactive where Base: HomeViewController {
     fileprivate var buzzToScrollOffsetX: Binder<CGFloat> {
         Binder(base) { base, x in
             guard SettingsManager.shared.vibrate else {
-                return 
+                return
             }
             switch x {
             case 0...50:
@@ -573,50 +568,51 @@ extension Reactive where Base: HomeViewController {
             base.messageBar.setNewGoalPlaceHolderMessage()
             
             DispatchQueue.global(qos: .userInteractive).async {
-//                base.calendarModel?.addGoalByMonth(goal: new)
+                //                base.calendarModel?.addGoalByMonth(goal: new)
             }
         }
     }
     
     fileprivate var deleteGoalWithIdentifier: Binder<String> {
         Binder(base) { base, identifier in
-            let numberOfItems = 0 //base.homeViewModel.goalViewModelsRelay.value.count
+            let base = base as HomeViewController
+            
+            let goals = base.homeViewModel.goalViewModelsRelay.value
+            let numberOfItems = goals.count
             
             var isFistItemDelete = false
-            
-//            DispatchQueue.main.async {
-//                let y = base.goalCircularCollectionView.contentOffset.y
-//                let oneRowBefore = CGPoint(x: 0, y: y-K.singleRowHeight)
-//
-//                if oneRowBefore.y >= 0 {
-//                    base.goalCircularCollectionView.setContentOffset(oneRowBefore, animated: true)
-//
-//                } else if oneRowBefore.y < 0 {
-//                    guard  numberOfItems > 1 else { return }
-//
-//                    isFistItemDelete = true
-//
-//                    let oneRowAfter = CGPoint(x: 0, y: y+K.singleRowHeight)
-//                    base.goalCircularCollectionView.setContentOffset(oneRowAfter, animated: true)
-//                }
-//            }
-            
+
+            DispatchQueue.main.async {
+                let y = base.goalCircularCollectionView.contentOffset.y
+                let oneRowBefore = CGPoint(x: 0, y: y-K.singleRowHeight)
+
+                if oneRowBefore.y >= 0 {
+                    base.goalCircularCollectionView.setContentOffset(oneRowBefore, animated: true)
+
+                } else if oneRowBefore.y < 0 {
+                    guard  numberOfItems > 1 else { return }
+
+                    isFistItemDelete = true
+
+                    let oneRowAfter = CGPoint(x: 0, y: y+K.singleRowHeight)
+                    base.goalCircularCollectionView.setContentOffset(oneRowAfter, animated: true)
+                }
+            }
+
             let delay = (numberOfItems==1) ? 0.0 : 0.6
-            
-//            DispatchQueue.main.asyncAfter(deadline: .now()+delay) {
-//                if isFistItemDelete {
-//                    base.goalCircularCollectionView.setContentOffset(.zero, animated: false)
-//                }
-//
-//                let goalVmsFiltered = base.homeViewModel
-//                    .goalViewModelsRelay.value
-//                    .filter { $0.goal.identifier != identifier }
-//
-//                base.homeViewModel.goalViewModelsRelay
-//                    .accept(goalVmsFiltered)
-//
-//                base.calendarModel?.deleteGoal(with: identifier, completion: nil)
-//            }
+
+            DispatchQueue.main.asyncAfter(deadline: .now()+delay) {
+                if isFistItemDelete {
+                    base.goalCircularCollectionView.setContentOffset(.zero, animated: false)
+                }
+
+                let goalVmsFiltered = base.homeViewModel
+                    .goalViewModelsRelay.value
+                    .filter { $0.goal.identifier != identifier }
+
+                base.homeViewModel.goalViewModelsRelay
+                    .accept(goalVmsFiltered)
+            }
         }
     }
     
@@ -829,7 +825,7 @@ extension HomeViewController {
         let calendarViewController = CalendarViewController(goals: goals)
 
         calendarViewController
-            .calendarViewModel.goalsEditedSubject
+            .goalsEditedSubject
             .map { $0.compactMap(GoalViewModel.init) }
             .bind(to: homeViewModel.goalViewModelsRelay)
             .disposed(by: calendarViewController.disposeBag)

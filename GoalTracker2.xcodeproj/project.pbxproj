@@ -48,7 +48,6 @@
 		6248936028FC154A004580CB /* SwitchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6248935F28FC154A004580CB /* SwitchController.swift */; };
 		624E91E728FD6EC400E15735 /* PeriodSettingModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 624E91E628FD6EC400E15735 /* PeriodSettingModel.swift */; };
 		6265948C296B199600F5A606 /* TutorialBalloon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6265948B296B199600F5A606 /* TutorialBalloon.swift */; };
-		626742AE2937A5860068FFE6 /* CalendarModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 626742AD2937A5860068FFE6 /* CalendarModel.swift */; };
 		626768B82967094100666C8A /* Outfit-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 626768922967094100666C8A /* Outfit-Bold.ttf */; };
 		626768B92967094100666C8A /* Outfit-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 626768932967094100666C8A /* Outfit-Regular.ttf */; };
 		626768BA2967094100666C8A /* Outfit-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 626768942967094100666C8A /* Outfit-Black.ttf */; };
@@ -182,7 +181,6 @@
 		6248935F28FC154A004580CB /* SwitchController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwitchController.swift; sourceTree = "<group>"; };
 		624E91E628FD6EC400E15735 /* PeriodSettingModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeriodSettingModel.swift; sourceTree = "<group>"; };
 		6265948B296B199600F5A606 /* TutorialBalloon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialBalloon.swift; sourceTree = "<group>"; };
-		626742AD2937A5860068FFE6 /* CalendarModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarModel.swift; sourceTree = "<group>"; };
 		626768852967022400666C8A /* thumbs-up-burst.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "thumbs-up-burst.json"; sourceTree = "<group>"; };
 		626768922967094100666C8A /* Outfit-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Outfit-Bold.ttf"; sourceTree = "<group>"; };
 		626768932967094100666C8A /* Outfit-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Outfit-Regular.ttf"; sourceTree = "<group>"; };
@@ -550,14 +548,6 @@
 			path = ViewModel;
 			sourceTree = "<group>";
 		};
-		6267688F2967081900666C8A /* Model */ = {
-			isa = PBXGroup;
-			children = (
-				626742AD2937A5860068FFE6 /* CalendarModel.swift */,
-			);
-			path = Model;
-			sourceTree = "<group>";
-		};
 		626768902967094100666C8A /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
@@ -762,7 +752,6 @@
 			isa = PBXGroup;
 			children = (
 				6267688D2967081200666C8A /* Controller */,
-				6267688F2967081900666C8A /* Model */,
 				6267688E2967081500666C8A /* ViewModel */,
 				62CA185B292FCE7A006F046D /* Cells */,
 			);
@@ -1099,7 +1088,6 @@
 				621AEAFE28CEF74D00D53F2C /* PresentationController.swift in Sources */,
 				621AEAF228CEF74300D53F2C /* ArcProcessBar.swift in Sources */,
 				62F249932936A3820017530F /* SettingsManager.swift in Sources */,
-				626742AE2937A5860068FFE6 /* CalendarModel.swift in Sources */,
 				62CA1867293270AD006F046D /* YearSelectViewController.swift in Sources */,
 				62767E3E2936A69B00622A4B /* ScorePannel.swift in Sources */,
 				621AEB0A28CF089400D53F2C /* HomeViewModel.swift in Sources */,

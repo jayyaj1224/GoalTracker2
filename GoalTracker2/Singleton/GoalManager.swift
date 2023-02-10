@@ -51,6 +51,27 @@ class GoalManager {
             }
         return goalsTemp
     }
+    
+    static func dayEdit(goal: inout Goal, dayIndex: Int, status: GoalStatus) {
+        let prevStatus = GoalStatus(rawValue: goal.days[dayIndex].status)
+        
+        switch status {
+        case .success:
+            goal.successCount+=1
+            if prevStatus == .fail {
+                goal.failCount-=1
+            }
+        case .fail:
+            goal.failCount+=1
+            if prevStatus == .success {
+                goal.successCount-=1
+            }
+        case .none:
+            break
+        }
+        
+        goal.days[dayIndex].status = status.rawValue
+    }
 }
 
 extension GoalManager {

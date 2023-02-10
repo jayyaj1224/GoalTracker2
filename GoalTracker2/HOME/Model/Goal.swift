@@ -56,9 +56,7 @@ struct Goal: Codable {
         self.days = Array(0...totalDays-1)
             .map { i in
                 let date = today.add(i)
-                let yyyyMM = date.stringFormat(of: .yyyyMM)
                 let yyyyMMdd = date.stringFormat(of: .yyyyMMdd)
-                
                 return Day(date: yyyyMMdd,index: i, status: "none")
             }
     }
@@ -110,7 +108,6 @@ extension Goal {
         self.days = Array(0...totalDays-1)
             .map { i in
                 let date = today.add(i)
-                let yyyyMM = date.stringFormat(of: .yyyyMM)
                 let yyyyMMdd = date.stringFormat(of: .yyyyMMdd)
                 
                 var day = Day(date: yyyyMMdd,index: i, status: "none")
@@ -151,11 +148,9 @@ extension Goal {
         self.days = Array(0...totalDays-1)
             .map { i in
                 let date = today.add(i-1)
-                let yyyyMM = date.stringFormat(of: .yyyyMM)
                 let yyyyMMdd = date.stringFormat(of: .yyyyMMdd)
                 
                 var day = Day(date: yyyyMMdd,index: i, status: "none")
-                
                 
                 if day.date < Date().stringFormat(of: .yyyyMMdd) {
                     if randomFailed.contains(i) {
@@ -194,7 +189,6 @@ extension Goal {
         self.days = Array(0...totalDays-1)
             .map { i in
                 let date = today.add(i-1)
-                let yyyyMM = date.stringFormat(of: .yyyyMM)
                 let yyyyMMdd = date.stringFormat(of: .yyyyMMdd)
                 
                 var day = Day(date: yyyyMMdd,index: i, status: "none")
@@ -235,7 +229,6 @@ extension Goal {
         self.days = Array(0...totalDays-1)
             .map { i in
                 let date = today.add(i-1)
-                let yyyyMM = date.stringFormat(of: .yyyyMM)
                 let yyyyMMdd = date.stringFormat(of: .yyyyMMdd)
                 
                 var day = Day(date: yyyyMMdd,index: i, status: "none")
@@ -277,7 +270,6 @@ extension Goal {
         self.days = Array(0...totalDays-1)
             .map { i in
                 let date = today.add(i-1)
-                let yyyyMM = date.stringFormat(of: .yyyyMM)
                 let yyyyMMdd = date.stringFormat(of: .yyyyMMdd)
                 
                 var day = Day(date: yyyyMMdd,index: i, status: "none")

@@ -9,43 +9,46 @@ import Foundation
 import RxSwift
 import RxCocoa
 
-/*
- CalendarViewModel
-  ⎿ yyyyMM : Goal[GoalMonthlyViewModel]
- */
-
 class CalendarViewModel {
     var goals: [Goal]
-    
     var daysIndexRange: [String: ClosedRange<Int>] = [:]
     
     let tableViewDatasourceRelay = BehaviorRelay<[CalendarDatasource]>(value: [])
-    
-    let goalsEditedSubject = PublishSubject<[Goal]>()
     
     typealias CalendarDatasource = (goal: Goal, range: ClosedRange<Int>?)
     
     var selectedMonth: String = Date().stringFormat(of: .MM)
     var selectedYear: String = Date().stringFormat(of: .yyyy)
     
+    var hasEdited = false
+    
     init(goals: [Goal]) {
         self.goals = goals
         
-        setDatasourceFromGoals()
+        setRange()
+        reloadDatasource()
     }
     
-    func setDatasourceFromGoals() {
+    func monthSelected(_ month: Int) {
+        selectedMonth = String(format: "%02d", month)
+        
+        setRange()
+        reloadDatasource()
+    }
+    
+    private func reloadDatasource() {
+        let datasource = goals.map {
+            CalendarDatasource(goal: $0, range: daysIndexRange[$0.identifier])
+        }
+        tableViewDatasourceRelay.accept(datasource)
+    }
+    
+    private func setRange() {
         daysIndexRange.removeAll()
         
         goals.forEach {
             daysIndexRange[$0.identifier] = calculateDaysIndexRangeFrom($0)
         }
-        
-        let datasource = goals
-            .map {
-                CalendarDatasource(goal: $0, range: daysIndexRange[$0.identifier])
-            }
-        tableViewDatasourceRelay.accept(datasource)
     }
     
     private func calculateDaysIndexRangeFrom(_ goal: Goal) -> ClosedRange<Int>? {
@@ -71,46 +74,32 @@ class CalendarViewModel {
         
         return startIndex...endIndex
     }
-    
-//    func displaySelected() {
-//        let keyDate = (selectedYear+selectedMonth)
-//        let goalMonths = calendarModel.goalMonth(yyyyMM: keyDate)
-//
-//        tableViewDatasourceRelay.accept(goalMonths)
-//    }
-//
-//
-//    var isEmpty: Bool {
-//        tableViewDatasourceRelay.value.isEmpty
-//    }
 }
 
-//extension CalendarViewModel {
-//    func goalTitle(at row: Int) -> String {
-//        return tableViewDatasourceRelay.value[row].title
-//    }
-//
-//    func goalIdentifier(at row: Int) -> String {
-//        return tableViewDatasourceRelay.value[row].identifier
-//    }
-//
-//    func deleteGoal(with identifier: String) {
-//        calendarModel.deleteGoal(with: identifier) { [weak self] in
-//
-//            self?.displaySelected()
-//        }
-//    }
-//
-//    func fixGoal(goalAt: Int, dayAt: Int, status: GoalStatus, goalMonth: GoalMonth) {
-//        // fix viewModel
-//        var temp = tableViewDatasourceRelay.value
-//        temp[goalAt].days[dayAt].status = status.rawValue
-//        tableViewDatasourceRelay.accept(temp)
-//
-//        // fix model
-//        let yyyyMM = (selectedYear+selectedMonth)
-//        calendarModel.goalFixedReplace(with: temp, date: yyyyMM, goalAt: goalAt, dayAt: dayAt, newStatus: status)
-//    }
-//}
-//
+extension CalendarViewModel {
+    func deleteGoal(with identifier: String) {
+        goals.removeAll { $0.identifier == identifier }
+        
+        reloadDatasource()
+    }
+    
+    func fixGoal(identifier: String, dayIndex: Int, status: GoalStatus) {
+        hasEdited = true
+        
+        guard let goalEnumerated = goals
+            .enumerated()
+            .first(where: {$0.element.identifier == identifier}) else { return }
+        
+        var goal = goalEnumerated.element
+        let offset = goalEnumerated.offset
+        
+        GoalManager.dayEdit(goal: &goal, dayIndex: dayIndex, status: status)
+        
+        goals[offset] = goal
+        
+        reloadDatasource()
+        
+        GoalManager.shared.update(goal)
+    }
+}
 

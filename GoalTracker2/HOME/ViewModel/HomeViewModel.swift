@@ -71,7 +71,7 @@ class GoalViewModel {
     var executionRate: CGFloat {
         let startDate = Date.inAnyFormat(dateString: goal.startDate)
         let daysCountToNow = startDate.daysCountToNow+1
-        var ratio = CGFloat(goal.successCount)/CGFloat(daysCountToNow)
+        let ratio = CGFloat(goal.successCount)/CGFloat(daysCountToNow)
         
         return min(1, ratio) * 100
     }
@@ -113,10 +113,7 @@ class GoalViewModel {
     var failCountLabelColor: UIColor {
         return  (goal.failCount > goal.failCap) ? .red : .black
     }
-}
-
-//MARK: Tile Board
-extension GoalViewModel {
+    
     func needDateLabelVisible(at index: Int) -> Bool {
         if (index+1)%(10*tileNumberOfRows) == 0 {
             return true
@@ -184,8 +181,6 @@ extension GoalViewModel {
     private func calculateMaxStreak() -> Int {
         var maxStreak = 0
         var streak = 0
-
-        let thisMonth = Date().stringFormat(of: .yyyyMM)
         let today = Date().stringFormat(of: .yyyyMMdd)
         
         for day in goal.days where day.date<=today {
@@ -198,9 +193,7 @@ extension GoalViewModel {
         }
         return maxStreak
     }
-}
-
-extension GoalViewModel {
+    
     func todayCheck(_ status: GoalStatus) {
         let daysCountFromStart = Date
             .inFormat(of: .yyyyMMdd, dateString: goal.startDate)
