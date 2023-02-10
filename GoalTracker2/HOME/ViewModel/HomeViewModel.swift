@@ -51,6 +51,17 @@ class HomeViewModel {
         
         goalViewModelsRelay.accept(viewModels)
     }
+    
+    func getTodayStatus(at row: Int) -> GoalStatus {
+        let viewModels = goalViewModelsRelay.value
+        let goal = viewModels[row].goal
+        
+        let index = Date.inFormat(of: .yyyyMMdd, dateString: goal.startDate)
+            .daysCountToNow
+        let day = goal.days[index]
+        
+        return GoalStatus(rawValue: day.status)!
+    }
 }
 
 class GoalViewModel {

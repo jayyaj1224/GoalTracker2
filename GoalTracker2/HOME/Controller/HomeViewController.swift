@@ -472,13 +472,14 @@ extension Reactive where Base: HomeViewController {
     
     fileprivate var circularScrollStoppedAt: Binder<CGFloat> {
         Binder(base) {base, y in
-            let row = Int(y/K.singleRowHeight)
             let viewModels = base.homeViewModel.goalViewModelsRelay.value
             
             guard !viewModels.isEmpty else { return }
-            let goal = viewModels[row].goal
             
-            base.checkButton.isSelected = (goal.status == .success)
+            let row = Int(y/K.singleRowHeight)
+            let todayStatus = base.homeViewModel.getTodayStatus(at: row)
+            
+            base.checkButton.isSelected = (todayStatus == .success)
             
             if SettingsManager.shared.vibrate {
                 UIImpactFeedbackGenerator(style: .light).impactOccurred()
@@ -566,10 +567,6 @@ extension Reactive where Base: HomeViewController {
             base.homeViewModel.acceptNewGoal(new)
             
             base.messageBar.setNewGoalPlaceHolderMessage()
-            
-            DispatchQueue.global(qos: .userInteractive).async {
-                //                base.calendarModel?.addGoalByMonth(goal: new)
-            }
         }
     }
     
@@ -714,9 +711,11 @@ extension HomeViewController {
         if sender is UITapGestureRecognizer && checkButton.isSelected {
             return
         }
+        
         if homeViewModel.goalViewModelsRelay.value.isEmpty {
             return
         }
+        
         view.hideAllToasts()
         
         let page = pageIndicator.currentIndex
