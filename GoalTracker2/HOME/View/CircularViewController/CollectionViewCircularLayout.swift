@@ -8,9 +8,9 @@
 import UIKit
 
 class CircularLayout: UICollectionViewLayout {
-    var attributeList = [UICollectionViewLayoutAttributes]()
+    private var attributeList = [UICollectionViewLayoutAttributes]()
     
-    var angleAtExtreme: CGFloat {
+    private var angleAtExtreme: CGFloat {
         let itemsCount = collectionView!.numberOfItems(inSection: 0)
         if itemsCount > 0 {
             return -CGFloat(collectionView!.numberOfItems(inSection: 0) - 1) * anglePerItem
@@ -19,13 +19,13 @@ class CircularLayout: UICollectionViewLayout {
         }
     }
     
-    var angle: CGFloat {
+    private var angle: CGFloat {
         let height = (collectionViewContentSize.height - collectionView!.bounds.height)
         guard height != 0 else { return 0 }
         return angleAtExtreme * collectionView!.contentOffset.y / height
     }
     
-    var radius: CGFloat {
+    private var radius: CGFloat {
         get {
             if SettingsManager.shared.handSide == .right {
                 return 820
