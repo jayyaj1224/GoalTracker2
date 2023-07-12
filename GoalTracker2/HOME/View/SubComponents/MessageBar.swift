@@ -1,4 +1,4 @@
-//
+ //
 //  MessageBar.swift
 //  GoalTracker
 //
