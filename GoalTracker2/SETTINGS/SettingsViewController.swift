@@ -149,7 +149,7 @@ class SettingsViewController: UIViewController {
             .addAction { [weak self] in
                 GoalManager.shared.deleteAll()
                 self?.resetButton.isEnabled = false
-                self?.view.makeToast("Complete.", position: .center)
+//                self?.view.makeToast("Complete.", position: .center)
                 
                 self?.settingsDelegate?.dataHasReset()
             }

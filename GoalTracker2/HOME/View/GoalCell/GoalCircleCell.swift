@@ -152,8 +152,8 @@ class GoalCircleCell: UICollectionViewCell {
             while let presentedViewController = topController.presentedViewController {
                 topController = presentedViewController
             }
-            topController.view.hideAllToasts()
-            topController.view.makeToast("Copied", position: .bottom)
+//            topController.view.hideAllToasts()
+//            topController.view.makeToast("Copied", position: .bottom)
         }
     }
 }

@@ -9,7 +9,7 @@ import UIKit
 import RxSwift
 import RxCocoa
 import Lottie
-import Toast_Swift
+//import Toast_Swift
 
 class HomeViewController: UIViewController {
     //MARK: - UI Components
@@ -462,7 +462,7 @@ extension Reactive where Base: HomeViewController {
     fileprivate var circularScrollStartedAt: Binder<CGFloat> {
         Binder(base) { base, y in
             DispatchQueue.main.async {
-                base.view.hideAllToasts()
+//                base.view.hideAllToasts()
                 
                 base.scrollBackButton.alpha = 0
                 base.plusRotatingButton.alpha = 1
@@ -716,7 +716,7 @@ extension HomeViewController {
             return
         }
         
-        view.hideAllToasts()
+//        view.hideAllToasts()
         
         let page = pageIndicator.currentIndex
         
@@ -727,22 +727,22 @@ extension HomeViewController {
         } else {
             homeViewModel.dayCheck(at: page, status: .fail)
             
-            var toastStyle = ToastStyle()
-            toastStyle.backgroundColor = .black.withAlphaComponent(0.4)
-            toastStyle.fadeDuration = 0.1
+//            var toastStyle = ToastStyle()
+//            toastStyle.backgroundColor = .black.withAlphaComponent(0.4)
+//            toastStyle.fadeDuration = 0.1
             
             GTToast.hideAllToast()
             thumbsUpLottieView.stop()
             
             lottieDismissAnimation()
             
-            view.makeToast(
-                "Unchecked",
-                point: CGPoint(x: K.screenWidth/2, y: messageBar.frame.minY-100),
-                title: nil, image: nil,
-                style: toastStyle,
-                completion: nil
-            )
+//            view.makeToast(
+//                "Unchecked",
+//                point: CGPoint(x: K.screenWidth/2, y: messageBar.frame.minY-100),
+//                title: nil, image: nil,
+//                style: toastStyle,
+//                completion: nil
+//            )
         }
         
         showCalendarTutorialBalloonIfNeeded()

@@ -331,13 +331,13 @@ extension UserNoteViewController {
             .show()
         
         DispatchQueue.main.asyncAfter(deadline: .now()+0.5) {
-            self.view.makeToast(
-                "← Swipe left or right to pin and delete →",
-                point: CGPoint(x: K.screenWidth/2, y: 320),
-                title: nil,
-                image: nil,
-                completion: nil
-            )
+//            self.view.makeToast(
+//                "← Swipe left or right to pin and delete →",
+//                point: CGPoint(x: K.screenWidth/2, y: 320),
+//                title: nil,
+//                image: nil,
+//                completion: nil
+//            )
         }
     }
     

@@ -11,7 +11,7 @@ import IQKeyboardManagerSwift
 import RxSwift
 import RxCocoa
 import RealmSwift
-import Toast_Swift
+//import Toast_Swift
 import Lottie
 
 @main
