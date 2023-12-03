@@ -13,7 +13,7 @@ import Lottie
 
 class HomeViewController: UIViewController {
     //MARK: - UI Components
-    fileprivate let goalCircularCollectionView = CircularCollectionView()
+    fileprivate let goalCollectionView = CircularCollectionView()
     
     fileprivate let plusRotatingButton: NeumorphicButton = {
         let button = NeumorphicButton(color: .crayon, type: .large)
@@ -211,7 +211,7 @@ extension HomeViewController {
         let cvDoubletapGestureRecognizer = UITapGestureRecognizer()
         cvDoubletapGestureRecognizer.numberOfTapsRequired = 2
         cvDoubletapGestureRecognizer.addTarget(self, action: #selector(collectionViewDoubleTapped))
-        goalCircularCollectionView.addGestureRecognizer(cvDoubletapGestureRecognizer)
+        goalCollectionView.addGestureRecognizer(cvDoubletapGestureRecognizer)
         
         let lottieTapGestureRecognizer = UITapGestureRecognizer()
         lottieTapGestureRecognizer.addTarget(self, action: #selector(lottieBlurViewTapped))
@@ -252,14 +252,14 @@ extension HomeViewController {
     private func bindScrollStatusRelay() {
         let scrollStatusChanged = Observable
             .merge(
-                goalCircularCollectionView.rx.didScroll.map { ScrollStatus.isScorlling },
-                goalCircularCollectionView.rx.didEndDragging.map { _ in ScrollStatus.stopped },
-                goalCircularCollectionView.rx.didEndDecelerating.map { ScrollStatus.stopped }
+                goalCollectionView.rx.didScroll.map { ScrollStatus.isScorlling },
+                goalCollectionView.rx.didEndDragging.map { _ in ScrollStatus.stopped },
+                goalCollectionView.rx.didEndDecelerating.map { ScrollStatus.stopped }
             )
             .distinctUntilChanged()
         
         scrollStatusChanged
-            .withLatestFrom(goalCircularCollectionView.rx.contentOffset) {
+            .withLatestFrom(goalCollectionView.rx.contentOffset) {
                 CircleScroll(status: $0, y: $1.y)
             }
             .bind(to: circularCvScrollStautsRelay)
@@ -288,7 +288,7 @@ extension HomeViewController {
     
     private func bindCollectionView() {
         homeViewModel.goalViewModelsRelay
-            .bind(to: goalCircularCollectionView.rx.items) { [weak self] cv, row, viewModel in
+            .bind(to: goalCollectionView.rx.items) { [weak self] cv, row, viewModel in
                 let cell = cv.dequeueReusableCell(withReuseIdentifier: "GoalCircleCell", for: IndexPath(row: row, section: 0))
                 
                 guard let cell = cell as? GoalCircleCell, let self = self else { return cell }
@@ -325,7 +325,7 @@ extension HomeViewController {
     private func pageIndicatorBind() {
         homeViewModel
             .goalViewModelsRelay
-            .flatMap { Observable.just(($0.count, self.goalCircularCollectionView.contentOffset.y)) }
+            .flatMap { Observable.just(($0.count, self.goalCollectionView.contentOffset.y)) }
             .bind(to: pageIndicator.rx.numberOfPages)
             .disposed(by: disposeBag)
         
@@ -342,7 +342,7 @@ extension HomeViewController {
     
     private func layoutComponents() {
         [
-            goalCircularCollectionView,     pageIndicator,
+            goalCollectionView,     pageIndicator,
             topTransparentScreenView,       bottomTransparentScreenView,
             topScreenView,                  bottomScreenView,
             plusRotatingButton,
@@ -354,7 +354,7 @@ extension HomeViewController {
         ]
             .forEach(view.addSubview(_:))
 
-        goalCircularCollectionView.snp.makeConstraints { make in
+        goalCollectionView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
             make.centerY.equalToSuperview()
             make.height.equalTo(K.singleRowHeight)
@@ -362,7 +362,7 @@ extension HomeViewController {
 
         topTransparentScreenView.snp.makeConstraints { make in
             make.top.leading.trailing.equalToSuperview()
-            make.bottom.equalTo(self.goalCircularCollectionView.snp.top).offset(40)
+            make.bottom.equalTo(self.goalCollectionView.snp.top).offset(40)
         }
         
         bottomTransparentScreenView.snp.makeConstraints { make in
@@ -403,8 +403,8 @@ extension HomeViewController {
         }
 
         pageIndicator.snp.makeConstraints { make in
-            make.centerY.equalTo(goalCircularCollectionView)
-            make.leading.equalTo(goalCircularCollectionView)
+            make.centerY.equalTo(goalCollectionView)
+            make.leading.equalTo(goalCollectionView)
         }
         
         settingsButton.snp.makeConstraints { make in
@@ -543,11 +543,11 @@ extension Reactive where Base: HomeViewController {
     
     fileprivate var scrollToAddedGoal: Binder<Void> {
         Binder(base) {base, _ in
-            let offsetY = base.goalCircularCollectionView.contentSize.height-K.singleRowHeight
+            let offsetY = base.goalCollectionView.contentSize.height-K.singleRowHeight
             let rect = CGRect(x: 0, y: offsetY, width: 10, height: K.singleRowHeight)
             
             DispatchQueue.main.async {
-                base.goalCircularCollectionView.scrollRectToVisible(rect, animated: true)
+                base.goalCollectionView.scrollRectToVisible(rect, animated: true)
             }
             
             base.pageIndicator.updateIndicators(offset: offsetY)
@@ -580,11 +580,11 @@ extension Reactive where Base: HomeViewController {
             var isFistItemDelete = false
 
             DispatchQueue.main.async {
-                let y = base.goalCircularCollectionView.contentOffset.y
+                let y = base.goalCollectionView.contentOffset.y
                 let oneRowBefore = CGPoint(x: 0, y: y-K.singleRowHeight)
 
                 if oneRowBefore.y >= 0 {
-                    base.goalCircularCollectionView.setContentOffset(oneRowBefore, animated: true)
+                    base.goalCollectionView.setContentOffset(oneRowBefore, animated: true)
 
                 } else if oneRowBefore.y < 0 {
                     guard  numberOfItems > 1 else { return }
@@ -592,7 +592,7 @@ extension Reactive where Base: HomeViewController {
                     isFistItemDelete = true
 
                     let oneRowAfter = CGPoint(x: 0, y: y+K.singleRowHeight)
-                    base.goalCircularCollectionView.setContentOffset(oneRowAfter, animated: true)
+                    base.goalCollectionView.setContentOffset(oneRowAfter, animated: true)
                 }
             }
 
@@ -600,7 +600,7 @@ extension Reactive where Base: HomeViewController {
 
             DispatchQueue.main.asyncAfter(deadline: .now()+delay) {
                 if isFistItemDelete {
-                    base.goalCircularCollectionView.setContentOffset(.zero, animated: false)
+                    base.goalCollectionView.setContentOffset(.zero, animated: false)
                 }
 
                 let goalVmsFiltered = base.homeViewModel
@@ -637,7 +637,7 @@ extension HomeViewController {
             self?.calenderButtonsTapped()
         }
         
-        let row = Int(goalCircularCollectionView.contentOffset.y/K.singleRowHeight)
+        let row = Int(goalCollectionView.contentOffset.y/K.singleRowHeight)
         let goals = self.homeViewModel.goalViewModelsRelay.value.map { $0.goal }
         
         if goals.count != 0 {
@@ -693,14 +693,14 @@ extension HomeViewController {
     @objc private func collectionViewDoubleTapped(_ sender: UITapGestureRecognizer) {
         if isMagnified {
             UIView.animate(withDuration: 0.3, delay: 0) {
-                self.goalCircularCollectionView.transform = .identity
+                self.goalCollectionView.transform = .identity
             }
         } else {
             [self.topScreenView, self.bottomScreenView]
                 .forEach { $0.alpha = 0 }
             
             UIView.animate(withDuration: 0.3, delay: 0) {
-                self.goalCircularCollectionView.transform = CGAffineTransform(scaleX: 0.6, y: 0.6)
+                self.goalCollectionView.transform = CGAffineTransform(scaleX: 0.6, y: 0.6)
             }
         }
         
@@ -759,7 +759,7 @@ extension HomeViewController {
     }
     
     @objc private func messageBarTapped() {
-        let row = Int(goalCircularCollectionView.contentOffset.y/K.singleRowHeight)
+        let row = Int(goalCollectionView.contentOffset.y/K.singleRowHeight)
         let identifier = homeViewModel.goalIdentifier(at: row)
         
         let noteViewController = UserNoteViewController(goalIdentifier: identifier)
@@ -859,7 +859,7 @@ extension HomeViewController: SettingsProtocol {
     }
     
     func scoreBoardSet() {
-        goalCircularCollectionView.reloadData()
+        goalCollectionView.reloadData()
     }
 }
 

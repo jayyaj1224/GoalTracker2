@@ -91,6 +91,7 @@ class CircularLayout: UICollectionViewLayout {
     }
     
     override func shouldInvalidateLayout(forBoundsChange newBounds: CGRect) -> Bool {
+
         return true
     }
 }

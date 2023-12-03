@@ -317,7 +317,7 @@
 		6210B98429423EA100CDA87B /* View */ = {
 			isa = PBXGroup;
 			children = (
-				6267687F2966FFB900666C8A /* CircularViewController */,
+				6267687F2966FFB900666C8A /* CircularCollectionView */,
 				626768802966FFBF00666C8A /* GoalCell */,
 				6210B98529423EA700CDA87B /* SubComponents */,
 			);
@@ -433,13 +433,13 @@
 			path = Controller;
 			sourceTree = "<group>";
 		};
-		6267687F2966FFB900666C8A /* CircularViewController */ = {
+		6267687F2966FFB900666C8A /* CircularCollectionView */ = {
 			isa = PBXGroup;
 			children = (
 				621AEAEC28CEF74300D53F2C /* CircularCollectionView.swift */,
 				621AEAED28CEF74300D53F2C /* CollectionViewCircularLayout.swift */,
 			);
-			path = CircularViewController;
+			path = CircularCollectionView;
 			sourceTree = "<group>";
 		};
 		626768802966FFBF00666C8A /* GoalCell */ = {
